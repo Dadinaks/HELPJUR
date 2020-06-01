@@ -61,7 +61,7 @@
 
 				<?php echo form_open('Categorie_Tache/modifier/tache'); ?>
 				<input type="hidden" name="idTache" id="idTache">
-
+				
 				<select id="categorie_tache" name="categorie_tache" class="browser-default custom-select custom-select-sm mb-4" required>
 					<option class="font-weight-bold" selected>-- Séléction Catégorie --</option>
 					<?php $data['categorie'] = $this->TachecategorieModel->find('categorie');
@@ -112,12 +112,8 @@
 
 				<?php echo form_open('Categorie_Tache/supprimer/tache'); ?>
 				<input type='hidden' name='idTache' id='idTache'>
-				<div class="mb-3">
-					Voulez-vous vraiment supprimer cette tâche?
-				</div>
-
-				<button type="submit" class="btn btn-sm btn-rounded btn-danger"><i class="fas fa-trash-alt mr-2"></i>Supprimer</button>
-				<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>
+				
+				<div class="deleteTacheform mb-3"></div>
 				<?php echo form_close(); ?>
 			</div>
 		</div>
@@ -144,8 +140,32 @@
     $('#modaldeleteTache').on('show.bs.modal', function (e) {
         var idTache = $(e.relatedTarget).attr('data-id');
         var tache = $(e.relatedTarget).attr('data-tache');
+		var check = $(e.relatedTarget).attr('data-check');
 
         $(this).find('.modal-body #idTache').val(idTache);
         $(this).find('.modal-body .tache').text(tache);
+
+		$(this).find('.deleteTacheform').empty();
+        if (check > 0) {
+            $(this).find('.deleteTacheform').append(
+                "<div>" +
+                "<p class='note note-danger'>" +
+                "<small class='font-weight-bold text-danger'>Note : </small>" +
+                "<small>Vous ne pouvez pas supprimer cette Tâche parce qu'elle est liée avec des tickets.</small>" +
+                "</p>" +
+                "</div>" +
+
+                "<button data-dismiss='modal' class='btn btn-sm btn-rounded btn-light'><i class='fas fa-times mr-2'></i>Annuler</button>"
+            )
+        } else {
+            $(this).find('.deleteTacheform').append(
+                '<div class="mb-3">' +
+                'Voulez-vous vraiment supprimer cette tâche?' +
+                '</div>' +
+
+                '<button type="submit" class="btn btn-sm btn-rounded btn-danger"><i class="fas fa-trash-alt mr-2"></i>Supprimer</button>' +
+                '<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>'
+            )
+        }
     });
 </script>

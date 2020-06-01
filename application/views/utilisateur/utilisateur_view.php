@@ -16,7 +16,7 @@
                 <div class="row text-center">
                     <div class="offset-6 col-6">
                         <div class="row">
-                            <div class="offset-xl-5 offset-lg-5 offset-md-5 col-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="offset-xl-5 offset-lg-5 offset-md-5 col-4 col-lg-4 col-md-4 col-sm-12">
                                 <input list="lieu_user" id="filtre_lieu_user" name="lieu_user" class="browser-default custom-select custom-select-sm" placeholder="-- Filtre Agence --" required>
                                 <datalist id="lieu_user">
                                     <?php $lieu = $this->LieuModel->find();
@@ -34,10 +34,6 @@
                                         <option value="<?php echo $row->idProfil; ?>"><?php echo $row->profile; ?></option>
                                     <?php } ?>
                                 </select>
-                            </div>
-
-                            <div>
-                                <button class="btn btn-sm btn-rounded btn-default" data-tooltip="tooltip" data-placement="bottom" title="Retirer tous les filtres"><i class="fas fa-times"></i></button>
                             </div>
                         </div>
                     </div>

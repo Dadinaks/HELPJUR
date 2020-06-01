@@ -73,6 +73,11 @@ class Utilisateur extends CI_Controller
 		redirect(base_url('Utilisateur'));
 	}
 
+	public function verif_matricul($matricule){
+		$data['verifie'] = $this->UtilisateurModel->count('matricule =' . $matricule);
+		echo json_encode($data);
+	}
+
 	public function filtrer_par_profil($idProfil){
 		$data['profils'] = $this->UtilisateurModel->find("profil.idProfil =" . $idProfil);
 		echo json_encode($data);

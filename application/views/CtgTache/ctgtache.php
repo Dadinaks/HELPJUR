@@ -100,8 +100,8 @@
 
 							<a href='' class='btn-floating btn-sm btn-danger' data-toggle='modal'
 								data-keyboard='false' data-backdrop='static' data-target='#modaldeleteTache'
-								data-id='<?php echo $row->idTache; ?>' data-tache='<?php echo $row->tache; ?>'
-								data-tooltip='tooltip' data-placement='bottom' title='Supprimer'><i class='fas fa-trash-alt'></i></a>
+								data-id='<?php echo $row->idTache; ?>' data-check='<?php echo $this->TachecategorieModel->check($row->idTache); ?>' 
+								data-tache='<?php echo $row->tache; ?>' data-tooltip='tooltip' data-placement='bottom' title='Supprimer'><i class='fas fa-trash-alt'></i></a>
 						</td>
 					</tr>
 					<?php } ?>

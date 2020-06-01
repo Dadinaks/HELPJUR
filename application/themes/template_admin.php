@@ -101,8 +101,7 @@
                                             (<span class="grey-text"><?php echo $this->session->userdata('profile'); ?></span>)
                                         </small>
                                     </a>
-
-                                    <small class="text-muted"> Option </small>
+                                    
                                     <hr>
                                     <div class="custom-control custom-checkbox custom-control-inline ml-2">
                                         <input type="checkbox" class="custom-control-input" id="defaultInline1">

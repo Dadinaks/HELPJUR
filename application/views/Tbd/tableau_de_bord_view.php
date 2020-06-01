@@ -47,12 +47,12 @@
 							<div class="card text-white bg-success mb-3" style="max-width: 20rem;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col">
+										<div class="col-2">
 											<p class="card-text text-white">
 												<i class="fas fa-file-archive fa-4x"></i>
 											</p>
 										</div>
-										<div class="col">
+										<div class="col-10">
 											<h5 class="card-title font-weight-bold text-right">Terminé</h5>
 											<p class="card-text text-white text-right"><?php echo $this->TicketModel->count('Terminé'); ?></p>
 										</div>
@@ -65,12 +65,12 @@
 							<div class="card text-white bg-default mb-3" style="max-width: 20rem;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col">
+										<div class="col-2">
 											<p class="card-text text-white">
 												<i class="fas fa-file-alt fa-4x"></i>
 											</p>
 										</div>
-										<div class="col">
+										<div class="col-10">
 											<h5 class="card-title text-right">Reçu</h5>
 											<p class="card-text text-white text-right"><?php echo $this->TicketModel->count('Reçu'); ?></p>
 										</div>
@@ -83,12 +83,12 @@
 							<div class="card text-white bg-warning mb-3" style="max-width: 20rem;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col">
+										<div class="col-2">
 											<p class="card-text text-white">
 												<i class="fas fa-file-signature fa-4x"></i>
 											</p>
 										</div>
-										<div class="col">
+										<div class="col-10">
 											<h5 class="card-title text-right">Encours</h5>
 											<p class="card-text text-white text-right"><?php echo $this->TicketModel->count('Encours'); ?></p>
 										</div>
@@ -137,12 +137,12 @@
 							<div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col">
+										<div class="col-2">
 											<p class="card-text text-white">
 												<i class="fas fa-file-excel fa-4x"></i>
 											</p>
 										</div>
-										<div class="col">
+										<div class="col-10">
 											<h5 class="card-title text-right">Refusé</h5>
 											<p class="card-text text-white text-right"><?php echo $this->TicketModel->count('Refusé'); ?></p>
 										</div>
@@ -173,12 +173,12 @@
 							<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
 								<div class="card-body">
 									<div class="row">
-										<div class="col">
+										<div class="col-2">
 											<p class="card-text text-white">
 												<i class="fas fa-file fa-4x"></i>
 											</p>
 										</div>
-										<div class="col">
+										<div class="col-10">
 											<h5 class="card-title text-right">F.A.Q</h5>
 											<p class="card-text text-white text-right"><?php echo $this->TicketModel->count('faq'); ?></p>
 										</div>
@@ -230,9 +230,9 @@
 
 								<div class="card-body">
 									<div class="row">
-										<div class="col-3"><span class="font-weight-bold">Catégorie :</span></div>
+										<div class="col-4"><span class="font-weight-bold">Catégorie :</span></div>
 
-										<div class="col-9">
+										<div class="col-8">
 											<select class="browser-default custom-select custom-select-sm mb-4" name="" id="categorieTicket">
 												<option class="font-weight-bold" selected disabled>-- Filtrer par Catégorie --</option>
 												<?php 

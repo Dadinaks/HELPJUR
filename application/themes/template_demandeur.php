@@ -120,10 +120,6 @@
 
                         <!-- Right -->
 				        <ul class="navbar-nav nav-flex-icons">
-                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Calendrier">
-                                <a href="<?php echo base_url('Calendrier'); ?>" class="nav-link"><i class="far fa-calendar-alt"></i></a>
-                            </li>
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="dropdown_demande" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="bottom" title="Demande d'avis"><i class="fas fa-comments"></i></a>
                                 
@@ -131,7 +127,7 @@
                                     <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalDemande" data-keyboard="false" data-backdrop="static"><i class="far fa-comment-dots mr-2"></i>Création d'une demande</a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Demande") { echo "active"; } ?>" href="<?php echo base_url('Demande_d_avis/Demande'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Demande") { echo "white-text"; } ?>"><i class="fas fa-paper-plane mr-2"></i>Demande envoyé</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Demande") { echo "white-text"; } ?>"><i class="fas fa-paper-plane mr-2"></i>Demande envoyée</span>
                                     </a>
                                 </div>
                             </li>
