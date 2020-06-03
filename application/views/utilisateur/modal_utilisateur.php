@@ -15,7 +15,7 @@
 					<div class="row">
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 							<div class="md-form form-sm">
-								<input type="number" name="matricule_utilisateur" id="matricule_utilisateur_ajout" min="1" max="9999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
+								<input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" name="matricule_utilisateur" id="matricule_utilisateur_ajout" min="1" max="99999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
 								<label for="matricule_utilisateur">Matricule</label>
 								<small><span id="validationMatricule" class="red-text"></span></small>
 							</div>
@@ -103,7 +103,7 @@
 							<input type="hidden" name="idUtilisateur_utilisateur" id="idUtilisateur_utilisateurEdit">
 
 							<div class="md-form form-sm">
-								<input type="number" name="matricule_utilisateur" min="0" id="matricule_utilisateurEdit" class="form-control" required disabled>
+								<input type="number" name="matricule_utilisateur" id="matricule_utilisateurEdit" class="form-control" required disabled>
 								<label for="matricule_utilisateur">Matricule</label>
 							</div>
 
@@ -169,6 +169,22 @@
 <!-- /Modal Edit Utilisateur -->
 
 <script type="text/javascript">
+	function maxLengthCheck(object) {
+		if (object.value.length > object.max.length)
+		object.value = object.value.slice(0, object.max.length)
+	}
+	
+	function isNumeric (evt) {
+		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode (key);
+		var regex = /[0-9]|\./;
+		if ( !regex.test(key) ) {
+			theEvent.returnValue = false;
+			if(theEvent.preventDefault) theEvent.preventDefault();
+		}
+	}
+
 	$('#modalUser').on('shown.bs.modal', function () {
 		$('#matricule_utilisateur_ajout').focus();
 	});

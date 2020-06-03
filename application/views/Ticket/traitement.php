@@ -442,7 +442,7 @@
             "xmlns='http://www.w3.org/TR/REC-html40'>" +
             "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
         var footer = "</body></html>";
-        var sourceHTML = header + CKEDITOR.instances['contenu_doc'].getData() + footer;
+        var sourceHTML = header + CKEDITOR.instances['contenu_traitement'].getData() + footer;
         var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
         var fileDownload = document.createElement("a");
 

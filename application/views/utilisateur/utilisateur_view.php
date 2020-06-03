@@ -153,7 +153,15 @@
                     "data"  : "profile"
                 }, {
                     "title" : "Action",
-                    "data"  : "idUtilisateur"
+                    "data"  : null,
+                    "render": function ( data, type, row, meta ) {
+                        return  '<?php if ($row->statutCompte == 'Désactivé') { ?>
+                                    <a href="<?php echo base_url('Utilisateur/Activer/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>' +
+                                '<?php } else { ?>
+                                    <a href="<?php echo base_url('Utilisateur/Desactiver/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>' +
+                                '<?php } ?>
+                                <a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="<?php echo $row->idUtilisateur; ?>"  data-matricule="<?php echo $row->matricule; ?>" data-nom="<?php echo $row->nom; ?>" data-prenom="<?php echo $row->prenom; ?>" data-email="<?php echo $row->email; ?>" data-agence="<?php echo $row->agence; ?>" data-direction="<?php echo $row->direction; ?>" data-unite="<?php echo $row->unite; ?>" data-poste="<?php echo $row->poste; ?>" data-profile="<?php echo $row->idProfil; ?>" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
+                    }
                 }
             ]
         });
@@ -161,15 +169,20 @@
 
         var filtre_lieu   = document.getElementById("filtre_lieu_user");
         var filtre_profil = document.getElementById("filtre_profil_user");
-
+        
+        
+       
         $("#filtre_lieu_user").on("change", function() {
-            console.log(filtre_lieu.value);
-            /*$.getJSON("<?php //echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + categorieTicket.value, function(data){
-                $("#nbTache").empty();
-                $.each(data.nbs, function(key, nombre){
-                    $("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+            var a    = filtre_lieu.value;
+            var lieu = a.replace(' ', '%20');
+
+            $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_lieu/") ?>" + lieu, function(data){
+                tableau.clear();
+                $.each(data.agences, function(key, agence){
+                    tableau.row.add(agence);
+                    tableau.draw();
                 });
-            });*/
+            });
         });
 
         $("#filtre_profil_user").on("change", function() {

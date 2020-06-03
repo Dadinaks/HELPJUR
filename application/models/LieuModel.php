@@ -2,8 +2,11 @@
 
 class LieuModel extends CI_Model
 {
-	public function find()
+	public function find($where = NULL)
 	{
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
         $query = $this->db->get('lieu');
         
         return $query->result();

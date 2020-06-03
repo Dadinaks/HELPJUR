@@ -84,7 +84,9 @@ class Utilisateur extends CI_Controller
 	}
 
 	public function filtrer_par_lieu($agence){
-		$data['agences'] = $this->UtilisateurModel->find("lieu.agences =" . $agence);
+		$a  = preg_replace('~%20~', ' ', $agence);
+		$id = $this->LieuModel->find("agences = '" . $a . "'");
+		$data['agences'] = $this->UtilisateurModel->find("lieu.idLieu = " . $id[0]->idLieu);
 		echo json_encode($data);
 	}
 }

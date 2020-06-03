@@ -158,7 +158,7 @@
                                 <a href="<?php echo base_url('Calendrier'); ?>" class="nav-link"><i class="far fa-calendar-alt"></i></a>
                             </li>
 
-                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Demande Reçue(s)">
+                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Demande(s) reçue(s)">
                                 <a href="<?php echo base_url('demande_d_avis'); ?>" class="nav-link">
                                     <i class="fas fa-envelope-open-text"></i>
                                     <?php if ($this->DemandeModel->count('statutDemande = "Envoyé"') != NULL) { ?>
