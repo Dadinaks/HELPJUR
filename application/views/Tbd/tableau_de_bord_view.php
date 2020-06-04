@@ -305,15 +305,17 @@
   			<table id="dtall" class="table table-sm table-striped" id="tb_avalide">
   				<thead>
   					<tr>
-  						<th class="font-weight-bold">Statut</th>
-  						<th class="font-weight-bold">Numéro</th>
-  						<th class="font-weight-bold">Saisisseur</th>
+  						<th class="font-weight-bold">Status</th>
+  						<th class="font-weight-bold">Numéro du Ticket</th>
   						<th class="font-weight-bold">Demandeur</th>
+  						<th class="font-weight-bold">Saisisseur</th>
+  						<th class="font-weight-bold">Valideur</th>
   						<th class="font-weight-bold">Objet</th>
   						<th class="font-weight-bold">Nature de tâche</th>
   						<th class="font-weight-bold">Date de réception</th>
   						<th class="font-weight-bold">Date de traitement</th>
-  						<th class="font-weight-bold">Date d'avant validation</th>
+  						<th class="font-weight-bold">Date de Validation</th>
+  						<th class="font-weight-bold">Date de transmission</th>
   						<th class="font-weight-bold">Date de revision</th>
   						<th class="font-weight-bold">Date de refus</th>
   						<th class="font-weight-bold">Date d'abandon</th>
@@ -434,23 +436,49 @@
 		});
 
         var tableau = $('#dtall').DataTable({
-            "order": [[0, "desc"]],
+            "order": [[1, "desc"]],
 		    "columns": [{
-			    	"title": "Numéro",
+			    	"title": "Numéro du Ticket",
 			        "data": "numTicket",
 			        "class" : "font-weight-bold"
+			    },  {
+			        "title": "Demandeur",
+			        "data": "demandeur"
 			    }, {
 			        "title": "Saisisseur",
 			        "data": "saisisseur"
 			    }, {
-			        "title": "Demandeur",
-			        "data": "demandeur"
+			        "title": "Valideur",
+			        "data": null
 			    }, {
 			        "title": "Objet",
 			        "data": "objet"
 			    }, {
 			        "title": "Nature de tâche",
 			        "data": "tache"
+			    },{
+			        "title": "Status",
+			        "data": "statutTicket",
+					"render" : function ( data, type, row, meta ) {
+						var a = "";
+						if(data == "A_Validé"){
+							a = '<span class="white-text bg-vert font-weight-bold" style="padding : 3px; border-radius: 3px;">A valider</span>';
+						} else if (data == "Terminé") {
+							a = '<span class="white-text bg-success font-weight-bold" style="padding : 3px; border-radius: 3px;">Terminé</span>';
+						} else if (data == "Faq") {
+							a = '<span class="white-text bg-primary font-weight-bold" style="padding : 3px; border-radius: 3px;">Rediriger vers F.A.Q</span>';
+						} else if (data == "Reçu") {
+							a = '<span class="white-text bg-default font-weight-bold" style="padding : 3px; border-radius: 3px;">Reçu</span>';
+						} else if (data == "Abandonné") {
+							a = '<span class="white-text bg-grena font-weight-bold" style="padding : 3px; border-radius: 3px;">Abandonné</span>';
+						} else if (data == "Refusé") {
+							a = '<span class="white-text bg-danger font-weight-bold" style="padding : 3px; border-radius: 3px;">Refusé</span>';
+						} else if (data == "Encours") {
+							a = '<span class="white-text bg-warning font-weight-bold" style="padding : 3px; border-radius: 3px;">En cours de traitement</span>';
+						} else if (data == "Révisé") {
+							a = '<span class="white-text bg-orange font-weight-bold" style="padding : 3px; border-radius: 3px;">A reviser</span>';
+						}
+                        return  a } 
 			    }, {
 			        "title": "Date de réception",
 			        "data": "dateReception"
@@ -458,7 +486,10 @@
 			        "title": "Date de traitement",
 			        "data": "dateEncours"
 			    }, {
-			        "title": "Date d'avant validation",
+			        "title": "Date de Validation",
+			        "data": "dateTermine"
+			    }, {
+			        "title": "Date de transmission",
 			        "data": "dateAvantValidation"
 			    }, {
 			        "title": "Date de revision",
@@ -472,9 +503,6 @@
 			    }, {
 			        "title": "Date de redirection vers F.A.Q",
 			        "data": "dateFaq"
-			    }, {
-			        "title": "Date de terminaison",
-			        "data": "dateTermine"
 			    }
 			],
             "language" : {
