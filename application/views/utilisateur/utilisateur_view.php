@@ -154,13 +154,13 @@
                 }, {
                     "title" : "Action",
                     "data"  : null,
-                    "render": function ( data, type, row, meta ) {
-                        return  '<?php if ($row->statutCompte == 'Désactivé') { ?>
-                                    <a href="<?php echo base_url('Utilisateur/Activer/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>' +
-                                '<?php } else { ?>
-                                    <a href="<?php echo base_url('Utilisateur/Desactiver/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>' +
-                                '<?php } ?>
-                                <a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="<?php echo $row->idUtilisateur; ?>"  data-matricule="<?php echo $row->matricule; ?>" data-nom="<?php echo $row->nom; ?>" data-prenom="<?php echo $row->prenom; ?>" data-email="<?php echo $row->email; ?>" data-agence="<?php echo $row->agence; ?>" data-direction="<?php echo $row->direction; ?>" data-unite="<?php echo $row->unite; ?>" data-poste="<?php echo $row->poste; ?>" data-profile="<?php echo $row->idProfil; ?>" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
+                    "render": function (data, type, row, meta) {
+                        if (data.statutCompte == 'Désactivé') {
+                            return '<a href="<?php echo base_url("Utilisateur/Activer/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>';
+                        } else {
+                            return '<a href="<?php echo base_url("Utilisateur/Desactiver/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>';
+                        }
+                        return '<a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="' + data.idUtilisateur + '"  data-matricule="' + data.matricule +'" data-nom="' + data.nom +'" data-prenom="' + data.prenom +'" data-email="' + data.email +'" data-agence="' + data.agence +'" data-direction="' + data.direction +'" data-unite="' + data.unite +'" data-poste="' + data.poste +'" data-profile="' + data.idProfil +'" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
                     }
                 }
             ]

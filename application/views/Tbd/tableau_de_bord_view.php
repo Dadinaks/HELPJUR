@@ -198,6 +198,7 @@
 										<div class="col">
 											<select class="browser-default custom-select custom-select-sm mb-4" name="" id="statutTicket">
 												<option class="font-weight-bold" selected disabled>-- Filtrer par statut --</option>
+												<option value="Tout">Tous</option>
 												<option value="Termine">Terminé</option>
 												<option value="Encours">En cours de traitement</option>
 												<option value="Revise">Révisé</option>
@@ -235,6 +236,7 @@
 										<div class="col-8">
 											<select class="browser-default custom-select custom-select-sm mb-4" name="" id="categorieTicket">
 												<option class="font-weight-bold" selected disabled>-- Filtrer par Catégorie --</option>
+												<option value="Tout">Tous</option>
 												<?php 
 												$data["categories"] = $this->TachecategorieModel->find("categorie");
 												foreach ($data["categories"] as $row) :
@@ -305,7 +307,6 @@
   			<table id="dtall" class="table table-sm table-striped" id="tb_avalide">
   				<thead>
   					<tr>
-  						<th class="font-weight-bold">Status</th>
   						<th class="font-weight-bold">Numéro du Ticket</th>
   						<th class="font-weight-bold">Demandeur</th>
   						<th class="font-weight-bold">Saisisseur</th>
@@ -313,8 +314,9 @@
   						<th class="font-weight-bold">Objet</th>
   						<th class="font-weight-bold">Nature de tâche</th>
   						<th class="font-weight-bold">Date de réception</th>
+  						<th class="font-weight-bold">Status</th>
   						<th class="font-weight-bold">Date de traitement</th>
-  						<th class="font-weight-bold">Date de Validation</th>
+  						<th class="font-weight-bold">Date de validation</th>
   						<th class="font-weight-bold">Date de transmission</th>
   						<th class="font-weight-bold">Date de revision</th>
   						<th class="font-weight-bold">Date de refus</th>
@@ -417,22 +419,40 @@
 
 		var statutTicket = document.getElementById("statutTicket");
 		$("#statutTicket").on("change", function() {
-			$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste/") ?>" + statutTicket.value, function(data){
-				$("#nbTicket").empty();
-				$.each(data.nombres, function(key, nombre){
-					$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+			if(statutTicket.value === 'Tout'){
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste") ?>", function(data){
+					$("#nbTicket").empty();
+					$.each(data.nombres, function(key, nombre){
+						$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+					});
 				});
-			});
+			} else {
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste/") ?>" + statutTicket.value, function(data){
+					$("#nbTicket").empty();
+					$.each(data.nombres, function(key, nombre){
+						$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+					});
+				});
+			}
 		});
 
 		var categorieTicket = document.getElementById("categorieTicket");
 		$("#categorieTicket").on("change", function() {
-			$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + categorieTicket.value, function(data){
-				$("#nbTache").empty();
-				$.each(data.nbs, function(key, nombre){
-					$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+			if(categorieTicket.value === 'Tout'){
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie") ?>", function(data){
+					$("#nbTache").empty();
+					$.each(data.nbs, function(key, nombre){
+						$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+					});
 				});
-			});
+			} else {
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + categorieTicket.value, function(data){
+					$("#nbTache").empty();
+					$.each(data.nbs, function(key, nombre){
+						$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+					});
+				});
+			}
 		});
 
         var tableau = $('#dtall').DataTable({
@@ -441,7 +461,7 @@
 			    	"title": "Numéro du Ticket",
 			        "data": "numTicket",
 			        "class" : "font-weight-bold"
-			    },  {
+			    }, {
 			        "title": "Demandeur",
 			        "data": "demandeur"
 			    }, {
@@ -456,7 +476,10 @@
 			    }, {
 			        "title": "Nature de tâche",
 			        "data": "tache"
-			    },{
+			    }, {
+			        "title": "Date de réception",
+			        "data": "dateReception"
+			    }, {
 			        "title": "Status",
 			        "data": "statutTicket",
 					"render" : function ( data, type, row, meta ) {
@@ -480,13 +503,10 @@
 						}
                         return  a } 
 			    }, {
-			        "title": "Date de réception",
-			        "data": "dateReception"
-			    }, {
 			        "title": "Date de traitement",
 			        "data": "dateEncours"
 			    }, {
-			        "title": "Date de Validation",
+			        "title": "Date de validation",
 			        "data": "dateTermine"
 			    }, {
 			        "title": "Date de transmission",
@@ -543,7 +563,7 @@
         $.getJSON("<?php echo base_url("Tableau_de_bord/recuperer_tous_ticket") ?>", function(data){
         	tableau.clear();
 			$.each(data.tickets, function(key, ticket){
-				tableau.row.add(ticket);
+				tableau.row.add(ticket);	
 				tableau.draw();
 			});
 		});
