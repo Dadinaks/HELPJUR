@@ -221,6 +221,10 @@
         <script type="text/javascript">
             //Animations initialization
             new WOW().init();
+            
+            $('#modalDemande').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            });
 
             $(function () {
                 $("[data-tooltip='tooltip']").tooltip()

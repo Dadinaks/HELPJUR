@@ -34,14 +34,14 @@
 					<div class="row justify-content-center">
 						<div class="col-8">
 							<div class="md-form">
-								<input type="text" id="title_ferie" name="title_ferie" class="form-control" required>
+								<input type="text" id="title_ferie" name="title_ferie" class="form-control" autocomplete="off" required>
 								<label for="title_ferie">Titre</label>
 							</div>
 						</div>
 
 						<div class="col-8">
 							<div class="md-form">
-								<input type="text" id="start_ferie" name="start_ferie" class="form-control" required>
+								<input type="text" id="start_ferie" name="start_ferie" class="form-control" autocomplete="off" required>
 								<label for="start_ferie">Jour férié</label>
 							</div>
 						</div>
@@ -108,7 +108,7 @@
 					<div class="row justify-content-center">
 						<div class="col-8 ">
 							<div class="md-form">
-								<input type="text" id="date_debut_conge" name="date_debut_conge" class="form-control">
+								<input type="text" id="date_debut_conge" name="date_debut_conge" class="form-control" autocomplete="off" required>
 								<label for="date_debut_conge">Début du congé</label>
 							</div>
 						</div>
@@ -117,7 +117,7 @@
 					<div class="row justify-content-center">
 						<div class="col-8 ">
 							<div class="md-form">
-								<input type="text" id="date_fin_conge" name="date_fin_conge" class="form-control">
+								<input type="text" id="date_fin_conge" name="date_fin_conge" class="form-control" autocomplete="off" required>
 								<label for="date_fin_conge">Fin du congé</label>
 							</div>
 						</div>

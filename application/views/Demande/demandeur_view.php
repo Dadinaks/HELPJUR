@@ -80,4 +80,8 @@
         $(this).find('.modal-body #idDemande_abandonner').val(idDemande);
         $(this).find('.objet').text(objet);
     });
+    
+	$('#modalAbandonner').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

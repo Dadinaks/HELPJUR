@@ -228,4 +228,8 @@
         $(this).find('.modal-body #poste_utilisateurEdit').val(Poste).trigger("change");
         $(this).find('.modal-body #profile_utilisateurEdit').val(Profile).trigger("change");
     });
+	
+	$('#modalUser').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

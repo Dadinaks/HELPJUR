@@ -257,4 +257,8 @@
         });
         $('.dataTables_length').addClass('bs-select');
     });
+
+    $('#modalAbandonner').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

@@ -13,28 +13,14 @@ class Utilisateur extends CI_Controller
 
 	public function index()
 	{
+		$this->layout->set_theme('template_admin');
+		$this->layout->set_titre('Utilisateur');
+		$this->layout->view('utilisateur/utilisateur_view');
+	}
+
+	public function tableau_user(){
 		$data['utilisateurs'] = $this->UtilisateurModel->find();
-
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-        }
+		echo json_encode($data);
 	}
 
 	public function inserer_Utilisateur()

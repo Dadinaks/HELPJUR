@@ -165,4 +165,8 @@
             $('select[name="tache"]').empty();
         }
     });
+    
+	$('#modalRefuser').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

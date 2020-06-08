@@ -295,12 +295,34 @@
   	<div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
   		<h4 class="text-center mt-4 font-weight-bold">Liste de tous les tickets</h4>
 
-  		<div class="text-right">
-  			Entre
-  			<input type="text" name="date1" id="date1">
-  			et
-  			<input type="text" name="date2" id="date2">
-  			<button class="btn sm-btn btn-floating btn-default"><i class="fas fa-search"></i></button>
+  		<div class="row">
+		  	<div class="col-6 offset-6">
+			    <div class="row">
+					<div class="col-3">
+						<select class="browser-default custom-select custom-select-sm mb-4" name="" id="dateStatut">
+							<option class="font-weight-bold" selected disabled>-- Date à rechercher --</option>
+							<option value="Tout">Tous</option>
+							<option value="dateReception">Date de réception</option>
+							<option value="dateTermine">Date de validation</option>
+							<option value="dateEncours">Date de traitement</option>
+							<option value="dateRevise">Date de revision</option>
+							<option value="dateAvantValidation">Date de transmission</option>
+							<option value="dateRefus">Date de refus</option>
+							<option value="dateAbandon">Date d'abandon</option>
+							<option value="dateFaq">Date de redirection vers F.A.Q</option>
+						</select>
+					</div>
+
+					<div class="col-3"><input type="text" name="date1" id="date1" placeholder="Date Début" class="form-control form-control-sm" autocomplete="off" disabled></div>
+
+					<div class="col-3"><input type="text" name="date2" id="date2" placeholder="Date Fin" class="form-control form-control-sm" autocomplete="off" disabled></div>
+
+					<div class="col-3"><button class="btn btn-sm btn-rounded btn-default" id="rd" style="margin-top: 0px;"><i class="fas fa-search mr-2"></i>rechercher</button></div>
+				</div>
+		  	</div>
+  			
+
+  			
   		</div>
 
   		<div class="table-responsive text-nowrap">
@@ -325,7 +347,7 @@
   					</tr>
   				</thead>
 
-  				<tbody id="tball"></tbody>
+  				<tbody id="tball" class="text-center"></tbody>
   			</table>
   		</div>
   	</div>
@@ -456,7 +478,7 @@
 		});
 
         var tableau = $('#dtall').DataTable({
-            "order": [[1, "desc"]],
+            "order": [[0, "desc"]],
 		    "columns": [{
 			    	"title": "Numéro du Ticket",
 			        "data": "numTicket",
@@ -573,6 +595,46 @@
 			$("#date2").datepicker({ dateFormat: 'dd/mm/yy' });
 		});
 
+		$("#dateStatut").on("change", function() {
+			var dateStatut = $("#dateStatut").val();
+
+			if(dateStatut != 'Tout'){			
+				$("#date1").attr("disabled", false);
+				$("#date2").attr("disabled", false);
+			} else {
+				$("#date1").val("");
+				$("#date2").val("");
+				$("#date1").attr("disabled", true);
+				$("#date2").attr("disabled", true);
+
+				$.getJSON("<?php echo base_url("Tableau_de_bord/recuperer_tous_ticket") ?>", function(data){
+					tableau.clear().draw();
+					$.each(data.tickets, function(key, ticket){
+						tableau.row.add(ticket);	
+						tableau.draw();
+					});
+				});
+			}
+		});
+
+		$("#rd").on("click", function(){
+			var d1    = $("#date1").val();
+			var d2 	  = $("#date2").val();
+			var str1  = d1.replace('/', '-');
+			var str2  = d2.replace('/', '-');
+			var date1 = str1.replace('/', '-');
+			var date2 = str2.replace('/', '-');
+			var dateStatut = $("#dateStatut").val();
+			
+			$.getJSON("<?php echo base_url("Tableau_de_bord/entre_2_date/") ?>" + dateStatut + '/' + date1 + '/' + date2 , function(data){
+				tableau.clear().draw();
+				$.each(data.tickets, function(key, ticket){
+					tableau.row.add(ticket);	
+					tableau.draw();
+				});
+			});
+		});
+		
 
 		//line
 		$.getJSON("<?php echo base_url("Tableau_de_bord/graphe_line") ?>", function(data){
