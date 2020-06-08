@@ -220,44 +220,44 @@
 
         <script type="text/javascript">
             //Animations initialization
-            new WOW().init();
-            
-            $('#modalDemande').on('hidden.bs.modal', function () {
-                $(this).find('form').trigger('reset');
-            });
+            /*  new WOW().init();
+                
+                $('#modalDemande').on('hidden.bs.modal', function () {
+                    $(this).find('form').trigger('reset');
+                });
 
-            $(function () {
-                $("[data-tooltip='tooltip']").tooltip()
-            });
-            
-            $(document).ready(function () {
-                setInterval(function () {
-                    $.ajax({
-                        url     : "<?php echo base_url('demande_d_avis/notification') ?>",
-                        type    : "post",
-                        dataType: "json",
+                $(function () {
+                    $("[data-tooltip='tooltip']").tooltip()
+                });
+                
+                $(document).ready(function () {
+                    setInterval(function () {
+                        $.ajax({
+                            url     : "<?php echo base_url('demande_d_avis/notification') ?>",
+                            type    : "post",
+                            dataType: "json",
 
-                        success: function (data) {
-                            $('#nouvelle_demande').html(data.nombre);
-                        }
-                    });
-                }, 100);
+                            success: function (data) {
+                                $('#nouvelle_demande').html(data.nombre);
+                            }
+                        });
+                    }, 100);
 
-                setInterval(function () {
-                    $.ajax({
-                        url: "<?php echo base_url('ticket/notification') ?>",
-                        type: "post",
-                        dataType: "json",
+                    setInterval(function () {
+                        $.ajax({
+                            url: "<?php echo base_url('ticket/notification') ?>",
+                            type: "post",
+                            dataType: "json",
 
-                        success: function (data) {
-                            $('#new_recu').html(data.recu);
-                            $('#new_avalider').html(data.avalider);
-                            $('#new_revise').html(data.revision);
-                            $('#new_ticket').html(data.total);
-                        }
-                    });
-                }, 100);
-            });
+                            success: function (data) {
+                                $('#new_recu').html(data.recu);
+                                $('#new_avalider').html(data.avalider);
+                                $('#new_revise').html(data.revision);
+                                $('#new_ticket').html(data.total);
+                            }
+                        });
+                    }, 100);
+                }); */
         </script>
     </body>
 </html>
