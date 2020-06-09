@@ -43,6 +43,16 @@ class Tableau_de_bord extends CI_Controller
         echo json_encode($data);
     }
 
+    public function type_juriste($profil, $statut = NULL){
+        if ($statut !=  NULL){
+            $data["nombres"] = $this->TbdModel->nbTicket_par_type_juriste($profil, $statut);
+        } else {
+            $data["nombres"] = $this->TbdModel->nbTicket_par_type_juriste($profil);
+        }
+
+        echo json_encode($data);
+    }
+
     public function nombre_ticket_categorie($idCategorie = NULL){
         if ($idCategorie !=  NULL){
             $data["nbs"] = $this->TbdModel->nbTicket_par_categorie($idCategorie);

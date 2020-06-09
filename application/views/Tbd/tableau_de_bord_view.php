@@ -189,12 +189,10 @@
 
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="card mb-3">
-								<div class="card-header font-weight-bold">Nombre de ticket traiter par juriste</div>
+								<div class="card-header font-weight-bold">Nombre de tickets traités par juriste</div>
 
 								<div class="card-body">
 									<div class="row">
-										<div class="col"><span class="font-weight-bold">Statut du ticket :</span></div>
-
 										<div class="col">
 											<select class="browser-default custom-select custom-select-sm mb-4" name="" id="statutTicket">
 												<option class="font-weight-bold" selected disabled>-- Filtrer par statut --</option>
@@ -206,6 +204,17 @@
 												<option value="Refuse">Refusé</option>
 												<option value="Abandonne">Abandonné</option>
 												<option value="faq">F.A.Q</option>
+											</select>
+										</div>
+
+										<div class="col">
+											<select class="browser-default custom-select custom-select-sm mb-4" name="" id="typeJuriste">
+												<option class="font-weight-bold" selected disabled>-- Filtrer par Type de juriste --</option>
+												<option value="Tout">Tous</option>
+												<?php $donnee['profils'] = $this->ProfilModel->find('idProfil BETWEEN 1 AND 3');
+												foreach ($donnee['profils'] as $row) : ?>
+												<option value="<?php echo $row->idProfil; ?>"><?php echo $row->profile; ?></option>
+												<?php endforeach; ?>
 											</select>
 										</div>
 									</div>
@@ -426,59 +435,170 @@
 	        }
 	    });
 
+		// tableau tab 1 Nombre de tickets traités par juriste
+		var tbl_dtnbTicket = $('#dtnbTicket').DataTable({
+            "order": [[1, "desc"]],
+		    "columns": [{
+			    	"title": "Juriste",
+			        "data": "juriste",
+			        "class" : "font-weight-bold"
+			    }, {
+			        "title": "Nombre de Ticket(s)",
+			        "data": "nb"
+				}],
+			"searching": false,
+            "language" : {
+                "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                "sZeroRecords":    "Aucun élément correspondant trouvé",
+                "oPaginate": {
+                    "sFirst":    "Premier",
+                    "sLast":     "Dernier",
+                    "sNext":     "Suivant",
+                    "sPrevious": "Précédent"
+                },
+                 "oAria": {
+                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                    "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d lignes sélectionnées",
+                        "0": "Aucune ligne sélectionnée",
+                        "1": "1 ligne sélectionnée"
+                    }
+                }
+            },
+			"pageLength"  : 5,
+			"bPaginate": true,
+			"bLengthChange": false,
+			"bFilter": true,
+			"bInfo": false,
+			"bAutoWidth": false
+		});
+
 	    $.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste") ?>", function(data){
+			tbl_dtnbTicket.clear().draw();
 			$.each(data.nombres, function(key, nombre){
-				$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+				tbl_dtnbTicket.row.add(nombre);	
+				tbl_dtnbTicket.draw();
 			});
+		});
+
+		// tableau tab 1 Nombre de Ticket par categorie de demande
+		var tbl_dtnbTache = $('#dtnbTache').DataTable({
+            "order": [[1, "desc"]],
+		    "columns": [{
+			    	"title": "Nature de tâche",
+			        "data": "tache",
+			        "class" : "font-weight-bold"
+			    }, {
+			        "title": "Nombre(s)",
+			        "data": "nb"
+				}],
+			"searching": false,
+            "language" : {
+                "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                "sZeroRecords":    "Aucun élément correspondant trouvé",
+                "oPaginate": {
+                    "sFirst":    "Premier",
+                    "sLast":     "Dernier",
+                    "sNext":     "Suivant",
+                    "sPrevious": "Précédent"
+                },
+                 "oAria": {
+                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                    "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d lignes sélectionnées",
+                        "0": "Aucune ligne sélectionnée",
+                        "1": "1 ligne sélectionnée"
+                    }
+                }
+            },
+			"pageLength"  : 5,
+			"bPaginate": true,
+			"bLengthChange": false,
+			"bFilter": true,
+			"bInfo": false,
+			"bAutoWidth": false
 		});
 
 		$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie") ?>", function(data){
-			$("#nbTache").empty();
+			tbl_dtnbTache.clear().draw();
 			$.each(data.nbs, function(key, nombre){
-				$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+				tbl_dtnbTache.row.add(nombre);	
+				tbl_dtnbTache.draw();
 			});
 		});
 
-		var statutTicket = document.getElementById("statutTicket");
+		//filtre statuts
 		$("#statutTicket").on("change", function() {
-			if(statutTicket.value === 'Tout'){
+			if($("#statutTicket").val()	=== 'Tout'){
 				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste") ?>", function(data){
-					$("#nbTicket").empty();
+					tbl_dtnbTicket.clear().draw();
 					$.each(data.nombres, function(key, nombre){
-						$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+						tbl_dtnbTicket.row.add(nombre);	
+						tbl_dtnbTicket.draw();
 					});
 				});
 			} else {
-				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste/") ?>" + statutTicket.value, function(data){
-					$("#nbTicket").empty();
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste/") ?>" + $("#statutTicket").val(), function(data){
+					tbl_dtnbTicket.clear().draw();
 					$.each(data.nombres, function(key, nombre){
-						$("#nbTicket").append("<tr><td>" + nombre.juriste + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+						tbl_dtnbTicket.row.add(nombre);	
+						tbl_dtnbTicket.draw();
 					});
 				});
 			}
 		});
 
-		var categorieTicket = document.getElementById("categorieTicket");
+		//filtre type de juriste
+		$("#typeJuriste").on("change", function() {
+			if($("#typeJuriste").val() === 'Tout'){
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_juriste") ?>", function(data){
+					tbl_dtnbTicket.clear().draw();
+					$.each(data.nombres, function(key, nombre){
+						tbl_dtnbTicket.row.add(nombre);	
+						tbl_dtnbTicket.draw();
+					});
+				});
+			} else {
+				$.getJSON("<?php echo base_url("Tableau_de_bord/type_juriste/") ?>" + $("#typeJuriste").val(), function(data){
+					tbl_dtnbTicket.clear().draw();
+					$.each(data.nombres, function(key, nombre){
+						tbl_dtnbTicket.row.add(nombre);	
+						tbl_dtnbTicket.draw();
+					});
+				});
+			}
+		});
+
+		//filtre categorie
 		$("#categorieTicket").on("change", function() {
-			if(categorieTicket.value === 'Tout'){
+			if($("#categorieTicket").val() === 'Tout'){
 				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie") ?>", function(data){
-					$("#nbTache").empty();
+					tbl_dtnbTache.clear().draw();
 					$.each(data.nbs, function(key, nombre){
-						$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+						tbl_dtnbTache.row.add(nombre);	
+						tbl_dtnbTache.draw();
 					});
 				});
 			} else {
-				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + categorieTicket.value, function(data){
-					$("#nbTache").empty();
+				$.getJSON("<?php echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + $("#categorieTicket").val(), function(data){
+					tbl_dtnbTache.clear().draw();
 					$.each(data.nbs, function(key, nombre){
-						$("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+						tbl_dtnbTache.row.add(nombre);	
+						tbl_dtnbTache.draw();
 					});
 				});
 			}
 		});
 
+		//tab 2
         var tableau = $('#dtall').DataTable({
-            "order": [[0, "desc"]],
+			"order": [[0, "desc"]],
 		    "columns": [{
 			    	"title": "Numéro du Ticket",
 			        "data": "numTicket",
@@ -500,7 +620,7 @@
 			        "data": "tache"
 			    }, {
 			        "title": "Date de réception",
-			        "data": "dateReception"
+					"data" : "dateReception"
 			    }, {
 			        "title": "Status",
 			        "data": "statutTicket",
@@ -526,10 +646,10 @@
                         return  a } 
 			    }, {
 			        "title": "Date de traitement",
-			        "data": "dateEncours"
+			        "data" : "dateEncours"
 			    }, {
-			        "title": "Date de validation",
-			        "data": "dateTermine"
+			        "title" : "Date de validation",
+					"data"  : "dateTermine"
 			    }, {
 			        "title": "Date de transmission",
 			        "data": "dateAvantValidation"
@@ -578,7 +698,8 @@
                 }
             },
             "pageLength" : 20,
-            "lengthMenu" : [5, 10, 15, 20, 25, 50, 100]
+			"lengthMenu" : [5, 10, 15, 20, 25, 50, 100],
+			"bAutoWidth": false
         });
         $('.dataTables_length').addClass('bs-select');
 
