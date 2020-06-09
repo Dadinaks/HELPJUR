@@ -56,7 +56,6 @@ class UtilisateurModel extends CI_Model
             $idUtilisateur = $this->input->post('idUtilisateur_utilisateur');
 
             $data = array(
-                'matricule' => $this->input->post('matricule_utilisateur'),
                 'nom'       => $this->input->post('nom_utilisateur'),
                 'prenom'    => $this->input->post('prenom_utilisateur'),
                 'email'     => $this->input->post('email_utilisateur'),

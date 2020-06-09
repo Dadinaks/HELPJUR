@@ -88,4 +88,12 @@ class TachecategorieModel extends CI_Model
 
         return $nb;
     }
+
+    public function check($idTache)
+    {
+        $this->db->where('idTache', $idTache);
+        $nb = $this->db->count_all_results('ticket');
+
+        return $nb;
+    }
 }

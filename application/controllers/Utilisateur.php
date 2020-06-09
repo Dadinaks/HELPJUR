@@ -13,28 +13,14 @@ class Utilisateur extends CI_Controller
 
 	public function index()
 	{
+		$this->layout->set_theme('template_admin');
+		$this->layout->set_titre('Utilisateur');
+		$this->layout->view('utilisateur/utilisateur_view');
+	}
+
+	public function tableau_user(){
 		$data['utilisateurs'] = $this->UtilisateurModel->find();
-
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Utilisateur');
-        	$this->layout->view('utilisateur/utilisateur_view', $data);
-        }
+		echo json_encode($data);
 	}
 
 	public function inserer_Utilisateur()
@@ -73,13 +59,20 @@ class Utilisateur extends CI_Controller
 		redirect(base_url('Utilisateur'));
 	}
 
+	public function verif_matricul($matricule){
+		$data['verifie'] = $this->UtilisateurModel->count('matricule =' . $matricule);
+		echo json_encode($data);
+	}
+
 	public function filtrer_par_profil($idProfil){
 		$data['profils'] = $this->UtilisateurModel->find("profil.idProfil =" . $idProfil);
 		echo json_encode($data);
 	}
 
 	public function filtrer_par_lieu($agence){
-		$data['agences'] = $this->UtilisateurModel->find("lieu.agences =" . $agence);
+		$a  = preg_replace('~%20~', ' ', $agence);
+		$id = $this->LieuModel->find("agences = '" . $a . "'");
+		$data['agences'] = $this->UtilisateurModel->find("lieu.idLieu = " . $id[0]->idLieu);
 		echo json_encode($data);
 	}
 }

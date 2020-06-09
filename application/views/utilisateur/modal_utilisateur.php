@@ -15,9 +15,9 @@
 					<div class="row">
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 							<div class="md-form form-sm">
-								<input type="number" name="matricule_utilisateur" id="matricule_utilisateur" min="1" max="9999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
+								<input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" name="matricule_utilisateur" id="matricule_utilisateur_ajout" min="1" max="99999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
 								<label for="matricule_utilisateur">Matricule</label>
-								<span id="validationMatricule"></span>
+								<small><span id="validationMatricule" class="red-text"></span></small>
 							</div>
 
 							<div class="md-form form-sm">
@@ -38,7 +38,7 @@
 
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 							<div class="pb-3">
-								<input list="lieu_utilisateur" id="input_lieu_utilisateur" name="lieu_utilisateur" class="browser-default custom-select custom-select-sm" required>
+								<input list="lieu_utilisateur" id="input_lieu_utilisateur" name="lieu_utilisateur" placeholder="-- Agence --" class="browser-default custom-select custom-select-sm" required>
 								<datalist id="lieu_utilisateur">
 									<option class="font-weight-bold" selected disabled>-- Agence --</option>
 									<?php $lieu = $this->LieuModel->find();
@@ -74,7 +74,7 @@
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Enregistrer </button>
+					<button type="submit" class="btn btn-sm btn-rounded btn-success" id="save" disabled><i class="fas fa-check mr-2"></i>Enregistrer </button>
 					<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>
 				<?php echo form_close(); ?>
 			</div>
@@ -103,7 +103,7 @@
 							<input type="hidden" name="idUtilisateur_utilisateur" id="idUtilisateur_utilisateurEdit">
 
 							<div class="md-form form-sm">
-								<input type="number" name="matricule_utilisateur" min="0" id="matricule_utilisateurEdit" class="form-control" required disabled>
+								<input type="number" name="matricule_utilisateur" id="matricule_utilisateurEdit" class="form-control" required disabled>
 								<label for="matricule_utilisateur">Matricule</label>
 							</div>
 
@@ -169,8 +169,38 @@
 <!-- /Modal Edit Utilisateur -->
 
 <script type="text/javascript">
-	$('#modalEditUser').on('show.bs.modal', function () {
-		$('#matricule_utilisateur').trigger('focus');
+	function maxLengthCheck(object) {
+		if (object.value.length > object.max.length)
+		object.value = object.value.slice(0, object.max.length)
+	}
+	
+	function isNumeric (evt) {
+		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode (key);
+		var regex = /[0-9]|\./;
+		if ( !regex.test(key) ) {
+			theEvent.returnValue = false;
+			if(theEvent.preventDefault) theEvent.preventDefault();
+		}
+	}
+
+	$('#modalUser').on('shown.bs.modal', function () {
+		$('#matricule_utilisateur_ajout').focus();
+	});
+
+	$("#matricule_utilisateur_ajout").keyup(function(){
+		var m = $(this).val();
+
+		$.getJSON("<?php echo base_url("Utilisateur/verif_matricul/") ?>" + m, function(data){
+			$("#validationMatricule").empty();
+			if(data.verifie === 1){
+				$("#validationMatricule").append("Le matricule " + m +" existe deja.");
+				$("#save").attr("disabled", true);
+			} else {
+				$("#save").attr("disabled", false);
+			}
+		});		
 	});
 
     $('#modalEditUser').on('show.bs.modal', function (e) {
@@ -198,4 +228,8 @@
         $(this).find('.modal-body #poste_utilisateurEdit').val(Poste).trigger("change");
         $(this).find('.modal-body #profile_utilisateurEdit').val(Profile).trigger("change");
     });
+	
+	$('#modalUser').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

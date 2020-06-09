@@ -101,14 +101,8 @@
                                             (<span class="grey-text"><?php echo $this->session->userdata('profile'); ?></span>)
                                         </small>
                                     </a>
-
-                                    <small class="text-muted"> Option </small>
+                                    
                                     <hr>
-                                    <div class="custom-control custom-checkbox custom-control-inline ml-2">
-                                        <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                        <label class="custom-control-label" for="defaultInline1">Désactiver LDAP</label>
-                                    </div>
-
                                     <a href="<?php echo base_url('Utilisateur'); ?>" class="dropdown-item <?php if ($this->uri->segment(1) == "Utilisateur") { echo "active"; } ?>">
                                         <span class="<?php if ($this->uri->segment(1) == "Utilisateur") { echo "white-text"; } ?>"><i class="fas fa-users-cog mr-2"></i>Gérer les utilisateurs</span>
                                     </a>
@@ -120,8 +114,14 @@
                                     <a href="<?php echo base_url('Categorie_Tache'); ?>" class="dropdown-item <?php if ($this->uri->segment(1) == "Categorie_Tache") { echo "active"; } ?>">
                                         <span class="<?php if ($this->uri->segment(1) == "Categorie_Tache") { echo "white-text"; } ?>"><i class="fas fa-clipboard-list mr-2"></i>Gérer les tâches et catégories</span>
                                     </a>
-                                    <hr>
 
+                                    <hr>
+                                    <div class="custom-control custom-checkbox custom-control-inline ml-2">
+                                        <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                        <label class="custom-control-label" for="defaultInline1">Désactiver LDAP</label>
+                                    </div>
+                                    
+                                    <hr>
                                     <a class="dropdown-item" href="<?php echo base_url('login/deconnexion'); ?>"><i class="fas fa-power-off mr-2"></i>Se déconnecter</a>
                                 </div>
                             </li>

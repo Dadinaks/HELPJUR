@@ -8,7 +8,7 @@
             </div>
             
             <div class="card-body">
-                <h4 class="card-title">Liste des demandes envoiées</h4>
+                <h4 class="card-title">Liste des demandes envoyées</h4>
                 <hr>
 
                 <div class="table-responsive text-nowrap">
@@ -17,7 +17,6 @@
                             <tr>
                                 <th class="font-weight-bold">Objet</th>
                                 <th class="font-weight-bold">Date d'envoie</th>
-                                <th class="font-weight-bold">Contenu</th>
                                 <th class="font-weight-bold">Fichier attaché(s)</th>
                                 <th class="font-weight-bold"><i class="fas fa-cog mr-2"></i>Action</th>
                             </tr>
@@ -28,7 +27,6 @@
                             <tr>
                                 <td class="text-left"><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
-                                <td><?php echo $row->contenu; ?></td>
                                 <td><?php echo $row->fichier; ?></td>
                                 <td>
                                     <a href="<?php echo base_url('demande_d_avis/consulter/'. $row->idDemande); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Consulter"><i class="fas fa-eye"></i></a>
@@ -82,4 +80,8 @@
         $(this).find('.modal-body #idDemande_abandonner').val(idDemande);
         $(this).find('.objet').text(objet);
     });
+    
+	$('#modalAbandonner').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

@@ -21,12 +21,12 @@
 				<span id="instru">Entrez vos identifiants</span>
 				<div class="form-group-perso">
 					<input type="text" id='pseudo' name='pseudo' autofocus required="" class="form-control"
-						   placeholder="Matricule">
+						   placeholder="Matricule" autocomplete="off">
 					<?php echo form_error('pseudo'); ?>
 				</div>
 				<div class="form-group-perso">
 					<input type="password" id='mdp' name='mdp' class="form-control" required=""
-						   placeholder="Mot de passe">
+						   placeholder="Mot de passe" autocomplete="off">
 					<?php echo form_error('mdp'); ?>
 				</div>
 				<div class="form-group-perso">

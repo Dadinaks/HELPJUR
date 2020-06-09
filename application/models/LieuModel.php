@@ -2,8 +2,11 @@
 
 class LieuModel extends CI_Model
 {
-	public function find()
+	public function find($where = NULL)
 	{
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
         $query = $this->db->get('lieu');
         
         return $query->result();
@@ -34,5 +37,15 @@ class LieuModel extends CI_Model
 		$this->db->where('idLieu', $this->input->post('idlieu'));
 
 		return $this->db->delete('lieu');
-	}
+    }
+    
+    public function count($where = NULL)
+    {
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
+        $nb = $this->db->count_all_results('lieu');
+
+        return $nb;
+    }
 }

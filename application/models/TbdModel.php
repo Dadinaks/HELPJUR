@@ -21,6 +21,28 @@ class TbdModel extends CI_Model
         return $query->result();
     }
 
+    /* SELECT CONCAT(u.matricule, " - ", u.nom, " ", u.prenom) as juriste,COUNT(*) as nb, p.profile as profil FROM ticket t 
+     * INNER JOIN utilisateur u ON (u.idUtilisateur = t.saisisseur)
+     * LEFT JOIN profil p ON (p.idProfil = u.profil)
+     * WHERE p.idProfil = $profil AND t.statutTicket = $statut
+     * GROUP BY t.saisisseur
+    */
+    public function nbTicket_par_type_juriste($profil, $statut = NULL){
+        $this->db->select("CONCAT(u.matricule, ' - ', u.nom, ' ', u.prenom) as juriste,COUNT(*) as nb")
+            ->from("ticket t")
+            ->join("utilisateur u", "u.idUtilisateur = t.saisisseur", "inner")
+            ->join("profil p", "p.idProfil = u.profil","left")
+            ->where("p.idProfil", $profil);
+        if ($statut != NULL) {
+            $this->db->where("t.statutTicket", $statut);
+        }
+                
+        $this->db->group_by("t.saisisseur");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     /* SELECT ta.tache as tache, COUNT(*) as nb FROM ticket t
     * INNER JOIN tache ta ON (ta.idTache = t.idTache)
     * INNER JOIN categorie c ON (c.idCategorie = ta.idCategorie)
@@ -42,16 +64,26 @@ class TbdModel extends CI_Model
         return $query->result();
     }
 
-    /* SELECT (SELECT objet FROM demande WHERE idDemande = ticket.idDemande) as objet,
-    * (SELECT tache FROM tache WHERE idTache = ticket.idTache) as tache,
-    * (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = ticket.saisisseur) as saisisseur,
-    * (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = ticket.demandeur) as demandeur,
-    * statutTicket, numTicket, dateReception, dateEncours,  dateAvantValidation, dateRevise, dateTermine, dateRefus, dateAbandon, dateFaq FROM ticket
+    /* SELECT demande.objet, tache.tache, CONCAT(s.matricule, ' - ', s.nom, ' ', s.prenom) as saisisseur, CONCAT(d.matricule, ' - ', d.nom, ' ', d.prenom) as demandeur, t.statutTicket, t.numTicket, DATE_FORMAT(t.dateReception, '%d/%m/%Y, à %H:%i') as dateReception, DATE_FORMAT(t.dateEncours, '%d/%m/%Y, à %H:%i') as dateEncours,  DATE_FORMAT(t.dateAvantValidation, '%d/%m/%Y, à %H:%i') as dateAvantValidation, DATE_FORMAT(t.dateRevise, '%d/%m/%Y, à %H:%i') as dateRevise, DATE_FORMAT(t.dateTermine, '%d/%m/%Y, à %H:%i') as dateTermine, DATE_FORMAT(t.dateRefus, '%d/%m/%Y, à %H:%i') as dateRefus, DATE_FORMAT(t.dateAbandon, '%d/%m/%Y, à %H:%i') as dateAbandon, DATE_FORMAT(t.dateFaq, '%d/%m/%Y, à %H:%i') as dateFaq FROM ticket t 
+     * INNER JOIN demande ON (demande.idDemande = t.idDemande) 
+     * INNER JOIN tache ON (tache.idTache = t.idTache) 
+     * INNER JOIN utilisateur s ON (s.idUtilisateur = t.saisisseur) 
+     * INNER JOIN utilisateur d ON (d.idUtilisateur = t.demandeur)
+     * t.dateReception BETWEEN $dateDebut AND $dateFin
     */
-    public function all_ticket(){
-        $query = $this->db->select("(SELECT objet FROM demande WHERE idDemande = ticket.idDemande) as objet, (SELECT tache FROM tache WHERE idTache = ticket.idTache) as tache, (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = ticket.saisisseur) as saisisseur, (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = ticket.demandeur) as demandeur, statutTicket, numTicket, dateReception, dateEncours, dateAvantValidation, dateRevise, dateTermine, dateRefus, dateAbandon, dateFaq")
-                 ->from("ticket")
-                 ->get();
+    public function all_ticket($statut = NULL, $dateDebut=NULL, $dateFin=NULL){
+        $this->db->select("demande.objet, tache.tache, CONCAT(s.matricule, ' - ', s.nom, ' ', s.prenom) as saisisseur, CONCAT(d.matricule, ' - ', d.nom, ' ', d.prenom) as demandeur, t.statutTicket, t.numTicket, DATE_FORMAT(t.dateReception, '%d/%m/%Y, à %H:%i') as dateReception, DATE_FORMAT(t.dateEncours, '%d/%m/%Y, à %H:%i') as dateEncours,  DATE_FORMAT(t.dateAvantValidation, '%d/%m/%Y, à %H:%i') as dateAvantValidation, DATE_FORMAT(t.dateRevise, '%d/%m/%Y, à %H:%i') as dateRevise, DATE_FORMAT(t.dateTermine, '%d/%m/%Y, à %H:%i') as dateTermine, DATE_FORMAT(t.dateRefus, '%d/%m/%Y, à %H:%i') as dateRefus, DATE_FORMAT(t.dateAbandon, '%d/%m/%Y, à %H:%i') as dateAbandon, DATE_FORMAT(t.dateFaq, '%d/%m/%Y, à %H:%i') as dateFaq")
+            ->from("ticket t")
+            ->join('demande', 'demande.idDemande = t.idDemande', 'left')
+            ->join('tache', 'tache.idTache = t.idTache', 'left')
+            ->join('utilisateur s', 's.idUtilisateur = t.saisisseur', 'left')
+            ->join('utilisateur d', 'd.idUtilisateur = t.demandeur', 'left');
+        
+        if ($statut != NULL && $dateDebut != NULL && $dateFin !=NULL) {
+            $this->db->where('t.' . $statut . ' BETWEEN "' . date("Y-m-d", strtotime($dateDebut)) . '" AND "' . date("Y-m-d", strtotime($dateFin)) . '"');
+        }
+
+        $query = $this->db->get();
 
         return $query->result();
     }

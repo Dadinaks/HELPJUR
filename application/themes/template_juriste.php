@@ -97,7 +97,7 @@
                                     
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Recus") { echo "active"; } ?>" href="<?php echo site_url('ticket/Recus'); ?>">
                                         <span class="mr-5 <?php if ($this->uri->segment(2) == "Recus") { echo "white-text"; } ?>">
-                                            <i class="fas fa-file-alt mr-2"></i>Dossier Reçus 
+                                            <i class="fas fa-file-alt mr-2"></i>Dossiers Reçus 
                                             <?php $recu = $this->TicketModel->count('Reçu'); 
                                             if ($recu != NULL) { ?>
                                                 <span class="badge badge-pill badge-danger" id="new_recu"></span>
@@ -106,24 +106,24 @@
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Encours") { echo "active"; } ?>" href="<?php echo site_url('ticket/Encours'); ?>">
-                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Encours") { echo "white-text"; } ?>"><i class="fas fa-file-signature mr-1"></i>Dossier En cours de traitement</span>
+                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Encours") { echo "white-text"; } ?>"><i class="fas fa-file-signature mr-1"></i>Dossiers En cours de traitement</span>
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Refuses") { echo "active"; } ?>" href="<?php echo site_url('ticket/Refuses'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Refuses") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossier Refusés</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Refuses") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossiers Refusés</span>
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Abandon") { echo "active"; } ?>" href="<?php echo site_url('ticket/Abandon'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Abandon") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossier Abandonné</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Abandon") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossiers Abandonnés</span>
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Faq") { echo "active"; } ?>" href="<?php echo site_url('ticket/Faq'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Faq") { echo "white-text"; } ?>"><i class="fas fa-file mr-2"></i>Dossier redirigé vers F.A.Q</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Faq") { echo "white-text"; } ?>"><i class="fas fa-file mr-2"></i>Dossiers redirigé vers F.A.Q</span>
                                     </a>
 
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Termines") { echo "active"; } ?>" href="<?php echo site_url('ticket/Termines'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Termines") { echo "white-text"; } ?>"><i class="fas fa-file-archive mr-2"></i>Dossier Terminés</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Termines") { echo "white-text"; } ?>"><i class="fas fa-file-archive mr-2"></i>Dossiers Terminés</span>
                                     </a>
 
                                     <small class="text-muted"> Validation </small>
@@ -131,7 +131,7 @@
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Validation") { echo "active"; } ?>" href="<?php echo site_url('ticket/Validation'); ?>">
                                         <span class="<?php if ($this->uri->segment(2) == "Validation") { echo "white-text"; } ?>"><i class="fas fa-file-import mr-2"></i>
-                                            Dossier à valider
+                                            Dossiers à valider
                                             <?php $valider = $this->TicketModel->count('A_Validé'); 
                                             if ($valider != NULL) { ?>
                                                 <span class="badge badge-pill badge-danger" id="new_avalider"></span>
@@ -141,7 +141,7 @@
 
                                      <a class="dropdown-item <?php if ($this->uri->segment(2) == "Revision") { echo "active"; } ?>" href="<?php echo site_url('ticket/Revision'); ?>">
                                         <span class="<?php if ($this->uri->segment(2) == "Revision") { echo "white-text"; } ?>"><i class="fas fa-file-export mr-2"></i>
-                                            Dossier à réviser
+                                            Dossiers à réviser
                                             <?php $revise = $this->TicketModel->count('Révisé'); 
                                             if ($revise != NULL) { ?>
                                                 <span class="badge badge-pill badge-danger" id="new_revise"></span>
@@ -158,7 +158,7 @@
                                 <a href="<?php echo base_url('Calendrier'); ?>" class="nav-link"><i class="far fa-calendar-alt"></i></a>
                             </li>
 
-                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Demande Reçue(s)">
+                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Demande(s) reçue(s)">
                                 <a href="<?php echo base_url('demande_d_avis'); ?>" class="nav-link">
                                     <i class="fas fa-envelope-open-text"></i>
                                     <?php if ($this->DemandeModel->count('statutDemande = "Envoyé"') != NULL) { ?>

@@ -120,10 +120,6 @@
 
                         <!-- Right -->
 				        <ul class="navbar-nav nav-flex-icons">
-                            <li class="nav-item" data-tooltip="tooltip" data-placement="bottom" title="Calendrier">
-                                <a href="<?php echo base_url('Calendrier'); ?>" class="nav-link"><i class="far fa-calendar-alt"></i></a>
-                            </li>
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="dropdown_demande" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="bottom" title="Demande d'avis"><i class="fas fa-comments"></i></a>
                                 
@@ -131,7 +127,7 @@
                                     <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalDemande" data-keyboard="false" data-backdrop="static"><i class="far fa-comment-dots mr-2"></i>Création d'une demande</a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Demande") { echo "active"; } ?>" href="<?php echo base_url('Demande_d_avis/Demande'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Demande") { echo "white-text"; } ?>"><i class="fas fa-paper-plane mr-2"></i>Demande envoyé</span>
+                                        <span class="<?php if ($this->uri->segment(2) == "Demande") { echo "white-text"; } ?>"><i class="fas fa-paper-plane mr-2"></i>Demande envoyée</span>
                                     </a>
                                 </div>
                             </li>
@@ -224,40 +220,44 @@
 
         <script type="text/javascript">
             //Animations initialization
-            new WOW().init();
+            /*  new WOW().init();
+                
+                $('#modalDemande').on('hidden.bs.modal', function () {
+                    $(this).find('form').trigger('reset');
+                });
 
-            $(function () {
-                $("[data-tooltip='tooltip']").tooltip()
-            });
-            
-            $(document).ready(function () {
-                setInterval(function () {
-                    $.ajax({
-                        url     : "<?php echo base_url('demande_d_avis/notification') ?>",
-                        type    : "post",
-                        dataType: "json",
+                $(function () {
+                    $("[data-tooltip='tooltip']").tooltip()
+                });
+                
+                $(document).ready(function () {
+                    setInterval(function () {
+                        $.ajax({
+                            url     : "<?php echo base_url('demande_d_avis/notification') ?>",
+                            type    : "post",
+                            dataType: "json",
 
-                        success: function (data) {
-                            $('#nouvelle_demande').html(data.nombre);
-                        }
-                    });
-                }, 100);
+                            success: function (data) {
+                                $('#nouvelle_demande').html(data.nombre);
+                            }
+                        });
+                    }, 100);
 
-                setInterval(function () {
-                    $.ajax({
-                        url: "<?php echo base_url('ticket/notification') ?>",
-                        type: "post",
-                        dataType: "json",
+                    setInterval(function () {
+                        $.ajax({
+                            url: "<?php echo base_url('ticket/notification') ?>",
+                            type: "post",
+                            dataType: "json",
 
-                        success: function (data) {
-                            $('#new_recu').html(data.recu);
-                            $('#new_avalider').html(data.avalider);
-                            $('#new_revise').html(data.revision);
-                            $('#new_ticket').html(data.total);
-                        }
-                    });
-                }, 100);
-            });
+                            success: function (data) {
+                                $('#new_recu').html(data.recu);
+                                $('#new_avalider').html(data.avalider);
+                                $('#new_revise').html(data.revision);
+                                $('#new_ticket').html(data.total);
+                            }
+                        });
+                    }, 100);
+                }); */
         </script>
     </body>
 </html>

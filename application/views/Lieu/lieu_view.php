@@ -8,7 +8,7 @@
 			</div>
 
 			<div class="card-body">
-				<h4 class="card-title">Ajout d’une agence</h4>
+				<h4 class="card-title">Création d’une agence</h4>
 				<hr>
 
 				<div class="card-body">
@@ -16,20 +16,21 @@
 						<div class="row justify-content-center">
 							<div class="col-3">
 								<div class="md-form">
-									<input type="number" min="1" max="99999" id="code_ajout" name="code_ajout" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le Code de l\'agence)" oninput="setCustomValidity('')">
+									<input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" min="1" max="99999" id="code_ajout" name="code_ajout" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le Code de l\'agence')" oninput="setCustomValidity('')">
 									<label for="code">Code Agence</label>
 									<small><?php echo form_error('code_ajout'); ?></small>
+									<small id="validationCode" class="red-text"></small>
 								</div>
 							</div>
 							<div class="col-5">
 								<div class="md-form">
-									<input type="text" id="agence_ajout" name="agence_ajout" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le nom de l\'agence)" oninput="setCustomValidity('')">
+									<input type="text" id="agence_ajout" name="agence_ajout" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le nom de l\'agence')" oninput="setCustomValidity('')">
 									<label for="agence">Agence</label>
 								</div>
 							</div>
 							<div class="md-form">
 								<div class="col-2">
-									<button class="btn btn-rounded btn-success btn-sm">Ajouter</button>
+									<button id="save" class="btn btn-rounded btn-success btn-sm" disabled>Ajouter</button>
 								</div>
 							</div>
 						</div>
@@ -147,7 +148,7 @@
 <!-- /Modal delete lieu -->
 
 <script type="text/javascript">
-	function zeroFill( number, width )
+	function zeroFill(number, width)
 	{
 		width -= number.toString().length;
 		if ( width > 0 )
@@ -156,6 +157,38 @@
 		}
 		return number + ""; // always return a string
 	}
+
+	function maxLengthCheck(object)
+	{
+		if (object.value.length > object.max.length)
+		object.value = object.value.slice(0, object.max.length)
+	}
+	
+	function isNumeric(evt)
+	{
+		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode (key);
+		var regex = /[0-9]|\./;
+		if ( !regex.test(key) ) {
+			theEvent.returnValue = false;
+			if(theEvent.preventDefault) theEvent.preventDefault();
+		}
+	}
+
+	$("#code_ajout").keyup(function(){
+		var code = $(this).val();
+		$.getJSON("<?php echo base_url("Lieu/verifier/") ?>" + code, function(data){
+			$("#validationCode").empty();
+			
+			if(data.check === 1){
+				$("#validationCode").append("Le Code " + code +" existe deja.");
+				$("#save").attr("disabled", true);
+			} else {
+				$("#save").attr("disabled", false);
+			}
+		});
+	});
 
 	$(document).ready(function () {
 		$("#code_ajout").change(function() {

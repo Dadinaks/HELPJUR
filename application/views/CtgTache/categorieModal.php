@@ -47,7 +47,7 @@
 				</div>
 
 				<button type="submit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Enregistrer</button>
-				<a data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</a>
+				<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>
 				<?php echo form_close(); ?>
 			</div>
 		</div>
@@ -118,4 +118,8 @@
             )
         }
     });
+
+	$('#modalCategorie').on('hidden.bs.modal', function () {
+		$(this).find('form').trigger('reset');
+	});
 </script>

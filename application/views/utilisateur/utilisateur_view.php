@@ -16,7 +16,7 @@
                 <div class="row text-center">
                     <div class="offset-6 col-6">
                         <div class="row">
-                            <div class="offset-xl-5 offset-lg-5 offset-md-5 col-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="offset-xl-5 offset-lg-5 offset-md-5 col-4 col-lg-4 col-md-4 col-sm-12">
                                 <input list="lieu_user" id="filtre_lieu_user" name="lieu_user" class="browser-default custom-select custom-select-sm" placeholder="-- Filtre Agence --" required>
                                 <datalist id="lieu_user">
                                     <?php $lieu = $this->LieuModel->find();
@@ -34,10 +34,6 @@
                                         <option value="<?php echo $row->idProfil; ?>"><?php echo $row->profile; ?></option>
                                     <?php } ?>
                                 </select>
-                            </div>
-
-                            <div>
-                                <button class="btn btn-sm btn-rounded btn-default" data-tooltip="tooltip" data-placement="bottom" title="Retirer tous les filtres"><i class="fas fa-times"></i></button>
                             </div>
                         </div>
                     </div>
@@ -57,35 +53,6 @@
                                 <th class="font-weight-bold"><i class="fas fa-cog mr-2"></i>Action</th>
                             </tr>
                         </thead>
-
-                        <tbody>
-                            <?php foreach ($utilisateurs as $row) : ?>
-                                <tr>
-                                    <?php if ($row->statutCompte == 'Désactivé') { ?>
-                                        <td><span><?php echo $row->matricule; ?></span></td>
-                                        <td><span><?php echo $row->nom . ' ' . $row->prenom; ?></span></td>
-                                    <?php } else { ?>
-                                        <td><span class="font-weight-bold"><?php echo $row->matricule; ?></span></td>
-                                        <td><span class="font-weight-bold"><?php echo $row->nom . ' ' . $row->prenom; ?></span></td>
-                                    <?php } ?>
-                                    
-                                    <td><?php echo $row->email; ?></td>
-                                    <td><?php echo $row->agences; ?></td>
-                                    <td><?php echo $row->direction; ?></td>
-                                    <td><?php echo $row->unite; ?></td>
-                                    <td><?php echo $row->poste; ?></td>
-                                    <td><?php echo $row->profile; ?></td>
-                                    <td>
-                                        <?php if ($row->statutCompte == 'Désactivé') { ?>
-                                            <a href="<?php echo base_url('Utilisateur/Activer/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>
-                                        <?php } else { ?>
-                                            <a href="<?php echo base_url('Utilisateur/Desactiver/'. $row->idUtilisateur); ?>" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>
-                                        <?php } ?>
-                                        <a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="<?php echo $row->idUtilisateur; ?>"  data-matricule="<?php echo $row->matricule; ?>" data-nom="<?php echo $row->nom; ?>" data-prenom="<?php echo $row->prenom; ?>" data-email="<?php echo $row->email; ?>" data-agence="<?php echo $row->agence; ?>" data-direction="<?php echo $row->direction; ?>" data-unite="<?php echo $row->unite; ?>" data-poste="<?php echo $row->poste; ?>" data-profile="<?php echo $row->idProfil; ?>" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -133,10 +100,24 @@
             "lengthMenu" : [5, 10, 15, 100],
             "columns": [{
                     "title" : "Matricule",
-                    "data"  : "matricule"
+                    "data"  : null,
+                    "render": function (data, type, row, meta){
+                            if (data.statutCompte == 'Désactivé') {
+                                return data.matricule;
+                            } else {
+                                return '<span class="font-weight-bold">' + data.matricule + '</span>';
+                            }
+                        }
                 }, {
                     "title" : "Nom et Prénom(s)",
-                    "data"  : "prenom"
+                    "data"  : null,
+                    "render": function (data, type, row, meta){
+                            if (data.statutCompte == 'Désactivé') {
+                                return data.nom + " " + data.prenom;
+                            } else {
+                                return '<span class="font-weight-bold">' + data.nom + ' ' + data.prenom + '</span>';
+                            }
+                        }
                 }, {
                     "title" : "E-mail",
                     "data"  : "email"
@@ -157,28 +138,44 @@
                     "data"  : "profile"
                 }, {
                     "title" : "Action",
-                    "data"  : "idUtilisateur"
+                    "data"  : null,
+                    "render": function (data, type, row, meta) {
+                        var button = ''; 
+                        if (data.statutCompte == 'Désactivé') {
+                            button = '<a href="<?php echo base_url("Utilisateur/Activer/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>';
+                        } else {
+                            button = '<a href="<?php echo base_url("Utilisateur/Desactiver/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>';
+                        }
+                        return button + ' ' + '<a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="' + data.idUtilisateur + '"  data-matricule="' + data.matricule +'" data-nom="' + data.nom +'" data-prenom="' + data.prenom +'" data-email="' + data.email +'" data-agence="' + data.agence +'" data-direction="' + data.direction +'" data-unite="' + data.unite +'" data-poste="' + data.poste +'" data-profile="' + data.idProfil +'" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
+                    }
                 }
             ]
         });
         $('.dataTables_length').addClass('bs-select');
 
-        var filtre_lieu   = document.getElementById("filtre_lieu_user");
-        var filtre_profil = document.getElementById("filtre_profil_user");
-
+        $.getJSON("<?php echo base_url("Utilisateur/tableau_user") ?>", function(data){
+            $.each(data.utilisateurs, function(key, utilisateur){
+                tableau.row.add(utilisateur);
+                tableau.draw();
+            });
+        });
+       
         $("#filtre_lieu_user").on("change", function() {
-            console.log(filtre_lieu.value);
-            /*$.getJSON("<?php //echo base_url("Tableau_de_bord/nombre_ticket_categorie/") ?>" + categorieTicket.value, function(data){
-                $("#nbTache").empty();
-                $.each(data.nbs, function(key, nombre){
-                    $("#nbTache").append("<tr><td>" + nombre.tache + "</td> <td class='text-center'>" + nombre.nb + "</td></tr>");
+            var a    = $("#filtre_lieu_user").val();
+            var lieu = a.replace(' ', '%20');
+
+            $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_lieu/") ?>" + lieu, function(data){
+                tableau.clear().draw();
+                $.each(data.agences, function(key, agence){
+                    tableau.row.add(agence);
+                    tableau.draw();
                 });
-            });*/
+            });
         });
 
         $("#filtre_profil_user").on("change", function() {
-            $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_profil/") ?>" + filtre_profil.value, function(data){
-                tableau.clear();
+            $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_profil/") ?>" + $("#filtre_profil_user").val(), function(data){
+                tableau.clear().draw();
                 $.each(data.profils, function(key, profil){
                     tableau.row.add(profil);
                     tableau.draw();

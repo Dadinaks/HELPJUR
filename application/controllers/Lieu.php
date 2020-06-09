@@ -76,4 +76,10 @@ class Lieu extends CI_Controller
 		redirect(base_url('Lieu'));
 	}
 
+	public function verifier($code_agence){
+		$data['check'] = $this->LieuModel->count("codeAgence =" . $code_agence);
+
+		echo json_encode($data);
+	}
+
 }
