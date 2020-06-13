@@ -15,23 +15,23 @@
 					<div class="row">
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 							<div class="md-form form-sm">
-								<input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" name="matricule_utilisateur" id="matricule_utilisateur_ajout" min="1" max="99999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
+								<input type="number" autocomplete="off" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" name="matricule_utilisateur" id="matricule_utilisateur_ajout" min="1" max="99999" required="" oninvalid="this.setCustomValidity('Veuillez insérer le matricule de l\'utilisateur')" oninput="setCustomValidity('')" class="form-control">
 								<label for="matricule_utilisateur">Matricule</label>
 								<small><span id="validationMatricule" class="red-text"></span></small>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="nom_utilisateur" id="nom_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le nom de l\'utilisateur')" oninput="setCustomValidity('')">
+								<input type="text" autocomplete="off" name="nom_utilisateur" id="nom_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le nom de l\'utilisateur')" oninput="setCustomValidity('')">
 								<label for="nom_utilisateur">Nom</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="prenom_utilisateur" id="prenom_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le prénom de l\'utilisateur')" oninput="setCustomValidity('')">
+								<input type="text" autocomplete="off" name="prenom_utilisateur" id="prenom_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le prénom de l\'utilisateur')" oninput="setCustomValidity('')">
 								<label for="prenom_utilisateur">Prénoms</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="email" name="email_utilisateur" id="email_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez insérer un e-mail correct')" oninput="setCustomValidity('')">
+								<input type="email" autocomplete="off" name="email_utilisateur" id="email_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez insérer un e-mail correct')" oninput="setCustomValidity('')">
 								<label for="email_utilisateur">Email</label>
 							</div>
 						</div>
@@ -49,17 +49,17 @@
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="direction_utilisateur" id="direction_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner la direction de l\'utilisateur')" oninput="setCustomValidity('')">
+								<input type="text" autocomplete="off" name="direction_utilisateur" id="direction_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner la direction de l\'utilisateur')" oninput="setCustomValidity('')">
 								<label for="direction_utilisateur">Direction</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="unite_utilisateur" id="unite_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner l\'unité ou se trouve l\'utilisateur')" oninput="setCustomValidity('')">
+								<input type="text" autocomplete="off" name="unite_utilisateur" id="unite_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner l\'unité ou se trouve l\'utilisateur')" oninput="setCustomValidity('')">
 								<label for="unite_utilisateur">Unité</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="poste_utilisateur" id="poste_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le poste de l\'utilisateur')" oninput="setCustomValidity('')">
+								<input type="text" autocomplete="off" name="poste_utilisateur" id="poste_utilisateur" class="form-control" required="" oninvalid="this.setCustomValidity('Veuillez renseigner le poste de l\'utilisateur')" oninput="setCustomValidity('')">
 								<label for="poste_utilisateur">Poste</label>
 							</div>
 
@@ -94,7 +94,7 @@
 			</div>
 
 			<div class="modal-body text-center mb-1">
-				<h5 class="mt-1 mb-2">Modification d’un utilisateur</h5>
+				<h5 id="titreEdit" class="mt-1 mb-2">Modification d’un utilisateur</h5>
 				<hr>
 
 				<?php echo form_open('Utilisateur/modifier_Utilisateur'); ?>
@@ -108,17 +108,17 @@
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="nom_utilisateur" id="nom_utilisateurEdit" class="form-control" required>
+								<input type="text" name="nom_utilisateur" id="nom_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="nom_utilisateur">Nom</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="prenom_utilisateur" id="prenom_utilisateurEdit" class="form-control" required>
+								<input type="text" name="prenom_utilisateur" id="prenom_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="prenom_utilisateur">Prénoms</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="email" name="email_utilisateur" id="email_utilisateurEdit" class="form-control" required>
+								<input type="email" name="email_utilisateur" id="email_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="email_utilisateur">Email</label>
 							</div>
 						</div>
@@ -134,17 +134,17 @@
 							</select>
 
 							<div class="md-form form-sm">
-								<input type="text" name="direction_utilisateur" id="direction_utilisateurEdit" class="form-control" required>
+								<input type="text" name="direction_utilisateur" id="direction_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="direction_utilisateur">Direction</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="unite_utilisateur" id="unite_utilisateurEdit" class="form-control" required>
+								<input type="text" name="unite_utilisateur" id="unite_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="unite_utilisateur">Unité</label>
 							</div>
 
 							<div class="md-form form-sm">
-								<input type="text" name="poste_utilisateur" id="poste_utilisateurEdit" class="form-control" required>
+								<input type="text" name="poste_utilisateur" id="poste_utilisateurEdit" class="form-control" autocomplete="off" required>
 								<label for="poste_utilisateur">Poste</label>
 							</div>
 
@@ -159,7 +159,7 @@
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Enregistrer </button>
+					<button type="submit" id="saveEdit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Enregistrer</button>
 					<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>
 				<?php echo form_close(); ?>
 			</div>
@@ -187,6 +187,15 @@
 
 	$('#modalUser').on('shown.bs.modal', function () {
 		$('#matricule_utilisateur_ajout').focus();
+		$('#nom_utilisateur').attr("disabled", true);
+		$('#prenom_utilisateur').attr("disabled", true);
+		$('#email_utilisateur').attr("disabled", true);
+		$('#lieu_utilisateur').attr("disabled", true);
+		$('#departement_utilisateur').attr("disabled", true);
+		$('#direction_utilisateur').attr("disabled", true);
+		$('#unite_utilisateur').attr("disabled", true);
+		$('#poste_utilisateur').attr("disabled", true);
+		$('#profile_utilisateur').attr("disabled", true);
 	});
 
 	$("#matricule_utilisateur_ajout").keyup(function(){
@@ -196,8 +205,27 @@
 			$("#validationMatricule").empty();
 			if(data.verifie === 1){
 				$("#validationMatricule").append("Le matricule " + m +" existe deja.");
+
+				$('#nom_utilisateur').attr("disabled", true);
+				$('#prenom_utilisateur').attr("disabled", true);
+				$('#email_utilisateur').attr("disabled", true);
+				$('#lieu_utilisateur').attr("disabled", true);
+				$('#departement_utilisateur').attr("disabled", true);
+				$('#direction_utilisateur').attr("disabled", true);
+				$('#unite_utilisateur').attr("disabled", true);
+				$('#poste_utilisateur').attr("disabled", true);
+				$('#profile_utilisateur').attr("disabled", true);
 				$("#save").attr("disabled", true);
 			} else {
+				$('#nom_utilisateur').attr("disabled", false);
+				$('#prenom_utilisateur').attr("disabled", false);
+				$('#email_utilisateur').attr("disabled", false);
+				$('#lieu_utilisateur').attr("disabled", false);
+				$('#departement_utilisateur').attr("disabled", false);
+				$('#direction_utilisateur').attr("disabled", false);
+				$('#unite_utilisateur').attr("disabled", false);
+				$('#poste_utilisateur').attr("disabled", false);
+				$('#profile_utilisateur').attr("disabled", false);
 				$("#save").attr("disabled", false);
 			}
 		});		
@@ -215,21 +243,41 @@
         var Unite = $(e.relatedTarget).attr('data-unite');
         var Poste = $(e.relatedTarget).attr('data-poste');
         var Profile = $(e.relatedTarget).attr('data-profile');
+		var Statut = $(e.relatedTarget).attr('data-statut');
 
-        $(this).find('.modal-body #idUtilisateur_utilisateurEdit').val(idUtilisateur).trigger("change");
-        $(this).find('.modal-body #matricule_utilisateurEdit').val(Matricule).trigger("change");
-        $(this).find('.modal-body #nom_utilisateurEdit').val(Nom).trigger("change");
-        $(this).find('.modal-body #prenom_utilisateurEdit').val(Prenom).trigger("change");
-        $(this).find('.modal-body #email_utilisateurEdit').val(Email).trigger("change");
-        $(this).find('.modal-body #lieu_utilisateurEdit').val(Lieu).trigger("change");
-        $(this).find('.modal-body #departement_utilisateurEdit').val(Departement).trigger("change");
-        $(this).find('.modal-body #direction_utilisateurEdit').val(Direction).trigger("change");
-        $(this).find('.modal-body #unite_utilisateurEdit').val(Unite).trigger("change");
-        $(this).find('.modal-body #poste_utilisateurEdit').val(Poste).trigger("change");
-        $(this).find('.modal-body #profile_utilisateurEdit').val(Profile).trigger("change");
+		if (Statut == 'Activé'){
+			$('#titreEdit').html('Modification de l\'utilisateur : ' + Matricule);
+			$(this).find('.modal-body #idUtilisateur_utilisateurEdit').val(idUtilisateur).trigger("change");
+			$(this).find('.modal-body #matricule_utilisateurEdit').val(Matricule).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #nom_utilisateurEdit').val(Nom).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #prenom_utilisateurEdit').val(Prenom).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #email_utilisateurEdit').val(Email).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #lieu_utilisateurEdit').val(Lieu).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #departement_utilisateurEdit').val(Departement).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #direction_utilisateurEdit').val(Direction).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #unite_utilisateurEdit').val(Unite).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #poste_utilisateurEdit').val(Poste).trigger("change").attr("disabled", false);
+			$(this).find('.modal-body #profile_utilisateurEdit').val(Profile).trigger("change").attr("disabled", false);
+			$('#saveEdit').attr('hidden', false);
+		} else {
+			$('#titreEdit').html('Ce compte est désactivé, veuillez l\'activer pour le modifier.');
+			$('#saveEdit').attr('hidden', true);
+			$(this).find('.modal-body #idUtilisateur_utilisateurEdit').val(idUtilisateur).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #matricule_utilisateurEdit').val(Matricule).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #nom_utilisateurEdit').val(Nom).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #prenom_utilisateurEdit').val(Prenom).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #email_utilisateurEdit').val(Email).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #lieu_utilisateurEdit').val(Lieu).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #departement_utilisateurEdit').val(Departement).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #direction_utilisateurEdit').val(Direction).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #unite_utilisateurEdit').val(Unite).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #poste_utilisateurEdit').val(Poste).trigger("change").attr("disabled", true);
+			$(this).find('.modal-body #profile_utilisateurEdit').val(Profile).trigger("change").attr("disabled", true);
+		}
     });
 	
 	$('#modalUser').on('hidden.bs.modal', function () {
 		$(this).find('form').trigger('reset');
+		$(this).find('#validationMatricule').html('');
 	});
 </script>

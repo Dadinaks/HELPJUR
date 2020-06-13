@@ -29,6 +29,7 @@
                             <div class="col-3 col-3 col-lg-3 col-md-3 col-sm-12">
                                 <select class="browser-default custom-select custom-select-sm" id="filtre_profil_user" required>
                                     <option class="font-weight-bold" selected disabled>-- Filtre Profil --</option>
+                                    <option value="Tout">Tous</option>
                                     <?php $data['profiles'] = $this->ProfilModel->find();
                                     foreach ($data['profiles'] as $row) { ?>
                                         <option value="<?php echo $row->idProfil; ?>"><?php echo $row->profile; ?></option>
@@ -141,12 +142,21 @@
                     "data"  : null,
                     "render": function (data, type, row, meta) {
                         var button = ''; 
+                        
+                        /* $(".card button").click(function() {
+                            // Check if the clicked button has class `btn_s`
+                            if ($(this).hasClass('btn_s')) {
+                            $(this).html('Undo?').toggleClass('btn_s notsu');
+                            } else {
+                            $(this).html('Mark as not suitable?').toggleClass('notsu btn_s');
+                            }
+                        }); */
                         if (data.statutCompte == 'Désactivé') {
                             button = '<a href="<?php echo base_url("Utilisateur/Activer/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Activé"><i class="fas fa-user-check"></i></a>';
                         } else {
                             button = '<a href="<?php echo base_url("Utilisateur/Desactiver/"); ?>' + data.idUtilisateur +'" class="btn-floating btn-sm btn-danger" data-tooltip="tooltip" data-placement="bottom" title="Désactivé"><i class="fas fa-user-times mr-2"></i></a>';
                         }
-                        return button + ' ' + '<a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-id="' + data.idUtilisateur + '"  data-matricule="' + data.matricule +'" data-nom="' + data.nom +'" data-prenom="' + data.prenom +'" data-email="' + data.email +'" data-agence="' + data.agence +'" data-direction="' + data.direction +'" data-unite="' + data.unite +'" data-poste="' + data.poste +'" data-profile="' + data.idProfil +'" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
+                        return button + ' ' + '<a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalEditUser" data-statut="'+ data.statutCompte +'" data-id="' + data.idUtilisateur + '"  data-matricule="' + data.matricule +'" data-nom="' + data.nom +'" data-prenom="' + data.prenom +'" data-email="' + data.email +'" data-agence="' + data.agence +'" data-direction="' + data.direction +'" data-unite="' + data.unite +'" data-poste="' + data.poste +'" data-profile="' + data.idProfil +'" data-tooltip="tooltip" data-placement="bottom" title="Modifier les informations" data-keyboard="false" data-backdrop="static"><i class="fas fa-user-edit mr-2"></i></a>';
                     }
                 }
             ]
@@ -154,6 +164,7 @@
         $('.dataTables_length').addClass('bs-select');
 
         $.getJSON("<?php echo base_url("Utilisateur/tableau_user") ?>", function(data){
+            tableau.clear().draw();
             $.each(data.utilisateurs, function(key, utilisateur){
                 tableau.row.add(utilisateur);
                 tableau.draw();
@@ -174,13 +185,23 @@
         });
 
         $("#filtre_profil_user").on("change", function() {
-            $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_profil/") ?>" + $("#filtre_profil_user").val(), function(data){
-                tableau.clear().draw();
-                $.each(data.profils, function(key, profil){
-                    tableau.row.add(profil);
-                    tableau.draw();
+            if ($("#filtre_profil_user").val() != 'Tout'){
+                $.getJSON("<?php echo base_url("Utilisateur/filtrer_par_profil/") ?>" + $("#filtre_profil_user").val(), function(data){
+                    tableau.clear().draw();
+                    $.each(data.profils, function(key, profil){
+                        tableau.row.add(profil);
+                        tableau.draw();
+                    });
                 });
-            });
+            } else {
+                $.getJSON("<?php echo base_url("Utilisateur/tableau_user") ?>", function(data){
+                    tableau.clear().draw();
+                    $.each(data.utilisateurs, function(key, utilisateur){
+                        tableau.row.add(utilisateur);
+                        tableau.draw();
+                    });
+                });
+            }
         });
     });
 </script>

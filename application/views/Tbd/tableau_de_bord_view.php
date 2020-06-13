@@ -329,9 +329,6 @@
 					<div class="col-3"><button class="btn btn-sm btn-rounded btn-default" id="rd" style="margin-top: 0px;"><i class="fas fa-search mr-2"></i>rechercher</button></div>
 				</div>
 		  	</div>
-  			
-
-  			
   		</div>
 
   		<div class="table-responsive text-nowrap">
@@ -358,7 +355,28 @@
 
   				<tbody id="tball" class="text-center"></tbody>
   			</table>
-  		</div>
+		</div>
+		  
+		<!-- Modal Afficher -->
+		<div class="modal fade" id="modalAfficher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog cascading-modal modal-avatar modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<img src="<?php echo base_url('assets/Images/img4.png') ?>" alt="icon" class="rounded-circle img-responsive">
+					</div>
+					
+					<div class="modal-body text-center mb-1">
+						<h5 class="mt-1 mb-2">Contenu du ticket numéro: <span class="font-weight-bold text-danger numTicket"></span></h5>
+						<hr>
+
+						<div class="text-left" id="contenu">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Modal Afficher -->
   	</div>
 
   	<!-- Tab 3 -->
@@ -431,8 +449,17 @@
 	            }]
 	        },
 	        options: {
-	            responsive: true
-	        }
+	            responsive: true,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							var data 	= dataset.data[tooltipItem.index];
+							return data + "%";
+						}
+					}
+	        	}
+			}
 	    });
 
 		// tableau tab 1 Nombre de tickets traités par juriste
@@ -600,71 +627,118 @@
         var tableau = $('#dtall').DataTable({
 			"order": [[0, "desc"]],
 		    "columns": [{
-			    	"title": "Numéro du Ticket",
-			        "data": "numTicket",
-			        "class" : "font-weight-bold"
+			    	"title" : "Numéro du Ticket",
+			        "data"  : null,
+			        "class" : "font-weight-bold",
+					"render": function ( data, type, row, meta ) {
+						var numero = '';
+						var statut = data.statutTicket;
+
+						switch (statut){
+							case "Terminé" :
+								numero = '<a href="<?php echo base_url("Ticket/Visualiser/" ); ?>' + data.idTicket + '/Termine">'+ data.numTicket  +' </a>';
+								break;
+							case "Reçu" :
+								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
+								break;
+							case "Encours" :
+								numero = '<a href="<?php echo base_url("Ticket/traitement/" ); ?>' + data.idTicket + '/Voir">'+ data.numTicket  +' </a>';
+								break;
+							case "A_Validé" :
+								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								break;
+							case "Abandonné" :
+								numero = '<a href="<?php echo base_url("Ticket/traitement/"); ?>' + data.idTicket + '/Abandonne">'+ data.numTicket  +' </a>';
+								break;
+							case "Refusé" :
+								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								break;
+							case "Révisé" :
+								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								break;
+							case "Faq" :
+								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								break;
+
+							default:
+							numero = data.numTicket;
+						}
+						return numero;
+					}
 			    }, {
 			        "title": "Demandeur",
-			        "data": "demandeur"
+			        "data" : "demandeur"
 			    }, {
 			        "title": "Saisisseur",
-			        "data": "saisisseur"
+			        "data" : "saisisseur"
 			    }, {
 			        "title": "Valideur",
-			        "data": null
+			        "data" : null
 			    }, {
 			        "title": "Objet",
-			        "data": "objet"
+			        "data" : "objet"
 			    }, {
 			        "title": "Nature de tâche",
-			        "data": "tache"
+			        "data" : "tache"
 			    }, {
 			        "title": "Date de réception",
 					"data" : "dateReception"
 			    }, {
 			        "title": "Status",
-			        "data": "statutTicket",
+			        "data" : "statutTicket",
 					"render" : function ( data, type, row, meta ) {
-						var a = "";
-						if(data == "A_Validé"){
-							a = '<span class="white-text bg-vert font-weight-bold" style="padding : 3px; border-radius: 3px;">A valider</span>';
-						} else if (data == "Terminé") {
-							a = '<span class="white-text bg-success font-weight-bold" style="padding : 3px; border-radius: 3px;">Terminé</span>';
-						} else if (data == "Faq") {
-							a = '<span class="white-text bg-primary font-weight-bold" style="padding : 3px; border-radius: 3px;">Rediriger vers F.A.Q</span>';
-						} else if (data == "Reçu") {
-							a = '<span class="white-text bg-default font-weight-bold" style="padding : 3px; border-radius: 3px;">Reçu</span>';
-						} else if (data == "Abandonné") {
-							a = '<span class="white-text bg-grena font-weight-bold" style="padding : 3px; border-radius: 3px;">Abandonné</span>';
-						} else if (data == "Refusé") {
-							a = '<span class="white-text bg-danger font-weight-bold" style="padding : 3px; border-radius: 3px;">Refusé</span>';
-						} else if (data == "Encours") {
-							a = '<span class="white-text bg-warning font-weight-bold" style="padding : 3px; border-radius: 3px;">En cours de traitement</span>';
-						} else if (data == "Révisé") {
-							a = '<span class="white-text bg-orange font-weight-bold" style="padding : 3px; border-radius: 3px;">A reviser</span>';
+						var a      = "";
+						var statut = data;
+
+						switch (statut){
+							case "A_Validé" :
+								a = '<span class="white-text bg-vert font-weight-bold" style="padding : 3px; border-radius: 3px;">A valider</span>';
+								break;
+							case "Terminé" :
+								a = '<span class="white-text bg-success font-weight-bold" style="padding : 3px; border-radius: 3px;">Terminé</span>';
+								break;
+							case "Faq" :
+								a = '<span class="white-text bg-primary font-weight-bold" style="padding : 3px; border-radius: 3px;">Rediriger vers F.A.Q</span>';
+								break;
+							case "Reçu" :
+								a = '<span class="white-text bg-default font-weight-bold" style="padding : 3px; border-radius: 3px;">Reçu</span>';
+								break;
+							case "Abandonné" :
+								a = '<span class="white-text bg-grena font-weight-bold" style="padding : 3px; border-radius: 3px;">Abandonné</span>';
+								break;
+							case "Refusé" :
+								a = '<span class="white-text bg-danger font-weight-bold" style="padding : 3px; border-radius: 3px;">Refusé</span>';
+								break;
+							case "Encours" :
+								a = '<span class="white-text bg-warning font-weight-bold" style="padding : 3px; border-radius: 3px;">En cours de traitement</span>';
+								break;
+							case "Révisé" :
+								a = '<span class="white-text bg-orange font-weight-bold" style="padding : 3px; border-radius: 3px;">A reviser</span>';
+								break;
 						}
-                        return  a } 
+                        return  a 
+                    } 
 			    }, {
 			        "title": "Date de traitement",
 			        "data" : "dateEncours"
 			    }, {
-			        "title" : "Date de validation",
-					"data"  : "dateTermine"
+			        "title": "Date de validation",
+					"data" : "dateTermine"
 			    }, {
 			        "title": "Date de transmission",
-			        "data": "dateAvantValidation"
+			        "data" : "dateAvantValidation"
 			    }, {
 			        "title": "Date de revision",
-			        "data": "dateRevise"
+			        "data" : "dateRevise"
 			    }, {
 			        "title": "Date de refus",
-			        "data": "dateRefus"
+			        "data" : "dateRefus"
 			    }, {
 			        "title": "Date d'abandon",
-			        "data": "dateAbandon"
+			        "data" : "dateAbandon"
 			    }, {
 			        "title": "Date de redirection vers F.A.Q",
-			        "data": "dateFaq"
+			        "data" : "dateFaq"
 			    }
 			],
             "language" : {
@@ -828,5 +902,65 @@
 				}
 			});
 		});
+
+		$('#modalAfficher').on('show.bs.modal', function (e) {
+            var idTicket = $(e.relatedTarget).attr('data-id');
+            var numTicket = $(e.relatedTarget).attr('data-numTicket');
+
+            $(this).find('.numTicket').text(numTicket);
+
+            $.ajax({
+                url: '<?php echo base_url('ticket/Visualiser/') ?>' + idTicket + '/recu',
+                type: 'GET',
+                dataType: 'json',
+
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        $('#contenu').empty();
+                        $('#contenu').append(
+                            '<div class="row">' +
+                            '<div class="col-4">' +
+                            '<small><i class="fas fa-file mr-2"></i>Objet</small>' +
+                            '<hr>' +
+                            value.objet +
+                            '</div>' +
+
+                            '<div class="col-4">' +
+                            '<small><i class="fas fa-tasks mr-2"></i>Type</small>' +
+                            '<hr>' +
+
+                            '<dl class="row">' +
+                            '<dt class="col-sm-3">Catégorie</dt>' +
+                            '<dd class="col-sm-9">: ' + value.categorie + '</dd>' +
+
+                            '<dt class="col-sm-3">Tâche</dt>' +
+                            '<dd class="col-sm-9">: ' + value.tache + '</dd>' +
+                            '</dl>' +
+                            '</div>' +
+
+                            '<div class="col-4">' +
+                            '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
+                            '<hr>' +
+                            '<span class="font-weight-bold">' + value.matricule + '</span> - ' + value.nom + ' ' + value.prenom + '<br>' +
+                            //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
+                            '</div>' +
+                            '</div>' +
+
+                            '<small><i class="fas fa-file mr-2"></i>Contenue</small>' +
+                            '<hr>' +
+                            value.contenu +
+                            '<hr>' +
+
+							'<div class="text-center">' +
+							'<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>' +
+                            '</div>'
+                        );
+
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError, error) {
+                }
+            });
+        });
     });
 </script>
