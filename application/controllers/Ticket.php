@@ -17,16 +17,21 @@ class Ticket extends CI_Controller
     public function Recus()
     {
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');
+		$session = $this->session->userdata('profile');
 
-    	if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket Reçus');
 	    $this->layout->view('Ticket/recu', $data);
@@ -73,16 +78,21 @@ class Ticket extends CI_Controller
 	public function Refuses()
     {
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Refusé"', 'ticket.dateRefus');
-		
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');  
-        }
+        $session = $this->session->userdata('profile');
+
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket Refusés');
         $this->layout->view('Ticket/refuse', $data);
@@ -129,16 +139,21 @@ class Ticket extends CI_Controller
 	public function Abandon()
 	{
 		$data['tickets'] = $this->TicketModel->findAbandon();
+        $session = $this->session->userdata('profile');
 
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket Abandonnés');
 	    $this->layout->view('Ticket/adandon', $data);
@@ -196,16 +211,21 @@ class Ticket extends CI_Controller
 	public function Faq()
     {
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Faq"', 'ticket.dateFaq');
-		
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+        $session = $this->session->userdata('profile');
+
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket redirigé vers F.A.Q');
 	    $this->layout->view('Ticket/faq', $data);
@@ -254,16 +274,21 @@ class Ticket extends CI_Controller
 	public function Termines()
 	{
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Terminé"', 'ticket.dateTermine');
-		
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+        $session = $this->session->userdata('profile');
+
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket terminés');
 	    $this->layout->view('Ticket/termine', $data);
@@ -278,16 +303,21 @@ class Ticket extends CI_Controller
 	public function Encours()
 	{
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Encours"', 'ticket.dateEncours');
-		
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+        $session = $this->session->userdata('profile');
+
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket en cours de traitement');
 	    $this->layout->view('Ticket/encours', $data);
@@ -301,16 +331,21 @@ class Ticket extends CI_Controller
 	public function Validation()
 	{
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "A_Validé"', 'ticket.dateAvantValidation');
-		
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+        $session = $this->session->userdata('profile');
+
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket à validers');
 	    $this->layout->view('Ticket/a_valider', $data);
@@ -364,17 +399,21 @@ class Ticket extends CI_Controller
 	public function Revision()
 	{
 		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Révisé"', 'ticket.dateRevise');
-		
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
+        $session = $this->session->userdata('profile');
 
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-        }
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Ticket à réviser');
 	    $this->layout->view('Ticket/revises', $data);
@@ -396,15 +435,21 @@ class Ticket extends CI_Controller
 	{
 		$where = 'ticket.idTicket = '. $idTicket;
 		$data['ticket'] = $this->TicketModel->find($where, NULL);
+        $session = $this->session->userdata('profile');
 
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');        }
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+		}
 
         $this->layout->set_titre('Traitement du ticket');
 	    $this->layout->view('Ticket/traitement', $data);
@@ -506,32 +551,29 @@ class Ticket extends CI_Controller
 
 	public function Enregistrer($idTicket, $save = NULL)
 	{
-		if ($save == 'Consulter'){
-			$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
-
-			if ($this->form_validation->run()) {
-				$this->TicketModel->update($idTicket);
-			}
-
-			redirect(base_url('Ticket/Traitement/' . $idTicket . '/Consulter'));
-
-		} elseif ($save == 'Reviser'){
-			$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
-
-			if ($this->form_validation->run()) {
-				$this->TicketModel->update($idTicket);
-			}
-
-			redirect(base_url('Ticket/Traitement/' . $idTicket . '/Reviser'));
-
-		} else {
-			$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
-
-			if ($this->form_validation->run()) {
-				$this->TicketModel->update($idTicket);
-			}
-
-			redirect(base_url('Ticket/Traitement/' . $idTicket));
+		switch ($save){
+			case 'Consulter' :
+				$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
+				if ($this->form_validation->run()) {
+					$this->TicketModel->update($idTicket);
+				}
+				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Consulter'));
+				break;
+			
+			case 'Reviser' :
+				$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
+				if ($this->form_validation->run()) {
+					$this->TicketModel->update($idTicket);
+				}
+				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Reviser'));
+				break;
+			
+			default :
+				$this->form_validation->set_rules('contenu_traitement', 'Contenu', 'required');
+				if ($this->form_validation->run()) {
+					$this->TicketModel->update($idTicket);
+				}
+				redirect(base_url('Ticket/Traitement/' . $idTicket));
 		}
 		
 	}

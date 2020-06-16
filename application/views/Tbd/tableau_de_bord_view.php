@@ -673,7 +673,7 @@
 			        "data" : "saisisseur"
 			    }, {
 			        "title": "Valideur",
-			        "data" : null
+			        "data" : "valideur"
 			    }, {
 			        "title": "Objet",
 			        "data" : "objet"

@@ -87,7 +87,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="dropdown_ticket" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Gérer les Tickets
-                                    <?php $nb = $this->TicketModel->count('Reçu') + $this->TicketModel->count('A_Validé') + $this->TicketModel->count('Révisé'); 
+                                    <?php $nb = $this->TicketModel->count('Reçu') + $this->TicketModel->count('A_Validé') + $this->TicketModel->count('Révisé') + $this->TicketModel->count('Encours'); 
                                     if ($nb != NULL) { ?>
                                         <span class="badge badge-pill badge-danger" id="new_ticket"></span>
                                     <?php } ?>

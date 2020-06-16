@@ -10,12 +10,13 @@ class TicketModel extends CI_Model
      */
     public function find($where = NULL, $orderby = NULL)
     {
-		$this->db->select('*, concat(s.matricule, " - ", s.nom, " ", s.prenom) as info_saisisseur, concat(d.matricule, " - ", d.nom, " ", d.prenom) as info_demandeur')
+		$this->db->select('*, concat(s.matricule, " - ", s.nom, " ", s.prenom) as info_saisisseur, concat(v.matricule, " - ", v.nom, " ", v.prenom) as info_valideur, concat(d.matricule, " - ", d.nom, " ", d.prenom) as info_demandeur')
 			->from('ticket')
 			->join('demande', 'demande.idDemande = ticket.idDemande', 'left')
 			->join('tache', 'tache.idTache = ticket.idTache', 'left')
 			->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'left')
 			->join('utilisateur s', 's.idUtilisateur = ticket.saisisseur', 'left')
+			->join('utilisateur v', 'v.idUtilisateur = ticket.valideur', 'left')
 			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left');
 
 		//condition where
@@ -97,47 +98,47 @@ class TicketModel extends CI_Model
 			$numTicket = 'TIK-JUR-' . str_pad($count, 11, '0', STR_PAD_LEFT);
 		}
 		
-		if ($statut == 'Reçu') {
-			//Reçu
-			$data = array(
-				'numTicket' 	=> $numTicket,
-				'dateReception' => date("Y-m-d H:i:s"),
-				'statutTicket' 	=> $statut,
-				'idDemande' 	=> $this->input->post('demandeAccept_confirm'),
-				'demandeur'		=> $this->input->post('demandeur_confirm'),
-				'idTache' 		=> $this->input->post('tache_confirm')
-			);
-		} elseif ($statut == 'Refusé') {
-			//Refusé
-			$data = array(
-				'numTicket' 	=> $numTicket,
-				'dateRefus' 	=> date("Y-m-d H:i:s"),
-				'statutTicket' 	=> $statut,
-				'motif' 		=> $this->input->post('motif_confirm'),
-				'saisisseur' 	=> $userActifs,
-				'demandeur' 	=> $this->input->post('demandeur_confirm'),
-				'idDemande' 	=> $this->input->post('demandeRefus_confirm')
-			);
-		} elseif ($statut == 'Abandonné') {
-			//Abandonné
-			$data = array(
-				'numTicket' 	=> $numTicket,
-				'dateAbandon' 	=> date("Y-m-d H:i:s"),
-				'statutTicket' 	=> $statut,
-				'motif' 		=> $this->input->post('motif_abandon'),
-				'demandeur' 	=> $userActifs,
-				'idDemande' 	=> $this->input->post('idDemande_abandonner')
-			);
-		} else {
-			//FAQ
-			$data = array(
-				'numTicket' 	=> $numTicket,
-				'dateFaq' 		=> date("Y-m-d H:i:s"),
-				'statutTicket' 	=> $statut,
-				'saisisseur' 	=> $userActifs,
-				'demandeur' 	=> $idUtilisateur,
-				'idDemande' 	=> $idDemande
-			);	
+		switch($statut){
+			case 'Reçu' :
+				$data = array(
+					'numTicket' 	=> $numTicket,
+					'dateReception' => date("Y-m-d H:i:s"),
+					'statutTicket' 	=> $statut,
+					'idDemande' 	=> $this->input->post('demandeAccept_confirm'),
+					'demandeur'		=> $this->input->post('demandeur_confirm'),
+					'idTache' 		=> $this->input->post('tache_confirm')
+				);
+				break;
+			case 'Refusé' :
+				$data = array(
+					'numTicket' 	=> $numTicket,
+					'dateRefus' 	=> date("Y-m-d H:i:s"),
+					'statutTicket' 	=> $statut,
+					'motif' 		=> $this->input->post('motif_confirm'),
+					'saisisseur' 	=> $userActifs,
+					'demandeur' 	=> $this->input->post('demandeur_confirm'),
+					'idDemande' 	=> $this->input->post('demandeRefus_confirm')
+				);
+				break;
+			case 'Abandonné' :
+				$data = array(
+					'numTicket' 	=> $numTicket,
+					'dateAbandon' 	=> date("Y-m-d H:i:s"),
+					'statutTicket' 	=> $statut,
+					'motif' 		=> $this->input->post('motif_abandon'),
+					'demandeur' 	=> $userActifs,
+					'idDemande' 	=> $this->input->post('idDemande_abandonner')
+				);
+				break;
+			default :
+				$data = array(
+					'numTicket' 	=> $numTicket,
+					'dateFaq' 		=> date("Y-m-d H:i:s"),
+					'statutTicket' 	=> $statut,
+					'saisisseur' 	=> $userActifs,
+					'demandeur' 	=> $idUtilisateur,
+					'idDemande' 	=> $idDemande
+				);	
 		}
 		
 		return $this->db->insert('ticket', $data);
@@ -190,44 +191,6 @@ class TicketModel extends CI_Model
 		$this->db->where('idTicket', $idTicket);
 	
 		return $this->db->update('ticket', $data);
-
-		/* if ($statut == 'Encours') {
-			$data = array(
-				'dateEncours'  => date("Y-m-d H:i:s"),
-				'statutTicket' => $statut,
-				'saisisseur'   => $utilisateur
-			);
-		} elseif ($statut == 'A_Validé') {
-			$data = array(
-				'dateAvantValidation' => date("Y-m-d H:i:s"),
-				'statutTicket' 		  => $statut
-			);
-		} elseif ($statut == 'Révisé') {
-			$data = array(
-				'dateRevise'   => date("Y-m-d H:i:s"),
-				'statutTicket' => $statut,
-				'revision'	   => $this->input->post('remarque')
-			);
-		} elseif ($statut == 'Terminé') {
-			$data = array(
-				'dateTermine'  => date("Y-m-d H:i:s"),
-				'statutTicket' => $statut,
-			);
-		} elseif ($statut == 'Abandonné') {
-			$data = array(
-				'dateAbandon' 	=> date("Y-m-d H:i:s"),
-				'statutTicket' 	=> $statut,
-				'motif' 		=> $this->input->post('motif_abandon'),
-				'saisisseur' 	=> $utilisateur
-			);
-		} else {
-			$data = array(
-				'traitement' => $this->input->post('contenu_traitement'),
-			);
-		}
-		$this->db->where('idTicket', $idTicket);
-	
-		return $this->db->update('ticket', $data); */	
 	}
 
 	public function count($statut = NULL)

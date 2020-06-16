@@ -30,7 +30,7 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
-                                <td><span class="font-weight-bold"><?php echo $row->matricule . ' - ' .$row->nom . ' ' . $row->prenom; ?></span></td> 
+                                <td><span class="font-weight-bold"><?php echo $row->info_saisisseur; ?></span></td> 
                                 <td><?php echo $row->categorie; ?></td> 
                                 <td><?php echo $row->tache; ?></td> 
                                 <td class="text-left"><?php echo $row->objet; ?></td>

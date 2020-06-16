@@ -10,27 +10,24 @@ class Tableau_de_bord extends CI_Controller
     }
     
     public function index()
-    {
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-            $this->layout->set_titre('Tableau de bord');
-            $this->layout->view('Tbd/tableau_de_bord_view');
+    { 
+        $session = $this->session->userdata('profile');
 
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Tableau de bord');
-            $this->layout->view('Tbd/tableau_de_bord_view');
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Tableau de bord');
-            $this->layout->view('Tbd/tableau_de_bord_view');
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Tableau de bord');
-            $this->layout->view('Tbd/tableau_de_bord_view');
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Directeur Juridique' || 'Senior' || 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
         }
+        $this->layout->set_titre('Tableau de bord');
+        $this->layout->view('Tbd/tableau_de_bord_view');
     }
 
     public function nombre_ticket_juriste($statut = NULL){

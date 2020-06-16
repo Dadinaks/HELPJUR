@@ -9,11 +9,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -71,11 +71,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -133,11 +133,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -211,11 +211,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -282,11 +282,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -356,11 +356,11 @@
 
 			<small>
 				<dl class="row">
-					<dt class="col-sm-3 col-md-4 col-lg-2">Matricule du saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->matricule; ?></dd>
+					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->nom . ' ' . $row->prenom; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
