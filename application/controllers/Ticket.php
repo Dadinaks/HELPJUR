@@ -16,7 +16,7 @@ class Ticket extends CI_Controller
 	 */
     public function Recus()
     {
-		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
+		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');
 
     	if ($this->session->userdata('profile') == 'Administrateur') {
             $this->layout->set_theme('template_admin');
@@ -36,7 +36,7 @@ class Ticket extends CI_Controller
 	{
 		$this->TicketModel->insert('Reçu');
 
-		$where = 'demande.idDemande = '. $this->input->post('demandeAccept');
+		$where = 'demande.idDemande = '. $this->input->post('demandeAccept_confirm');
 		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
 
 		$config ['protocol']  = 'smtp';
@@ -72,7 +72,7 @@ class Ticket extends CI_Controller
 	 */
 	public function Refuses()
     {
-		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Refusé"', 'ticket.dateRefus', 2);
+		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Refusé"', 'ticket.dateRefus');
 		
         if ($this->session->userdata('profile') == 'Administrateur') {
             $this->layout->set_theme('template_admin');  
@@ -195,7 +195,7 @@ class Ticket extends CI_Controller
 	 */
 	public function Faq()
     {
-		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Faq"', 'ticket.dateFaq', 2);
+		$data['tickets'] = $this->TicketModel->find('ticket.statutTicket = "Faq"', 'ticket.dateFaq');
 		
         if ($this->session->userdata('profile') == 'Administrateur') {
             $this->layout->set_theme('template_admin');  
@@ -211,9 +211,9 @@ class Ticket extends CI_Controller
 	    $this->layout->view('Ticket/faq', $data);
 	}
 
-    public function Rediriger_faq($idDemande)
+    public function Rediriger_faq($idDemande, $idDemandeur)
 	{
-		$this->TicketModel->insert('Faq', $idDemande);
+		$this->TicketModel->insert('Faq', $idDemande, $idDemandeur);
 
 		$where = 'demande.idDemande = '. $idDemande;
 		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
@@ -551,26 +551,24 @@ class Ticket extends CI_Controller
 	 */
 	public function Visualiser($idTicket, $statut = NULL)
 	{
-		if ($statut == 'faq' || $statut == 'refuse') { //FAQ && Refuser	
-			$data = $this->TicketModel->findOne($idTicket, FALSE);
-		} elseif($statut == 'recu') { //Accepter
-			$data = $this->TicketModel->findOne($idTicket, TRUE, 'utilisateur.idUtilisateur = demande.envoyeur');
-		} elseif ($statut == 'Encours') {
-			$where = 'ticket.idTicket = '. $idTicket;
-			$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
-			redirect(base_url('Ticket/Traitement/' . $idTicket . '/Voir'));
-		} elseif ($statut == 'Termine') {
-			$where = 'ticket.idTicket = '. $idTicket;
-			$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
-			redirect(base_url('Ticket/Traitement/' . $idTicket . '/Termine'));
-		} elseif ($statut == 'Abandonne') {
-			$where = 'ticket.idTicket = '. $idTicket;
-			$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
-			redirect(base_url('Ticket/Traitement/' . $idTicket . '/Abandonne'));
-		} elseif($statut == 'abandon') { //MODAL ABANDON
-			$data = $this->TicketModel->findOne($idTicket);
+		switch ($statut) {
+			case 'faq' || 'refuse' || 'recu' || 'abandon' :
+				$data = $this->TicketModel->find('ticket.idTicket =' .$idTicket);
+				break;
+			case 'Encours' :
+				$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
+				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Voir'));
+				break;
+			case 'Termine' :
+				$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
+				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Termine'));
+				break;
+			case 'Abandonne' :
+				$data['ticket'] = $this->TicketModel->find('ticket.idTicket =' .$idTicket);
+				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Abandonne'));
+				break;
 		}
-
+		
 		echo json_encode($data);
 	}
 
@@ -584,7 +582,8 @@ class Ticket extends CI_Controller
 		$data['recu'] 	  = $this->TicketModel->count('Reçu');
 		$data['avalider'] = $this->TicketModel->count('A_Validé');
 		$data['revision'] = $this->TicketModel->count('Révisé');
-		$data['total'] 	  = $data['recu'] + $data['avalider'] + $data['revision'];
+		$data['Encours']  = $this->TicketModel->count('Encours');
+		$data['total'] 	  = $data['recu'] + $data['avalider'] + $data['revision'] + $data['Encours'];
 
 		echo json_encode($data);
 	}

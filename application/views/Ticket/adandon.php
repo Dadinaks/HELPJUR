@@ -109,7 +109,7 @@
                             '<div class="col-4">' +
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
-                            '<span class="font-weight-bold">' + value.matricule + '</span> - ' + value.nom + ' ' + value.prenom + '<br>' +
+                            '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
                             //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
                             '</div>' +
                             '</div>' +

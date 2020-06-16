@@ -26,7 +26,10 @@
 			<div class="row">
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 					<div class="jumbotron">
-						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5>
+						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5><br>
+						<?php if($row->fichier != NULL) :?>
+						<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+						<?php endif; ?>
 						<hr class="my-4">
 
 						<p class="text-monospace"><?php echo $row->contenu; ?></p>
@@ -85,7 +88,10 @@
 			<div class="row">
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 					<div class="jumbotron">
-						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5>
+						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5><br>
+						<?php if($row->fichier != NULL) :?>
+						<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+						<?php endif; ?>
 						<hr class="my-4">
 
 						<p class="text-monospace"><?php echo $row->contenu; ?></p>
@@ -144,7 +150,10 @@
 			<div class="row">
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 					<div class="jumbotron">
-						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5>
+						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5><br>
+						<?php if($row->fichier != NULL) :?>
+						<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+						<?php endif; ?>
 						<hr class="my-4">
 
 						<p class="text-monospace"><?php echo $row->contenu; ?></p>
@@ -180,7 +189,7 @@
 
 							<button class="btn btn-sm btn-default btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le Ticket"><i class="fas fa-check mr-2"></i>Valider</button>
 
-							<a href="" class="btn btn-sm btn-amber btn-rounded" data-toggle="modal" data-target="#modalRemarque" data-keyboard="false" data-backdrop="static"><i class="fas fa-comments mr-2"></i>Remarque</a>
+							<a href="" class="btn btn-sm btn-amber btn-rounded" data-toggle="modal" data-target="#modalRemarque" data-keyboard="false" data-backdrop="static"><i class="fas fa-comments mr-2"></i>Réviser</a>
 							<?php } ?>
 
 							<a href="<?php echo base_url('Ticket/Validation'); ?>" class="btn btn-rounded btn-sm btn-info"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
@@ -227,7 +236,10 @@
 						</div>
 
 						<div>
-							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Objet : <?php echo $row->objet; ?></h5>
+							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Objet : <?php echo $row->objet; ?></h5><br>
+							<?php if($row->fichier != NULL) :?>
+							<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+							<?php endif; ?>
 							<hr class="my-4">
 
 							<p class="text-monospace"><?php echo $row->contenu; ?></p>
@@ -295,7 +307,10 @@
 						</div>
 
 						<div>
-							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Objet : <?php echo $row->objet; ?></h5>
+							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Objet : <?php echo $row->objet; ?></h5><br>
+							<?php if($row->fichier != NULL) :?>
+							<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+							<?php endif; ?>
 							<hr class="my-4">
 
 							<p class="text-monospace"><?php echo $row->contenu; ?></p>
@@ -358,7 +373,10 @@
 			<div class="row">
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 					<div class="jumbotron">
-						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5>
+						<h5 class="font-weight-bold text-monospace" id="objet_ticket"><?php echo $row->objet; ?></h5><br>
+						<?php if($row->fichier != NULL) :?>
+						<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+						<?php endif; ?>
 						<hr class="my-4">
 
 						<p class="text-monospace"><?php echo $row->contenu; ?></p>

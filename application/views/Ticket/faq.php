@@ -28,7 +28,7 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
-                                <td><span class="font-weight-bold"><?php echo $row->matricule . ' - ' .$row->nom . ' ' . $row->prenom; ?></span></td>   
+                                <td><span class="font-weight-bold"><?php echo $row->info_saisisseur; ?></span></td>   
                                 <td><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateFaq)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
@@ -85,19 +85,24 @@
 
                 success: function (data) {
                     $.each(data, function (key, value) {
+                        var pj = '';
+                        if(value.fichier){
+                            pj ='<a href="<?php echo base_url("/assets/Fichiers/"); ?>'+ value.fichier +'"><i class="fas fa-paperclip mr-2"></i>'+ value.fichier +'</a>'
+                        }
                         $('#contenu').empty();
                         $('#contenu').append(
                             '<div class="row mb-3">' +
                             '<div class="col-6">' +
                             '<small><i class="fas fa-file mr-2"></i>Objet</small>' +
                             '<hr>' +
-                            value.objet +
+                            value.objet + '<br>' + 
+                            pj +
                             '</div>' +
 
                             '<div class="col-6">' +
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
-                            '<span class="font-weight-bold">' + value.matricule + '</span> - ' + value.nom + ' ' + value.prenom + '<br>' +
+                            '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
                             //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
                             '</div>' +
                             '</div>' +
@@ -115,7 +120,7 @@
         });
 
         $('#tb_faq').DataTable({
-            "order": [[3, "desc"]],
+            "order": [[0, "desc"]],
             "language" : {
                 "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                 "sInfo":           "_START_ à _END_ sur _TOTAL_ éléments",

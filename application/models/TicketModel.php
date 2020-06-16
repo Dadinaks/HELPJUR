@@ -6,30 +6,17 @@ class TicketModel extends CI_Model
      * Récupération des Ticket : 
      *   - La condition WHERE de la requête existe si la fonction find()
      *     reçoit un parametre dans le Controlleur [find( $where )].
-	 * 	 - La condition INNER JOIN de la requête existe si la fonction find()
-     *     reçoit trois parametre dans le Controlleur [find( $where, $orderby, $join = TRUE||FALSE )].
+     *     reçoit deux parametre dans le Controlleur [find( $where, $orderby)].
      */
-    public function find($where = NULL, $orderby = NULL, $join = NULL)
+    public function find($where = NULL, $orderby = NULL)
     {
-		$this->db->select('*')
-			->from('ticket');
-		//condition jointure
-		if ($join == 1) {
-			$this->db->join('demande', 'demande.idDemande = ticket.idDemande', 'inner')
-				->join('tache', 'tache.idTache = ticket.idTache', 'inner')
-				->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'inner');
-		} elseif ($join == 2) {
-			$this->db->join('utilisateur', 'utilisateur.idUtilisateur = ticket.saisisseur', 'inner')
-				->join('demande', 'demande.idDemande = ticket.idDemande', 'inner');
-		} elseif ($join == 3) {
-			$this->db->join('utilisateur', 'utilisateur.idUtilisateur = ticket.demandeur', 'inner')
-				->join('demande', 'demande.idDemande = ticket.idDemande', 'inner');
-		} else {
-			$this->db->join('utilisateur', 'utilisateur.idUtilisateur = ticket.saisisseur', 'inner')
-				->join('demande', 'demande.idDemande = ticket.idDemande', 'inner')
-				->join('tache', 'tache.idTache = ticket.idTache', 'inner')
-				->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'inner');
-		}
+		$this->db->select('*, concat(s.matricule, " - ", s.nom, " ", s.prenom) as info_saisisseur, concat(d.matricule, " - ", d.nom, " ", d.prenom) as info_demandeur')
+			->from('ticket')
+			->join('demande', 'demande.idDemande = ticket.idDemande', 'left')
+			->join('tache', 'tache.idTache = ticket.idTache', 'left')
+			->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'left')
+			->join('utilisateur s', 's.idUtilisateur = ticket.saisisseur', 'left')
+			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left');
 
 		//condition where
 		if ($where != NULL) {
@@ -47,17 +34,19 @@ class TicketModel extends CI_Model
 
 	/**
 	 * Récupération des Ticket Abandonné. Requete :
-	 * SELECT *, (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = t.saisisseur) AS saisisseur, (SELECT CONCAT(matricule, ' - ', nom, ' ', prenom) FROM utilisateur WHERE idUtilisateur = t.demandeur) AS demandeur
-	 * FROM ticket t INNER JOIN demande d ON ( d.idDemande = t.idDemande )
+	 * SELECT *, CONCAT(s.matricule, ' - ', s.nom, ' ', s.prenom) AS saisisseur, CONCAT(de.matricule, ' - ', de.nom, ' ', de.prenom) AS demandeur
+	 * FROM ticket t 
+	 * INNER JOIN demande d ON ( d.idDemande = t.idDemande )
+	 * INNER JOIN utilisateur s ON ( s.idUtilisateur = t.saisisseur )
+	 * INNER JOIN utilisateur de ON ( de.idUtilisateur = t.demandeur )
 	 */
 	public function findAbandon()
 	{
-		$saisisseur = '(SELECT CONCAT(matricule, " - ", nom, " ", prenom) FROM utilisateur WHERE idUtilisateur = t.saisisseur) AS saisisseur';
-		$demandeur  = '(SELECT CONCAT(matricule, " - ", nom, " ", prenom) FROM utilisateur WHERE idUtilisateur = t.demandeur) AS demandeur';
-
-		$query = $this->db->select('*, ' . $saisisseur . ', ' . $demandeur )
+		$query = $this->db->select('*, CONCAT(s.matricule, " - ", s.nom, " ", s.prenom) AS saisisseur, CONCAT(de.matricule, " - ", de.nom, " ", de.prenom) AS demandeur')
 			->from('ticket t')
 			->join('demande d', 'd.idDemande = t.idDemande', 'inner')
+			->join('utilisateur s', 's.idUtilisateur = t.saisisseur', 'inner')
+			->join('utilisateur de', 'de.idUtilisateur = t.demandeur', 'inner')
 			->where('t.statutTicket', 'Abandonné')
 			->get();
 
@@ -90,7 +79,7 @@ class TicketModel extends CI_Model
     /**
 	 * Insertion dans la table ticket.
 	 */
-	public function insert($statut = NULL, $idDemande = NULL)
+	public function insert($statut = NULL, $idDemande = NULL, $idUtilisateur = NULL)
 	{
 		date_default_timezone_set('Africa/Nairobi');
 		$userActifs = $this->session->userdata('id_utilisateur');
@@ -114,9 +103,9 @@ class TicketModel extends CI_Model
 				'numTicket' 	=> $numTicket,
 				'dateReception' => date("Y-m-d H:i:s"),
 				'statutTicket' 	=> $statut,
-				'idDemande' 	=> $this->input->post('demandeAccept'),
-				'demandeur'		=> $this->input->post('demandeur'),
-				'idTache' 		=> $this->input->post('tache')
+				'idDemande' 	=> $this->input->post('demandeAccept_confirm'),
+				'demandeur'		=> $this->input->post('demandeur_confirm'),
+				'idTache' 		=> $this->input->post('tache_confirm')
 			);
 		} elseif ($statut == 'Refusé') {
 			//Refusé
@@ -124,9 +113,10 @@ class TicketModel extends CI_Model
 				'numTicket' 	=> $numTicket,
 				'dateRefus' 	=> date("Y-m-d H:i:s"),
 				'statutTicket' 	=> $statut,
-				'motif' 		=> $this->input->post('motif'),
+				'motif' 		=> $this->input->post('motif_confirm'),
 				'saisisseur' 	=> $userActifs,
-				'idDemande' 	=> $this->input->post('demandeRefus')
+				'demandeur' 	=> $this->input->post('demandeur_confirm'),
+				'idDemande' 	=> $this->input->post('demandeRefus_confirm')
 			);
 		} elseif ($statut == 'Abandonné') {
 			//Abandonné
@@ -145,6 +135,7 @@ class TicketModel extends CI_Model
 				'dateFaq' 		=> date("Y-m-d H:i:s"),
 				'statutTicket' 	=> $statut,
 				'saisisseur' 	=> $userActifs,
+				'demandeur' 	=> $idUtilisateur,
 				'idDemande' 	=> $idDemande
 			);	
 		}
@@ -156,7 +147,51 @@ class TicketModel extends CI_Model
 	{
 		date_default_timezone_set('Africa/Nairobi');
 
-		if ($statut == 'Encours') {
+		switch ($statut){
+			case 'Encours' :
+				$data = array(
+					'dateEncours'  => date("Y-m-d H:i:s"),
+					'statutTicket' => $statut,
+					'saisisseur'   => $utilisateur
+				);
+				break;
+			case 'A_Validé' :
+				$data = array(
+					'dateAvantValidation' => date("Y-m-d H:i:s"),
+					'statutTicket' 		  => $statut
+				);
+				break;
+			case 'Révisé' :
+				$data = array(
+					'dateRevise'   => date("Y-m-d H:i:s"),
+					'statutTicket' => $statut,
+					'revision'	   => $this->input->post('remarque')
+				);
+				break;
+			case 'Terminé' :
+				$data = array(
+					'dateTermine'  => date("Y-m-d H:i:s"),
+					'statutTicket' => $statut,
+				);
+				break;
+			case 'Abandonné' :
+				$data = array(
+					'dateAbandon' 	=> date("Y-m-d H:i:s"),
+					'statutTicket' 	=> $statut,
+					'motif' 		=> $this->input->post('motif_abandon'),
+					'saisisseur' 	=> $utilisateur
+				);
+				break;
+			default :
+				$data = array(
+					'traitement' => $this->input->post('contenu_traitement'),
+				);
+		}
+		$this->db->where('idTicket', $idTicket);
+	
+		return $this->db->update('ticket', $data);
+
+		/* if ($statut == 'Encours') {
 			$data = array(
 				'dateEncours'  => date("Y-m-d H:i:s"),
 				'statutTicket' => $statut,
@@ -192,7 +227,7 @@ class TicketModel extends CI_Model
 		}
 		$this->db->where('idTicket', $idTicket);
 	
-		return $this->db->update('ticket', $data);	
+		return $this->db->update('ticket', $data); */	
 	}
 
 	public function count($statut = NULL)

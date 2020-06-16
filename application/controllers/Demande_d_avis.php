@@ -101,23 +101,15 @@ class Demande_d_avis extends CI_Controller
     public function demander()
     {
         $config['upload_path']   = './assets/Fichiers/';
-        $config['allowed_types'] = 'docx|doc|xlsx|xls|ppt|word|xl|eml|txt|text|jpg|jpe|png|shtml|html|htm';
+        $config['allowed_types'] = '*';
         $config['max_size']      = 2048;
-        $config['max_width']     = 1024;
-        $config['max_height']    = 768;
         
         $this->upload->initialize($config);
 
-        if ($this->upload->do_upload('fichier_message')) {
-            $data = array('upload_data' => $this->upload->data());
-
-            $file = $this->upload->data('file_name');
-            if (!empty($file)) {
-                $this->DemandeModel->insert($file);
-            }
-        } else {
-            $this->DemandeModel->insert();
-        }
+        $this->upload->do_upload('fichier_message');
+        $data = array('upload_data' => $this->upload->data());
+        $file = $this->upload->data('file_name');
+        $this->DemandeModel->insert($file);
 
         redirect(base_url('Demande_d_avis/demande'));
     }

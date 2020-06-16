@@ -30,7 +30,7 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
-                                <td><span class="font-weight-bold"><?php echo $row->matricule . ' - ' .$row->nom . ' ' . $row->prenom; ?></span></td> 
+                                <td><span class="font-weight-bold"><?php echo $row->info_saisisseur; ?></span></td> 
                                 <td><?php echo $row->categorie; ?></td> 
                                 <td><?php echo $row->tache; ?></td> 
                                 <td class="text-left"><?php echo $row->objet; ?></td>
@@ -39,7 +39,10 @@
                             
                             <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <td>
-                                    <?php if ($this->session->userdata('matricule') != $row->matricule) { ?>
+                                    <?php
+                                    $matricul_verif = strpos($row->info_saisisseur, $this->session->userdata('matricule'));
+                                    if ($matricul_verif === false) {
+                                    ?>
                                     <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket . '/Voir'); ?>" class="btn-floating btn-sm btn-info" data-tooltip="tooltip" data-placement="bottom" title="Visualiser"><i  class="far fa-eye"></i></a>
                                     <?php } else { ?>
                                     <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Traiter le ticket"><i class="fas fa-tasks"></i></a>

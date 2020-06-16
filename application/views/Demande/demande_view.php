@@ -32,7 +32,11 @@
                                 </td>
                                 <td class="text-left"><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
-                                <td><?php echo $row->fichier; ?></td>
+                                <td class="text-left">
+                                    <?php if($row->fichier != NULL) :?>
+                                    <a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <a href="<?php echo base_url('demande_d_avis/consulter/'. $row->idDemande); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Consulter"><i class="fas fa-eye"></i></a>
                                 </td>

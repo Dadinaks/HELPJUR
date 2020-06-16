@@ -179,7 +179,7 @@
 
                                 <?php echo form_open_multipart('Demande_d_avis/demander'); ?>
                                     <div class="md-form">
-                                        <input type="text" id="objet_message" name="objet_message" class="form-control" required>
+                                        <input type="text" id="objet_message" name="objet_message" class="form-control" autocomplete="off" required>
                                         <label for="objet_message">Objet</label>
                                     </div>
 
@@ -189,9 +189,11 @@
                                             <label class="custom-file-label text-left" for="fichier_message1">Choisir un/plusieurs fichier(s) inferieur à 2Mo</label>
                                         </div>
                                     </div>
+                                    
+                                    <small id="error_uploadFile" class="red-text font-weight-bold"></small>
 
                                     <div class="md-form">
-                                        <textarea name="contenu_msg" id="contenu_msg" rows="10" cols="80"></textarea>
+                                        <textarea name="contenu_msg" id="contenu_msg" rows="10" cols="80" required></textarea>
                                     </div>
 
                                     <button type="submit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Envoyer</button>
@@ -220,44 +222,15 @@
 
         <script type="text/javascript">
             //Animations initialization
-            /*  new WOW().init();
+             new WOW().init();
                 
-                $('#modalDemande').on('hidden.bs.modal', function () {
-                    $(this).find('form').trigger('reset');
-                });
+            $('#modalDemande').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            });
 
-                $(function () {
-                    $("[data-tooltip='tooltip']").tooltip()
-                });
-                
-                $(document).ready(function () {
-                    setInterval(function () {
-                        $.ajax({
-                            url     : "<?php echo base_url('demande_d_avis/notification') ?>",
-                            type    : "post",
-                            dataType: "json",
-
-                            success: function (data) {
-                                $('#nouvelle_demande').html(data.nombre);
-                            }
-                        });
-                    }, 100);
-
-                    setInterval(function () {
-                        $.ajax({
-                            url: "<?php echo base_url('ticket/notification') ?>",
-                            type: "post",
-                            dataType: "json",
-
-                            success: function (data) {
-                                $('#new_recu').html(data.recu);
-                                $('#new_avalider').html(data.avalider);
-                                $('#new_revise').html(data.revision);
-                                $('#new_ticket').html(data.total);
-                            }
-                        });
-                    }, 100);
-                }); */
+            $(function () {
+                $("[data-tooltip='tooltip']").tooltip()
+            });
         </script>
     </body>
 </html>

@@ -106,7 +106,13 @@
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Encours") { echo "active"; } ?>" href="<?php echo site_url('ticket/Encours'); ?>">
-                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Encours") { echo "white-text"; } ?>"><i class="fas fa-file-signature mr-1"></i>Dossiers En cours de traitement</span>
+                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Encours") { echo "white-text"; } ?>">
+                                            <i class="fas fa-file-signature mr-1"></i>Dossiers En cours de traitement
+                                            <?php $encours = $this->TicketModel->count('Encours'); 
+                                            if ($encours != NULL) { ?>
+                                                <span class="badge badge-pill badge-danger" id="new_encours"></span>
+                                            <?php } ?>
+                                        </span>
                                     </a>
 
                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Refuses") { echo "active"; } ?>" href="<?php echo site_url('ticket/Refuses'); ?>">
@@ -238,9 +244,11 @@
                         dataType: "json",
 
                         success: function (data) {
+                            console.log(data);
                             $('#new_recu').html(data.recu);
                             $('#new_avalider').html(data.avalider);
                             $('#new_revise').html(data.revision);
+                            $('#new_encours').html(data.Encours);
                             $('#new_ticket').html(data.total);
                         }
                     });

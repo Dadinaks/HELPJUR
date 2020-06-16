@@ -12,7 +12,7 @@
                 <hr>
 
                 <div class="table-responsive text-nowrap">
-                    <table class="table table-sm table-striped">
+                    <table id="dt_demandeur" class="table table-sm table-striped">
                         <thead>
                             <tr>
                                 <th class="font-weight-bold">Objet</th>
@@ -27,7 +27,11 @@
                             <tr>
                                 <td class="text-left"><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
-                                <td><?php echo $row->fichier; ?></td>
+                                <td class="text-left">
+                                    <?php if($row->fichier != NULL) :?>
+                                    <a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <a href="<?php echo base_url('demande_d_avis/consulter/'. $row->idDemande); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Consulter"><i class="fas fa-eye"></i></a>
 
@@ -73,6 +77,38 @@
 <!-- /Modal Abandonner -->
 
 <script type="text/javascript">
+    $('#dt_demandeur').DataTable({
+            "order": [[1, "desc"]],
+			"searching": false,
+            "language" : {
+                "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                "sZeroRecords":    "Aucun élément correspondant trouvé",
+                "oPaginate": {
+                    "sFirst":    "Premier",
+                    "sLast":     "Dernier",
+                    "sNext":     "Suivant",
+                    "sPrevious": "Précédent"
+                },
+                 "oAria": {
+                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                    "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d lignes sélectionnées",
+                        "0": "Aucune ligne sélectionnée",
+                        "1": "1 ligne sélectionnée"
+                    }
+                }
+            },
+			"pageLength"  : 10,
+			"bPaginate": true,
+			"bLengthChange": false,
+			"bFilter": true,
+			"bInfo": false,
+			"bAutoWidth": false
+	});
+
     $('#modalAbandonner').on('show.bs.modal', function (e) {
         var idDemande = $(e.relatedTarget).attr('data-id');
         var objet     = $(e.relatedTarget).attr('data-objet');

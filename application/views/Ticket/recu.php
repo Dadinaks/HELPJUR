@@ -19,6 +19,7 @@
                                 <th class="font-weight-bold">Nature de Tâche</th>
                                 <th class="font-weight-bold">Tâche</th>
                                 <th class="font-weight-bold">Objet</th>
+                                <th class="font-weight-bold">Fichier attacher</th>
                                 <th class="font-weight-bold">Date de réception HELPJUR</th>
                                 <th class="font-weight-bold">Date de réception de la demande</th>
                                 <th class="font-weight-bold"><i class="fas fa-cog mr-2"></i>Action</th>
@@ -32,6 +33,11 @@
                                 <td><?php echo $row->categorie; ?></td>
                                 <td><?php echo $row->tache; ?></td>
                                 <td><?php echo $row->objet; ?></td>
+                                <td class="text-left">
+                                    <?php if($row->fichier != NULL) :?>
+                                    <a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateReception)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>
@@ -156,13 +162,19 @@
 
                 success: function (data) {
                     $.each(data, function (key, value) {
+                        var pj = '';
+                        if(value.fichier){
+                            pj ='<a href="<?php echo base_url("/assets/Fichiers/"); ?>'+ value.fichier +'"><i class="fas fa-paperclip mr-2"></i>'+ value.fichier +'</a>'
+                        }
                         $('#contenu').empty();
                         $('#contenu').append(
                             '<div class="row">' +
                             '<div class="col-4">' +
                             '<small><i class="fas fa-file mr-2"></i>Objet</small>' +
                             '<hr>' +
-                            value.objet +
+                            value.objet + '<br>' + 
+                            pj +
+                            
                             '</div>' +
 
                             '<div class="col-4">' +
@@ -221,7 +233,7 @@
         });
 
         $('#tb_recu').DataTable({
-            "order": [[4, "desc"]],
+            "order": [[0, "desc"]],
             "language" : {
                 "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                 "sInfo":           "_START_ à _END_ sur _TOTAL_ éléments",
