@@ -17,15 +17,18 @@ class Tableau_de_bord extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
-        }
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+		}
         $this->layout->set_titre('Tableau de bord');
         $this->layout->view('Tbd/tableau_de_bord_view');
     }

@@ -10,15 +10,22 @@ class TicketModel extends CI_Model
      */
     public function find($where = NULL, $orderby = NULL)
     {
-		$this->db->select('*, concat(s.matricule, " - ", s.nom, " ", s.prenom) as info_saisisseur, concat(v.matricule, " - ", v.nom, " ", v.prenom) as info_valideur, concat(d.matricule, " - ", d.nom, " ", d.prenom) as info_demandeur')
+        $user    = $this->session->userdata('id_utilisateur');
+		$session = $this->session->userdata('role');
+		
+		$this->db->select('*, concat(s.matricule, " - ", s.nom, " ", s.prenom) as info_saisisseur, concat(v.matricule, " - ", v.nom, " ", v.prenom) as info_valideur, concat(d.matricule, " - ", d.nom, " ", d.prenom) as info_demandeur, concat(r.matricule, " - ", r.nom, " ", r.prenom) as info_valideRemarque')
 			->from('ticket')
 			->join('demande', 'demande.idDemande = ticket.idDemande', 'left')
 			->join('tache', 'tache.idTache = ticket.idTache', 'left')
 			->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'left')
 			->join('utilisateur s', 's.idUtilisateur = ticket.saisisseur', 'left')
 			->join('utilisateur v', 'v.idUtilisateur = ticket.valideur', 'left')
-			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left');
+			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left')
+			->join('utilisateur r', 'r.idUtilisateur = ticket.demandeur', 'left');
 
+		if ($session == 4) {
+			$this->db->where("utilisateur.idUtilisateur", $user);
+		}
 		//condition where
 		if ($where != NULL) {
 			$this->db->where($where);
@@ -166,13 +173,15 @@ class TicketModel extends CI_Model
 				$data = array(
 					'dateRevise'   => date("Y-m-d H:i:s"),
 					'statutTicket' => $statut,
-					'revision'	   => $this->input->post('remarque')
+					'revision'	   => $this->input->post('remarque'),
+					'valideur'	   => $utilisateur
 				);
 				break;
 			case 'Terminé' :
 				$data = array(
-					'dateTermine'  => date("Y-m-d H:i:s"),
-					'statutTicket' => $statut,
+					'dateTermine'    => date("Y-m-d H:i:s"),
+					'statutTicket'   => $statut,
+					'valideRemarque' => $utilisateur
 				);
 				break;
 			case 'Abandonné' :

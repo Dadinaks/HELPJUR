@@ -305,7 +305,7 @@
   		<h4 class="text-center mt-4 font-weight-bold">Liste de tous les tickets</h4>
 
   		<div class="row">
-		  	<div class="col-6 offset-6">
+			  <div class="col-6 offset-6">
 			    <div class="row">
 					<div class="col-3">
 						<select class="browser-default custom-select custom-select-sm mb-4" name="" id="dateStatut">
@@ -625,7 +625,15 @@
 
 		//tab 2
         var tableau = $('#dtall').DataTable({
-			"order": [[0, "desc"]],
+			"order"  : [[0, "desc"]],
+			"dom"    : 'Bfrtip',
+        	"buttons": [
+            	{
+            		extend : 'excel',
+					text   : 'Excel<i class="fas fa-download ml-2"></i>',
+					className : 'btn btn-sm btn-rounded btn-warning'
+				}
+			],
 		    "columns": [{
 			    	"title" : "Numéro du Ticket",
 			        "data"  : null,
@@ -645,19 +653,19 @@
 								numero = '<a href="<?php echo base_url("Ticket/traitement/" ); ?>' + data.idTicket + '/Voir">'+ data.numTicket  +' </a>';
 								break;
 							case "A_Validé" :
-								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								numero = '<a href="<?php echo base_url("Ticket/traitement/" ); ?>' + data.idTicket +  '/Consulter">'+ data.numTicket  +' </a>';
 								break;
 							case "Abandonné" :
 								numero = '<a href="<?php echo base_url("Ticket/traitement/"); ?>' + data.idTicket + '/Abandonne">'+ data.numTicket  +' </a>';
 								break;
 							case "Refusé" :
-								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								numero = '<a data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static">'+ data.numTicket  +' </a>';
 								break;
 							case "Révisé" :
-								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 							case "Faq" :
-								numero = '<a href="#">'+ data.numTicket  +' </a>';
+								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 
 							default:
@@ -667,19 +675,30 @@
 					}
 			    }, {
 			        "title": "Demandeur",
-			        "data" : "demandeur"
+					"data" : "demandeur",
+					"class": "text-left"
 			    }, {
 			        "title": "Saisisseur",
-			        "data" : "saisisseur"
+			        "data" : "saisisseur",
+					"class": "text-left"
 			    }, {
 			        "title": "Valideur",
-			        "data" : "valideur"
+					"data" : null,
+					"class": "text-left",
+					"render": function ( data, type, row, meta ) {
+						var valideur = '';
+						var remarque = data.valideRemarque;
+						remarque ? valideur = data.valideRemarque + ' <br><small class="text-muted">Accorder par : ' + data.valideur + '</small>' : valideur = data.valideur;
+						return valideur;
+					}
 			    }, {
 			        "title": "Objet",
-			        "data" : "objet"
+			        "data" : "objet",
+					"class": "text-left"
 			    }, {
 			        "title": "Nature de tâche",
-			        "data" : "tache"
+			        "data" : "tache",
+					"class": "text-left"
 			    }, {
 			        "title": "Date de réception",
 					"data" : "dateReception"
@@ -941,7 +960,7 @@
                             '<div class="col-4">' +
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
-                            '<span class="font-weight-bold">' + value.matricule + '</span> - ' + value.nom + ' ' + value.prenom + '<br>' +
+                            '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
                             //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
                             '</div>' +
                             '</div>' +

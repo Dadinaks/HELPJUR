@@ -12,53 +12,53 @@ class Demande_d_avis extends CI_Controller
     public function index()
     {
         $data['demandes'] = $this->DemandeModel->find('demande.statutDemande = "Envoyé"');
+        $session = $this->session->userdata('profile');
 
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/demande_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/demande_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/demande_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/demande_view', $data);
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
         }
+        
+        $this->layout->set_titre('Demande d\'avis');
+        $this->layout->view('Demande/demande_view', $data);
     }
 
     public function consulter($id)
     {
         $data['demande'] = $this->DemandeModel->find('demande.idDemande ='. $id);
+        $session = $this->session->userdata('profile');
 
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/consulter_demande', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/consulter_demande', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/consulter_demande', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Demande d\'avis');
-            $this->layout->view('Demande/consulter_demande', $data);
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
         }
+        
+        $this->layout->set_titre('Demande d\'avis');
+        $this->layout->view('Demande/consulter_demande', $data);
     }
 
     public function statut_demande($idDemande)
@@ -75,27 +75,27 @@ class Demande_d_avis extends CI_Controller
     public function Demande()
     {
         $data['demandes'] = $this->DemandeModel->find('demande.statutDemande = "Envoyé"');
+        $session = $this->session->userdata('profile');
 
-        if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');
-            $this->layout->set_titre('Demande envoyé');
-            $this->layout->view('Demande/demandeur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Demande envoyé');
-            $this->layout->view('Demande/demandeur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Demande envoyé');
-            $this->layout->view('Demande/demandeur_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Demande envoyé');
-            $this->layout->view('Demande/demandeur_view', $data);
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
         }
+        
+        $this->layout->set_titre('Demande envoyé');
+        $this->layout->view('Demande/demandeur_view', $data);
     }
 
     public function demander()

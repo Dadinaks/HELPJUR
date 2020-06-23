@@ -72,16 +72,24 @@ class TbdModel extends CI_Model
      * t.dateReception BETWEEN $dateDebut AND $dateFin
     */
     public function all_ticket($statut = NULL, $dateDebut=NULL, $dateFin=NULL){
-        $this->db->select("t.idTicket, demande.objet, tache.tache, CONCAT(s.matricule, ' - ', s.nom, ' ', s.prenom) as saisisseur, CONCAT(v.matricule, ' - ', v.nom, ' ', v.prenom) as valideur, CONCAT(d.matricule, ' - ', d.nom, ' ', d.prenom) as demandeur, t.statutTicket, t.numTicket, DATE_FORMAT(t.dateReception, '%d/%m/%Y, à %H:%i') as dateReception, DATE_FORMAT(t.dateEncours, '%d/%m/%Y, à %H:%i') as dateEncours,  DATE_FORMAT(t.dateAvantValidation, '%d/%m/%Y, à %H:%i') as dateAvantValidation, DATE_FORMAT(t.dateRevise, '%d/%m/%Y, à %H:%i') as dateRevise, DATE_FORMAT(t.dateTermine, '%d/%m/%Y, à %H:%i') as dateTermine, DATE_FORMAT(t.dateRefus, '%d/%m/%Y, à %H:%i') as dateRefus, DATE_FORMAT(t.dateAbandon, '%d/%m/%Y, à %H:%i') as dateAbandon, DATE_FORMAT(t.dateFaq, '%d/%m/%Y, à %H:%i') as dateFaq")
+        $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role');
+
+        $this->db->select("t.idTicket, demande.objet, tache.tache, CONCAT(s.matricule, ' - ', s.nom, ' ', s.prenom) as saisisseur, CONCAT(v.matricule, ' - ', v.nom, ' ', v.prenom) as valideur, CONCAT(r.matricule, ' - ', r.nom, ' ', r.prenom) as valideRemarque, CONCAT(d.matricule, ' - ', d.nom, ' ', d.prenom) as demandeur, t.statutTicket, t.numTicket, DATE_FORMAT(t.dateReception, '%d/%m/%Y, à %H:%i') as dateReception, DATE_FORMAT(t.dateEncours, '%d/%m/%Y, à %H:%i') as dateEncours,  DATE_FORMAT(t.dateAvantValidation, '%d/%m/%Y, à %H:%i') as dateAvantValidation, DATE_FORMAT(t.dateRevise, '%d/%m/%Y, à %H:%i') as dateRevise, DATE_FORMAT(t.dateTermine, '%d/%m/%Y, à %H:%i') as dateTermine, DATE_FORMAT(t.dateRefus, '%d/%m/%Y, à %H:%i') as dateRefus, DATE_FORMAT(t.dateAbandon, '%d/%m/%Y, à %H:%i') as dateAbandon, DATE_FORMAT(t.dateFaq, '%d/%m/%Y, à %H:%i') as dateFaq")
             ->from("ticket t")
             ->join('demande', 'demande.idDemande = t.idDemande', 'left')
             ->join('tache', 'tache.idTache = t.idTache', 'left')
             ->join('utilisateur s', 's.idUtilisateur = t.saisisseur', 'left')
             ->join('utilisateur v', 'v.idUtilisateur = t.valideur', 'left')
-            ->join('utilisateur d', 'd.idUtilisateur = t.demandeur', 'left');
+            ->join('utilisateur d', 'd.idUtilisateur = t.demandeur', 'left')
+            ->join('utilisateur r', 'r.idUtilisateur = t.valideRemarque', 'left');
         
-        if ($statut != NULL && $dateDebut != NULL && $dateFin !=NULL) {
+            if ($statut != NULL && $dateDebut != NULL && $dateFin !=NULL) {
             $this->db->where('t.' . $statut . ' BETWEEN "' . date("Y-m-d", strtotime($dateDebut)) . '" AND "' . date("Y-m-d", strtotime($dateFin)) . '"');
+        }
+        
+        if ($session == 4) {
+            $this->db->where("d.idUtilisateur", $user);
         }
 
         $query = $this->db->get();

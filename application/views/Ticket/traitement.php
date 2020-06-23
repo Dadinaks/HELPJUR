@@ -72,10 +72,10 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Catégorie</dt>
 					<dd class="col-sm-9"><?php echo $row->categorie; ?></dd>
@@ -187,7 +187,7 @@
 							<?php if($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior'){ ?>
 							<button class="btn btn-sm btn-dark-green btn-rounded" type="submit" href="" data-tooltip="tooltip" data-placement="bottom" title="Enregistrer les modifications"><i class="fas fa-save mr-2"></i>Enregistrer</button>
 
-							<button class="btn btn-sm btn-default btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le Ticket"><i class="fas fa-check mr-2"></i>Valider</button>
+							<button class="btn btn-sm btn-default btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket . '/' . $this->session->userdata('id_utilisateur')); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le Ticket"><i class="fas fa-check mr-2"></i>Valider</button>
 
 							<a href="" class="btn btn-sm btn-amber btn-rounded" data-toggle="modal" data-target="#modalRemarque" data-keyboard="false" data-backdrop="static"><i class="fas fa-comments mr-2"></i>Réviser</a>
 							<?php } ?>
@@ -200,6 +200,7 @@
 			</div>
 		</div>
 	<!-- /.Visualiser A VALIDER -->
+
 
 	<!-- Visualiser Abandonné -->
 	<?php } elseif ($this->uri->segment(4) == 'Abandonne') { ?>
@@ -320,7 +321,26 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3) . '/Reviser'); ?>
+					<?php $matricul_verif = strpos($row->info_saisisseur, $this->session->userdata('matricule'));
+                    if ($matricul_verif === false) { 
+						echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3) . '/Reviser'); ?>
+						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
+						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
+							
+						<script type="text/javascript">
+							CKEDITOR.replace('contenu_traitement', {
+								readOnly: true,
+								language: 'fr',
+								uiColor: '#e0f2f1'
+							});
+						</script>
+						
+						<div class="text-right">
+							<a href="<?php echo base_url('Ticket/Revision'); ?>" class="btn btn-rounded btn-sm btn-info"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
+						</div>
+					<?php echo form_close();
+					} else { 
+						echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3) . '/Reviser'); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
 							
@@ -334,11 +354,12 @@
 						<div class="text-right">
 							<button class="btn btn-sm btn-dark-green btn-rounded" type="submit" href="" data-tooltip="tooltip" data-placement="bottom" title="Enregistrer les modifications"><i class="fas fa-save mr-2"></i>Enregistrer</button>
 
-							<button class="btn btn-sm btn-default btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le Ticket"><i class="fas fa-check mr-2"></i>Valider</button>
+							<button class="btn btn-sm btn-default btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket. '/' . $this->session->userdata('id_utilisateur')); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le Ticket"><i class="fas fa-check mr-2"></i>Valider</button>
 
 							<a href="<?php echo base_url('Ticket/Revision'); ?>" class="btn btn-rounded btn-sm btn-info"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
 						</div>
-					<?php echo form_close(); ?>
+					<?php echo form_close();
+					 } ?>
 				</div>
 				<!-- /.CKEditor traitement -->
 			</div>
@@ -405,7 +426,7 @@
 								<button class="btn btn-sm btn-teal btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Soumettre/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Soumettre le traitement pour validation"><i class="fas fa-check mr-2"></i>Soumettre</button>
 
 							<?php } elseif ($this->session->userdata('role') == 1) { ?>
-								<a class="btn btn-sm btn-success btn-rounded" href="<?php echo base_url('Ticket/Valider/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le traitement"><i class="fas fa-check mr-2"></i>Valider</a>
+								<button class="btn btn-sm btn-success btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket . '/' . $this->session->userdata('id_utilisateur')); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le traitement"><i class="fas fa-check mr-2"></i>Valider</button>
 							<?php } ?>
 
 							<a href="<?php echo base_url('Ticket/Encours'); ?>" class="btn btn-rounded btn-sm btn-info"><i class="fas fa-arrow-left mr-2"></i>Retour</a>
@@ -431,7 +452,7 @@
 				<div class="modal-body text-center mb-1">
 					<h5 class="mt-1 mb-2">Remarque</h5>
 					<hr>
-					<?php echo form_open('Ticket/Reviser/'. $row->idTicket	); ?>
+					<?php echo form_open('Ticket/Reviser/'. $row->idTicket . '/' . $this->session->userdata('id_utilisateur')); ?>
 						<div class="md-form">
 							<textarea id="remarque" name="remarque" class="md-textarea form-control" rows="4" required></textarea>
 							<label for="remarque">Remaques</label>

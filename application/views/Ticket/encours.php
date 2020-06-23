@@ -8,7 +8,11 @@
             </div>
             
             <div class="card-body">
+                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3 || $this->session->userdata('role') == 5) {  ?>
                 <h4 class="card-title">Liste des tickets en cours de traitement</h4>
+                <?php } else {  ?>
+                    <h4 class="card-title">Liste des tickets prises en charge</h4>
+                <?php } ?>
                 <hr>
 
                 <div class="table-responsive text-nowrap">
@@ -22,7 +26,9 @@
                                 <th class="font-weight-bold">Objet</th>
                                 <th class="font-weight-bold">Date de Traitement</th>
                                 <th class="font-weight-bold">Date de réception</th>
+                                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <th class="font-weight-bold"><i class="fas fa-cog mr-2"></i>Action</th>
+                                <?php }  ?>
                             </tr>
                         </thead>
 

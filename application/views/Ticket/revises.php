@@ -30,14 +30,19 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
-                                <td><span class="font-weight-bold"><?php echo $row->matricule . ' - ' .$row->nom . ' ' . $row->prenom; ?></span></td> 
+                                <td><span class="font-weight-bold"><?php echo $row->info_saisisseur; ?></span></td> 
                                 <td><?php echo $row->categorie; ?></td> 
                                 <td><?php echo $row->tache; ?></td> 
                                 <td class="text-left"><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateRevise)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>
+                                    <?php $matricul_verif = strpos($row->info_saisisseur, $this->session->userdata('matricule'));
+                                    if ($matricul_verif === false) { ?>
+                                    <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket . '/Reviser'); ?>" class="btn-floating btn-sm btn-info" data-tooltip="tooltip" data-placement="bottom" title="Consulter"><i class="fas fa-eye"></i></a>
+                                    <?php } else { ?>
                                     <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket . '/Reviser'); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Réviser"><i class="fas fa-edit"></i></a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <?php endforeach ?>

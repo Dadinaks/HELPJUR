@@ -13,27 +13,27 @@ class Lieu extends CI_Controller
 	public function index()
 	{
 		$data['lieux'] = $this->LieuModel->find();
+		$session = $this->session->userdata('profile');
 
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-            $this->layout->set_titre('Agence');
-	        $this->layout->view('Lieu/lieu_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre('Agence');
-	        $this->layout->view('Lieu/lieu_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre('Agence');
-	        $this->layout->view('Lieu/lieu_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre('Agence');
-	        $this->layout->view('Lieu/lieu_view', $data);
-        }
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+		}
+		
+        $this->layout->set_titre('Agence');
+	    $this->layout->view('Lieu/lieu_view', $data);
 	}
 
 	public function Ajout()

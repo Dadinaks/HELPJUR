@@ -16,8 +16,10 @@
                         <thead>
                             <tr>
                                 <th class="font-weight-bold">Numéro</th>
+                                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <th class="font-weight-bold">Saisisseur</th>
                                 <th class="font-weight-bold">Valideur</th>
+                                <?php } ?>
                                 <th class="font-weight-bold">Nature de tâche</th>
                                 <th class="font-weight-bold">Tâche</th>
                                 <th class="font-weight-bold">Objet</th>
@@ -31,15 +33,17 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
+                                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <td><span class="font-weight-bold"><?php echo $row->info_saisisseur; ?></span></td> 
                                 <td><span class="font-weight-bold"><?php echo $row->info_valideur; ?></span></td> 
+                                <?php }  ?>
                                 <td><?php echo $row->categorie; ?></td> 
                                 <td><?php echo $row->tache; ?></td> 
                                 <td class="text-left"><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateTermine)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>
-                                    <a href="<?php echo base_url('Ticket/Visualiser/' . $row->idTicket . '/Termine' ); ?>" class="btn-floating btn-sm btn-info" data-tooltip="tooltip" data-placement="bottom" title="Visualiser"><i class="fas fa-eye"></i></a>
+                                    <a href="<?php echo base_url('Ticket/Traitement/' . $row->idTicket . '/Termine' ); ?>" class="btn-floating btn-sm btn-info" data-tooltip="tooltip" data-placement="bottom" title="Visualiser"><i class="fas fa-eye"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach ?>
@@ -54,7 +58,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#tb_termine').DataTable({
-            "order": [[5, "desc"]],
+            "order": [[6, "desc"]],
             "language" : {
                 "sEmptyTable":     "Aucune donnée disponible dans le tableau",
                 "sInfo":           "_START_ à _END_ sur _TOTAL_ éléments",

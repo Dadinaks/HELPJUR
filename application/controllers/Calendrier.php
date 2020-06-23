@@ -33,26 +33,27 @@ class Calendrier extends Ci_Controller
 			$data['data'][$key]['textColor'] 	   = $value->textColor;
 		}
 
-		if ($this->session->userdata('profile') == 'Administrateur') {
-            $this->layout->set_theme('template_admin');  
-            $this->layout->set_titre("Evenements");
-			$this->layout->view('Calendriers/calendrier_view', $data);
+		$session = $this->session->userdata('profile');
 
-        } elseif ($this->session->userdata('profile') == 'Directeur Juridique' || $this->session->userdata('profile') == 'Senior' || $this->session->userdata('profile') == 'Junior') {
-            $this->layout->set_theme('template_juriste');
-            $this->layout->set_titre("Evenements");
-			$this->layout->view('Calendriers/calendrier_view', $data);
+		Switch ($session){
+			case 'Administrateur' :
+				$this->layout->set_theme('template_admin');
+				break;
+			case 'Demandeur' :
+				$this->layout->set_theme('template_demandeur');
+				break;
+			case 'Observateur' :
+				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
+		}
 
-        } elseif ($this->session->userdata('profile') == 'Demandeur') {
-            $this->layout->set_theme('template_demandeur');
-            $this->layout->set_titre("Evenements");
-			$this->layout->view('Calendriers/calendrier_view', $data);
-
-        } elseif ($this->session->userdata('profile') == 'Observateur') {
-            $this->layout->set_theme('template_observateur');
-            $this->layout->set_titre("Evenements");
-			$this->layout->view('Calendriers/calendrier_view', $data);
-        }
+        $this->layout->set_titre("Evenements");
+		$this->layout->view('Calendriers/calendrier_view', $data);
 	}
 
 	public function Inserer($table)

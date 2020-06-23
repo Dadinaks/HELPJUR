@@ -19,7 +19,6 @@
                                 <th class="font-weight-bold">Nature de Tâche</th>
                                 <th class="font-weight-bold">Tâche</th>
                                 <th class="font-weight-bold">Objet</th>
-                                <th class="font-weight-bold">Fichier attacher</th>
                                 <th class="font-weight-bold">Date de réception HELPJUR</th>
                                 <th class="font-weight-bold">Date de réception de la demande</th>
                                 <th class="font-weight-bold"><i class="fas fa-cog mr-2"></i>Action</th>
@@ -33,11 +32,6 @@
                                 <td><?php echo $row->categorie; ?></td>
                                 <td><?php echo $row->tache; ?></td>
                                 <td><?php echo $row->objet; ?></td>
-                                <td class="text-left">
-                                    <?php if($row->fichier != NULL) :?>
-                                    <a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
-                                    <?php endif; ?>
-                                </td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateReception)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>

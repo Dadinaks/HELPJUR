@@ -16,8 +16,10 @@
                         <thead>
                             <tr>
                                 <th class="font-weight-bold">Numéro</th>
+                                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <th class="font-weight-bold">Saisisseur</th>
                                 <th class="font-weight-bold">Demandeur</th>
+                                <?php } ?>
                                 <th class="font-weight-bold">Objet</th>
                                 <th class="font-weight-bold">Date d'abandon</th>
                                 <th class="font-weight-bold">Date de réception</th>
@@ -29,8 +31,10 @@
                             <?php foreach ($tickets as $row) : ?>
                             <tr>
                                 <td><span class="font-weight-bold"><?php echo $row->numTicket; ?></span></td>
+                                <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) {  ?>
                                 <td><span class="font-weight-bold"><?php echo $row->saisisseur; ?></span></td>
                                 <td><span class="font-weight-bold"><?php echo $row->demandeur; ?></span></td>
+                                <?php } ?>
                                 <td><?php echo $row->objet; ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateAbandon)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>

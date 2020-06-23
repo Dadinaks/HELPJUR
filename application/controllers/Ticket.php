@@ -23,14 +23,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket Reçus');
@@ -84,14 +87,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket Refusés');
@@ -145,14 +151,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket Abandonnés');
@@ -217,14 +226,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket redirigé vers F.A.Q');
@@ -280,14 +292,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket terminés');
@@ -309,14 +324,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket en cours de traitement');
@@ -337,24 +355,27 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket à validers');
 	    $this->layout->view('Ticket/a_valider', $data);
 	}
 
-	public function Valider($idTicket)
+	public function Valider($idTicket, $valideur)
 	{
 		$this->TicketModel->update($idTicket);
-		$this->TicketModel->update($idTicket, 'Terminé');
+		$this->TicketModel->update($idTicket, 'Terminé', $valideur);
 
 		$where = 'ticket.idTicket = '. $idTicket;
 		$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
@@ -405,23 +426,26 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Ticket à réviser');
 	    $this->layout->view('Ticket/revises', $data);
 	}
 
-	public function Reviser($idTicket)
+	public function Reviser($idTicket, $valideur)
 	{
-		$this->TicketModel->update($idTicket, 'Révisé');
+		$this->TicketModel->update($idTicket, 'Révisé', $valideur);
 
 		redirect(base_url('ticket/Validation'));
 	}
@@ -441,14 +465,17 @@ class Ticket extends CI_Controller
 			case 'Administrateur' :
 				$this->layout->set_theme('template_admin');
 				break;
-			case 'Directeur Juridique' || 'Senior' || 'Junior' :
-				$this->layout->set_theme('template_juriste');
-				break;
 			case 'Demandeur' :
 				$this->layout->set_theme('template_demandeur');
 				break;
 			case 'Observateur' :
 				$this->layout->set_theme('template_observateur');
+				break;
+			case 'Directeur Juridique' :
+			case 'Senior' :
+			case 'Junior' :
+				$this->layout->set_theme('template_juriste');
+				break;
 		}
 
         $this->layout->set_titre('Traitement du ticket');
@@ -594,9 +621,6 @@ class Ticket extends CI_Controller
 	public function Visualiser($idTicket, $statut = NULL)
 	{
 		switch ($statut) {
-			case 'faq' || 'refuse' || 'recu' || 'abandon' :
-				$data = $this->TicketModel->find('ticket.idTicket =' .$idTicket);
-				break;
 			case 'Encours' :
 				$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
 				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Voir'));
@@ -608,6 +632,9 @@ class Ticket extends CI_Controller
 			case 'Abandonne' :
 				$data['ticket'] = $this->TicketModel->find('ticket.idTicket =' .$idTicket);
 				redirect(base_url('Ticket/Traitement/' . $idTicket . '/Abandonne'));
+				break;
+			case 'faq' || 'refuse' || 'recu' || 'abandon' :
+				$data = $this->TicketModel->find('ticket.idTicket =' .$idTicket);
 				break;
 		}
 		
@@ -632,23 +659,28 @@ class Ticket extends CI_Controller
 
 	public function jour_ouvre($date, $jourOuvre)
 	{
-		// Tableau contenant les jours fériés
 		$data['ferie'] = $this->CalendrierModel->find('ferie');
+		$days 	   = array();
+		$ferie 	   = array();
+		$i 		   = 0;
 
+		// Tableau contenant les jours fériés
 		foreach($data['ferie'] as $row){
-			$ferie 	 = array($row->start);
-			$i 		 = 0;
-
-			while($i < $jourOuvre){
-				$date_tmp = date("Y-m-d", strtotime($i . ' weekdays' , $date));
-				if(in_array($date_tmp , $ferie)) {
-					$jourOuvre++;
-				}
-				$i++;
-			}
+			$ferie[] = $row->start;
 		}
 		
-		return strtotime($jourOuvre . ' weekdays' , $date);
+		while($i < $jourOuvre){
+			$date_tmp = date("Y-m-d", strtotime($i . 'weekdays', $date));
+				
+			if (in_array($date_tmp , $ferie)){
+				$jourOuvre++;
+			} else {
+				$days[] = $date_tmp;
+			}
+			$i++;
+		}
+
+		return $days;
 	}
 
 	public function Notification_retard_recu()
@@ -657,15 +689,15 @@ class Ticket extends CI_Controller
 
 		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
 		foreach ($data['ticket'] as $row) {
-			$recu	    = $row->dateReception;
-			$jour_ouvre = date("Y-m-d", self::jour_ouvre(strtotime($recu), 5)) .' '. date("H:i:s",strtotime($recu));
-			$now 		= date("Y-m-d H:i:s");
+			$recu	      = $row->dateReception;
+			$jour_ouvre[] = self::jour_ouvre(strtotime($recu), 5);
+			$now 		  = date("Y-m-d H:i:s");
 
-			$dateRecu = new DateTime($recu);
-			$date 	  = new DateTime($now);
-			$differnce  = $date->diff($dateRecu);
+			$dateRecu  = new DateTime($recu);
+			$date 	   = new DateTime($now);
+			$differnce = $date->diff($dateRecu);
 
-			var_dump("Jour ouvre        : " . $jour_ouvre);
+			var_dump($jour_ouvre);
 			var_dump("Date de Réception : " . $row->dateReception);
 			var_dump("Aujourd'hui       : " . $now);
 			var_dump($differnce);
@@ -681,65 +713,30 @@ class Ticket extends CI_Controller
 	 */
 	public function test() 
 	{
-		// Tableau contenant les jours fériés
-		/*$data['ferie'] = $this->CalendrierModel->find('ferie');
-
-		foreach($data['ferie'] as $row){
-			$ferie 	 = array($row->start);
-			$i 		 = 0;
-			$jourOuvre = 5;
-			$date 	 = strtotime('today');
-
-			while($i < $jourOuvre){
-				$date_tmp = date("Y-m-d", strtotime($i . ' weekdays' , $date));
-				if(in_array($date_tmp , $ferie)) {
-					$jourOuvre++;
-				}
-				$i++;
-			}
-		}*/
 		
-		//return strtotime($jourOuvre . ' weekdays' , $date);
+		date_default_timezone_set('Africa/Nairobi');
 
-		$data['ferie'] = $this->CalendrierModel->find('ferie');
-		$timestamp = strtotime ('2020-05-18');
-		$days 	   = array();
-		$i 		   = 0;
-		$jourOuvre = 5;
+		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
+		foreach ($data['ticket'] as $row) {
+			$jour_ouvre[] = self::jour_ouvre(strtotime('2020-06-25'/* $row->dateReception */), 5);
+			$now 		  = '2020-06-29'/* date("Y-m-d") */;
 
-		foreach($data['ferie'] as $row){
-			$ferie = array($row->start);
+			$dateRecu  = new DateTime('2020-06-25'/* $row->dateReception */);
+			$date 	   = new DateTime($now);
+			$differnce = $date->diff($dateRecu);
 
-			while($i < $jourOuvre){
-				$ferie = array($row->start);
-				$date_tmp = date("Y-m-d", strtotime($i . 'weekdays', $timestamp));
-				
-				if (in_array($date_tmp , $ferie)){
-					$jourOuvre++;
-				}
-				$days[] = $date_tmp;
-				$i++;
+			var_dump($jour_ouvre);
+			var_dump("Date de Réception : " . $row->dateReception);
+			var_dump("Aujourd'hui       : " . $now);
+			var_dump($differnce);
+			var_dump("---------------------------------------");
+
+			if ($differnce->days = 1 && in_array($now, $jour_ouvre[0])){
+				echo 'voila';
+			} else {
+				echo 'lelena';
 			}
-
 		}
-
-		//$date_fin   = date("Y-m-d", strtotime($jourOuvre . ' weekdays' , $timestamp));
-		//$date_debut = date("Y-m-d", $timestamp);
-
-		//$date_fin 	= new DateTime($date_fin);
-		//$date_debut = new DateTime($date_debut);
-		//$differnce  = $date_debut->diff($date_fin);
-
-
-		//rendue
-		//var_dump("Date du jour ouvré  : " . date("Y-m-d", $timestamp));
-		//var_dump("Date fin jour ouvré : " . date("Y-m-d", strtotime($jourOuvre . ' weekdays' , $timestamp)));
-
-		//var_dump($date_fin);
-		//var_dump($date_debut);
-		//var_dump($differnce->format("%d"));
-		var_dump($days);
-
 	}
 
 }

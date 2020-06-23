@@ -37,7 +37,13 @@
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateAvantValidation)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>
+                                    <?php 
+                                    $profil = $this->session->userdata('role');
+                                    if($profil == '1' || $profil == '2'){ ?>
                                     <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket . '/Consulter'); ?>" class="btn-floating btn-sm btn-success" data-tooltip="tooltip" data-placement="bottom" title="Consulter le ticket pour valider"><i class="fas fa-check"></i></a>
+                                    <?php } else {  ?>
+                                    <a href="<?php echo base_url('Ticket/traitement/' . $row->idTicket . '/Consulter'); ?>" class="btn-floating btn-sm btn-info" data-tooltip="tooltip" data-placement="bottom" title="Consulter le ticket pour valider"><i class="fas fa-eye"></i></a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <?php endforeach ?>

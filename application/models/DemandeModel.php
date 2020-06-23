@@ -8,9 +8,18 @@ class DemandeModel extends CI_Model
      *     reçoit un parametre dans le Controlleur [find( $where )].
      */
     public function find($where = NULL){
+        $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role');
+
         $this->db->select('*')
             ->from('demande')
             ->join('utilisateur', 'utilisateur.idUtilisateur = demande.envoyeur', 'inner');
+            
+        
+        if ($session == 4) {
+            $this->db->where("utilisateur.idUtilisateur", $user);
+        }
+
         if ($where != NULL) {
             $this->db->where($where);
         }
