@@ -713,7 +713,6 @@ class Ticket extends CI_Controller
 	 */
 	public function test() 
 	{
-		
 		date_default_timezone_set('Africa/Nairobi');
 
 		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
