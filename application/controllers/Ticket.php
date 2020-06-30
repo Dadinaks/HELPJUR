@@ -42,10 +42,13 @@ class Ticket extends CI_Controller
 	
 	public function Accepter_ticket()
 	{
-		$this->TicketModel->insert('Reçu');
-
-		$where = 'demande.idDemande = '. $this->input->post('demandeAccept_confirm');
+		$idDemande   = $this->input->post('demandeAccept_confirm');
+		$idDemandeur = $this->input->post('demandeur_confirm');
+		$this->TicketModel->insert('Reçu', $idDemande, $idDemandeur);
+		
+		$where = 'demande.idDemande = '. $idDemande;
 		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+		
 
 		$config ['protocol']  = 'smtp';
 		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
@@ -62,12 +65,18 @@ class Ticket extends CI_Controller
 		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
 		endforeach;
 		
-		$this->email->subject("[HELPJUR]Demande Reçu");
-		$this->email->message(
-			"Bonjour, <br>
-			Votre demande est reçu.
-			<br><br>Cordialement."
-		);
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
+		$this->email->subject("[HELPJUR]Demande Recu");
+		
+		foreach ($data['ticket'] as $row) :
+			$message =
+				"Bonjour, <br>
+				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est reçu.<br>
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+				<br><br>Cordialement.";	
+		endforeach;
+		
+		$this->email->message($message);
 		$this->email->send();
 
 		redirect(base_url('Ticket/recus'));
@@ -112,8 +121,8 @@ class Ticket extends CI_Controller
 		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
 
 		$config ['protocol']  = 'smtp';
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8';
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -126,12 +135,23 @@ class Ticket extends CI_Controller
 		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
 		endforeach;
 		
-		$this->email->subject("[HELPJUR]Demande Refusé");
-		$this->email->message(
-			"Bonjour, <br>
-			Votre demande a été refusé.
-			<br><br>Cordialement."
-		);
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $this->input->post('demandeAccept_confirm'));
+
+		foreach ($data['ticket'] as $row) :
+			$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande Refusé");
+			$this->email->message(
+				"Bonjour, <br>
+				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est refusé.
+				Vous pouvez la consulté dans la liste des dossiers refusé : <br>
+				<ul>
+					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
+					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
+				</ul>
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+				<br><br>Cordialement."
+			);
+		endforeach;
+
 		$this->email->send();
 
 		redirect(base_url('ticket/Refuses'));
@@ -173,7 +193,7 @@ class Ticket extends CI_Controller
 		if ($params != NULL) {
 			$idTicket 	 = $this->input->post('idTicket_abandonner');
 			$utilisateur = $this->session->userdata('id_utilisateur');
-
+			
 			$this->TicketModel->update($idTicket, 'Abandonné', $utilisateur);
 			
 		} else {
@@ -185,8 +205,8 @@ class Ticket extends CI_Controller
 			$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
 
 			$config ['protocol']  = 'smtp';
-			$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-			$config ['smtp_port'] = 1234;//25;
+			$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+			$config ['smtp_port'] = 25;//25;
 			$config ['charset']   = 'utf-8'; 
 			$config ['mailtype']  = 'html';
 			$config ['wordwrap']  = TRUE;
@@ -198,12 +218,22 @@ class Ticket extends CI_Controller
 			foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
 			endforeach;
 
-			$this->email->subject("[HELPJUR]Demande Abandonné");
-			$this->email->message(
-				"Bonjour, <br> Votre demande est abandonné.
-				Vous pouvez la consulté dans la liste des dossiers abandonnés.
-				<br><br>Cordialement."
-			);
+			$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
+
+			foreach ($data['ticket'] as $row) :
+				$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande Abandonné");
+				$this->email->message(
+					"Bonjour, <br>
+					Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est abandonné.
+					Vous pouvez la consulté dans la liste des dossiers abandonné :
+					<ul>
+						<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
+						<li><b><u>Objet :</u></b>" . $row->objet . "</li>
+					</ul>
+					<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+					<br><br>Cordialement."
+				);
+			endforeach;
 
 			$this->email->send();
 		}
@@ -251,8 +281,8 @@ class Ticket extends CI_Controller
 		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -264,14 +294,23 @@ class Ticket extends CI_Controller
 		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
         endforeach;
 
-	    $this->email->subject("[HELPJUR]Demande redirigé vers F.A.Q");
-	    $this->email->message(
-	    	"Bonjour, <br> Veuillez consulter la reponse de votre demande sur le  lien suivant : <br>
-	    	<a href='http://sp-web-pr/Lists/FAQ/Flat.aspx?RootFolder=%2FLists%2FFAQ%2FFAQ%20JURIDIQUETHEME%20ch%C3%A8ques%2C%20soci%C3%A9t%C3%A9s%20commerciales%2C%20suret%C3%A9s%20et%20les%20incidents%20de%20compte&FolderCTID=0x0120020018B2C7DB8F82724E98C046A6F3EE0D7B'>http://sp-web-pr/Lists/FAQ/</a>
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
 
-	    	<br><b style='color: #6c757d'>N.B : N'oubliez pas de renseigner votre matricule et mot de passe.</b>
-	    	<br><br>Cordialement."
-		);
+		foreach ($data['ticket'] as $row) :
+			$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande redirigé vers F.A.Q");
+			$this->email->message(
+				"Bonjour, <br>
+				Veuillez consulter la reponse de votre demande sur le  lien suivant : <br>
+				<a href='http://sp-web-pr/Lists/FAQ/Flat.aspx?RootFolder=%2FLists%2FFAQ%2FFAQ%20JURIDIQUETHEME%20ch%C3%A8ques%2C%20soci%C3%A9t%C3%A9s%20commerciales%2C%20suret%C3%A9s%20et%20les%20incidents%20de%20compte&FolderCTID=0x0120020018B2C7DB8F82724E98C046A6F3EE0D7B'>http://sp-web-pr/Lists/FAQ/</a>
+				
+				<b><u>NB :</b></u>
+				<ul>
+					<li>N'oubliez pas de renseigner votre matricule et mot de passe.</li>
+					<li><span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span></li>
+				</ul> 
+				<br><br>Cordialement."
+			);
+		endforeach;
 
 		$this->email->send();
 
@@ -378,11 +417,11 @@ class Ticket extends CI_Controller
 		$this->TicketModel->update($idTicket, 'Terminé', $valideur);
 
 		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
+		$data['ticket'] = $this->TicketModel->find($where);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -399,11 +438,17 @@ class Ticket extends CI_Controller
 				$this->email->to($envoyeur->email);
 			endforeach;
 
-		    $this->email->subject("[HELPJUR]Ticket terminé");
+		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Ticket terminé");
 		    $this->email->message(
 		    	"Bonjour, <br> 
-		    	Votre demande est Terminé sous le numéro : <b>" . $row->numTicket . "</b>.
-		    	<br><br>Cordialement."
+				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est Terminé.
+				Vous pouvez la consulté dans la liste des dossiers terminé :
+					<ul>
+						<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
+						<li><b><u>Objet :</u></b>" . $row->objet . "</li>
+					</ul>
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+				<br><br>Cordialement."
 			);
 		endforeach;
 
@@ -488,11 +533,11 @@ class Ticket extends CI_Controller
 		$this->TicketModel->update($idTicket, 'Encours', $userActif);
 
 		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where, NULL);
+		$data['ticket'] = $this->TicketModel->find($where);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -509,11 +554,19 @@ class Ticket extends CI_Controller
 				$this->email->to($envoyeur->email);
 			endforeach;
 
-		    $this->email->subject("Demande prise en charge[HELPJUR]");
+		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande prise en charge");
 		    $this->email->message(
 		    	"Bonjour, <br> 
 		    	Votre demande est prise en charge sous le numéro : " . $row->numTicket . ".<br>
-		    	Nous vous tiendrons informé dans " . $row->delai . " jour(s).
+				Nous vous tiendrons informé dans " . $row->delai . " jour(s).
+
+				Vous pouvez la consulté dans la liste des dossiers prise en charge :
+				<ul>
+					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
+					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
+				</ul>
+				
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
 		    	<br><br>Cordialement."
 			);
 		endforeach;
@@ -534,8 +587,8 @@ class Ticket extends CI_Controller
 		$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -552,11 +605,19 @@ class Ticket extends CI_Controller
 				$this->email->to($envoyeur->email);
 			endforeach;
 
-		    $this->email->subject("[HELPJUR]Demande prise en charge");
+		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande prise en charge");
 		    $this->email->message(
 		    	"Bonjour, <br> 
-		    	Votre demande est prise en charge sous le numéro : <b>" . $row->numTicket . "</b>.<br>
-		    	Nous vous tiendrons informé dans " . $row->delai . " jour(s).
+		    	Votre demande est prise en charge sous le numéro : " . $row->numTicket . ".<br>
+				Nous vous tiendrons informé dans " . $row->delai . " jour(s).
+
+				Vous pouvez la consulté dans la liste des dossiers prise en charge :
+				<ul>
+					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
+					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
+				</ul>
+				
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
 		    	<br><br>Cordialement."
 			);
 		endforeach;
@@ -660,19 +721,18 @@ class Ticket extends CI_Controller
 	public function jour_ouvre($date, $jourOuvre)
 	{
 		$data['ferie'] = $this->CalendrierModel->find('ferie');
-		$days 	   = array();
-		$ferie 	   = array();
-		$i 		   = 0;
+		
+		$days  = array();
+		$ferie = array();
+		$i 	   = 0;
 
-		// Tableau contenant les jours fériés
 		foreach($data['ferie'] as $row){
 			$ferie[] = $row->start;
 		}
-		
+			
 		while($i < $jourOuvre){
-			$date_tmp = date("Y-m-d", strtotime($i . 'weekdays', $date));
-				
-			if (in_array($date_tmp , $ferie)){
+			$date_tmp = date("Y-m-d", strtotime($i . ' weekdays' , $date));
+			if(in_array($date_tmp , $ferie)) {
 				$jourOuvre++;
 			} else {
 				$days[] = $date_tmp;
@@ -690,17 +750,17 @@ class Ticket extends CI_Controller
 		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
 		foreach ($data['ticket'] as $row) {
 			$recu	      = $row->dateReception;
-			$jour_ouvre[] = self::jour_ouvre(strtotime($recu), 5);
+			$jour_ouvre[] = date("Y-m-d", self::jour_ouvre(strtotime($recu), 5));
 			$now 		  = date("Y-m-d H:i:s");
 
-			$dateRecu  = new DateTime($recu);
-			$date 	   = new DateTime($now);
-			$differnce = $date->diff($dateRecu);
+			$dateRecu = new DateTime($recu);
+			$date 	  = new DateTime($now);
+			$differnce  = $date->diff($dateRecu);
 
 			var_dump($jour_ouvre);
 			var_dump("Date de Réception : " . $row->dateReception);
 			var_dump("Aujourd'hui       : " . $now);
-			var_dump($differnce);
+			var_dump("Intervale         : " . $differnce->days . " jour(s) " . $differnce->h . " heur(s) " . $differnce->i . " minute(s).");
 			var_dump("-------------------");
 		}
 	}
@@ -715,26 +775,29 @@ class Ticket extends CI_Controller
 	{
 		date_default_timezone_set('Africa/Nairobi');
 
-		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
+		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');
+
 		foreach ($data['ticket'] as $row) {
-			$jour_ouvre[] = self::jour_ouvre(strtotime('2020-06-25'/* $row->dateReception */), 5);
-			$now 		  = '2020-06-29'/* date("Y-m-d") */;
+			$recu	      = $row->dateReception;
+			$recu1	      = date("Y-m-d", strtotime($row->dateReception));
+			$jour_ouvre[$recu] = self::jour_ouvre(strtotime($recu), 5);
+			$now 		  = date("Y-m-d H:i:s");
 
-			$dateRecu  = new DateTime('2020-06-25'/* $row->dateReception */);
-			$date 	   = new DateTime($now);
-			$differnce = $date->diff($dateRecu);
+			$dateRecu = new DateTime($recu);
+			$date 	  = new DateTime($now);
+			$differnce  = $date->diff($dateRecu);
 
-			var_dump($jour_ouvre);
-			var_dump("Date de Réception : " . $row->dateReception);
-			var_dump("Aujourd'hui       : " . $now);
-			var_dump($differnce);
-			var_dump("---------------------------------------");
-
-			if ($differnce->days = 1 && in_array($now, $jour_ouvre[0])){
-				echo 'voila';
+			if (!in_array($recu1, $jour_ouvre)){
+				var_dump('mety');
 			} else {
-				echo 'lelena';
+				var_dump('tsy mety');
 			}
+			var_dump($jour_ouvre);
+			var_dump("Date de Réception : " . $recu);
+			var_dump("Date 1            : " . $recu1);
+			var_dump("Aujourd'hui       : " . $now);
+			var_dump("Intervale         : " . $differnce->days . " jour(s) " . $differnce->h . " heur(s) " . $differnce->i . " minute(s).");
+			var_dump("-------------------");
 		}
 	}
 

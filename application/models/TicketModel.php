@@ -21,11 +21,9 @@ class TicketModel extends CI_Model
 			->join('utilisateur s', 's.idUtilisateur = ticket.saisisseur', 'left')
 			->join('utilisateur v', 'v.idUtilisateur = ticket.valideur', 'left')
 			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left')
-			->join('utilisateur r', 'r.idUtilisateur = ticket.demandeur', 'left');
+			->join('utilisateur r', 'r.idUtilisateur = ticket.valideRemarque', 'left');
 
-		if ($session == 4) {
-			$this->db->where("utilisateur.idUtilisateur", $user);
-		}
+		
 		//condition where
 		if ($where != NULL) {
 			$this->db->where($where);
@@ -111,8 +109,8 @@ class TicketModel extends CI_Model
 					'numTicket' 	=> $numTicket,
 					'dateReception' => date("Y-m-d H:i:s"),
 					'statutTicket' 	=> $statut,
-					'idDemande' 	=> $this->input->post('demandeAccept_confirm'),
-					'demandeur'		=> $this->input->post('demandeur_confirm'),
+					'idDemande' 	=> $idDemande,
+					'demandeur'		=> $idUtilisateur,
 					'idTache' 		=> $this->input->post('tache_confirm')
 				);
 				break;
