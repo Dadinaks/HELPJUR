@@ -56,16 +56,20 @@
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/bootstrap.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/mdb.min.js'); ?>"></script>
         
+        <!-- moment -->
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/moment.js'); ?>"></script>
+        <!-- /.moment -->
+
         <!-- addons dataTable -->
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/datatables.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/datatables-select.min.js'); ?>"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/dataTables.buttons.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/buttons.flash.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/jszip.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/pdfmake.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/vfs_fonts.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/buttons.html5.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/css/addons/buttons.print.min.js'); ?>"></script>
         
         <!-- module WOW, Chart -->
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/modules/wow.js'); ?>"></script>
@@ -203,7 +207,7 @@
                                         <textarea name="contenu_msg" id="contenu_msg" rows="10" cols="80" required></textarea>
                                     </div>
 
-                                    <button type="submit" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Envoyer</button>
+                                    <button type="submit" id="send" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-check mr-2"></i>Envoyer</button>
                                     <button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>
                                 <?php echo form_close(); ?>
 
@@ -229,8 +233,26 @@
 
         <script type="text/javascript">
             //Animations initialization
-             new WOW().init();
-                
+            new WOW().init();
+            function bytesToSize(bytes) {
+                var sizes = ['Bytes', 'Ko', 'Mo', 'Go', 'To'];
+                if (bytes == 0) return '0 Byte';
+                    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+                return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+            }
+                                    
+            $('#fichier_message').bind('change', function() {
+                $("#error_uploadFile").empty();
+                if (this.files[0].size > 2000000){
+                    $("#error_uploadFile").append(
+                        "La pièce jointe ne doit pas dépasser de 2Mo. La taille de votre fichier est " + bytesToSize(this.files[0].size)
+                    );
+                    $("#send").attr("disabled", true);
+                } else {
+                    $("#send").attr("disabled", false);
+                }
+            });
+             
             $('#modalDemande').on('hidden.bs.modal', function () {
                 $(this).find('form').trigger('reset');
             });

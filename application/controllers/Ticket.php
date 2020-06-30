@@ -51,8 +51,8 @@ class Ticket extends CI_Controller
 		
 
 		$config ['protocol']  = 'smtp';
-		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
-		$config ['smtp_port'] = 1234;//25;
+		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8';
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
@@ -69,14 +69,14 @@ class Ticket extends CI_Controller
 		$this->email->subject("[HELPJUR]Demande Recu");
 		
 		foreach ($data['ticket'] as $row) :
-			$message =
+			$a = $this->email->message(
 				"Bonjour, <br>
 				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est reçu.<br>
 				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-				<br><br>Cordialement.";	
+				<br><br>Cordialement."
+			);
 		endforeach;
 		
-		$this->email->message($message);
 		$this->email->send();
 
 		redirect(base_url('Ticket/recus'));
@@ -775,29 +775,45 @@ class Ticket extends CI_Controller
 	{
 		date_default_timezone_set('Africa/Nairobi');
 
-		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');
+		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);	
+		$now  = date("Y-m-d H:i");
 
 		foreach ($data['ticket'] as $row) {
-			$recu	      = $row->dateReception;
-			$recu1	      = date("Y-m-d", strtotime($row->dateReception));
-			$jour_ouvre[$recu] = self::jour_ouvre(strtotime($recu), 5);
-			$now 		  = date("Y-m-d H:i:s");
+			$recu[]     = date("Y-m-d H:i", strtotime($row->dateReception));
+			$recuTime[] = date("H:i", strtotime($row->dateReception));
+		}
 
-			$dateRecu = new DateTime($recu);
-			$date 	  = new DateTime($now);
-			$differnce  = $date->diff($dateRecu);
+		for ($i = 0; $i < count($recu); $i++){
+			$date = $recu[$i];
+			$jour_ouvre[$recu[$i]]  = self::jour_ouvre(strtotime($date), 5);
+			$dateAddOneDay 			= $jour_ouvre[$recu[$i]][1] . ' ' . $recuTime[$i];
 
-			if (!in_array($recu1, $jour_ouvre)){
-				var_dump('mety');
+			if($now == $dateAddOneDay){
+				$config ['protocol']  = 'smtp'; 
+				$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+				$config ['smtp_port'] = 25;//25;
+				$config ['charset']   = 'utf-8'; 
+				$config ['mailtype']  = 'html';
+				$config ['wordwrap']  = TRUE;
+		
+				$this->email->initialize($config);
+				$this->email->set_newline("\r\n");
+				$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
+				$this->email->to("Cedrick.RAVOAHANGINIAINA@bni.mg");
+			
+				$this->email->subject("[HELPJUR]Ticket en retard de 24h");
+			
+				$this->email->message(
+					"Bonjour, <br>
+					Le ticket numéro .... est en retard de 24h. 
+					<b><u>NB :</b></u> <span style='color : rgb(241, 0, 74);'>Veuillez ne pas répondre à ce mail.</span>
+		    		<br><br>Cordialement."
+				);
+		
+				$this->email->send();
 			} else {
-				var_dump('tsy mety');
+				echo "aucun <br>";
 			}
-			var_dump($jour_ouvre);
-			var_dump("Date de Réception : " . $recu);
-			var_dump("Date 1            : " . $recu1);
-			var_dump("Aujourd'hui       : " . $now);
-			var_dump("Intervale         : " . $differnce->days . " jour(s) " . $differnce->h . " heur(s) " . $differnce->i . " minute(s).");
-			var_dump("-------------------");
 		}
 	}
 

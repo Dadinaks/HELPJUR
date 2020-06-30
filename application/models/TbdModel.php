@@ -7,9 +7,17 @@ class TbdModel extends CI_Model
     * WHERE t.statutTicket = $statut GROUP BY t.saisisseur
     */
     public function nbTicket_par_juriste($statut = NULL){
+        $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role');
+
         $this->db->select("CONCAT(u.matricule, ' - ', u.nom, ' ', u.prenom) as juriste,COUNT(*) as nb")
             ->from("ticket t")
             ->join("utilisateur u", "u.idUtilisateur = t.saisisseur", "inner");
+
+        
+        if ($session == 4) {
+            $this->db->where("utilisateur.idUtilisateur", $user);
+        }
 
         if ($statut != NULL) {
             $this->db->where("t.statutTicket", $statut);
@@ -28,11 +36,19 @@ class TbdModel extends CI_Model
      * GROUP BY t.saisisseur
     */
     public function nbTicket_par_type_juriste($profil, $statut = NULL){
+        $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role');
+
         $this->db->select("CONCAT(u.matricule, ' - ', u.nom, ' ', u.prenom) as juriste,COUNT(*) as nb")
             ->from("ticket t")
             ->join("utilisateur u", "u.idUtilisateur = t.saisisseur", "inner")
             ->join("profil p", "p.idProfil = u.profil","left")
             ->where("p.idProfil", $profil);
+        
+        if ($session == 4) {
+            $this->db->where("utilisateur.idUtilisateur", $user);
+        }
+
         if ($statut != NULL) {
             $this->db->where("t.statutTicket", $statut);
         }
@@ -49,10 +65,17 @@ class TbdModel extends CI_Model
     * WHERE c.idCategorie = $idCategorie GROUP BY ta.tache
     */
     public function nbTicket_par_categorie($idCategorie = NULL){
+        $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role');
+
         $this->db->select("ta.tache as tache, COUNT(*) as nb")
             ->from("ticket t")
             ->join("tache ta", "ta.idTache = t.idTache", "inner")
             ->join("categorie c", "c.idCategorie = ta.idCategorie", "inner");
+
+        if ($session == 4) {
+            $this->db->where("utilisateur.idUtilisateur", $user);
+        }
 
         if ($idCategorie != NULL) {
             $this->db->where("c.idCategorie", $idCategorie);
@@ -100,9 +123,16 @@ class TbdModel extends CI_Model
 
     /* SELECT count($date_statuts) FROM ticket where DATE_FORMAT($date_statuts, "%m") = $mois AND DATE_FORMAT($date_statuts, "%Y") = $an */
     public function data_chart_line($date_statuts, $mois, $an = NULL){
+        /* $user    = $this->session->userdata('id_utilisateur');
+        $session = $this->session->userdata('role'); */
+
         $this->db->select('count('. $date_statuts .') as '. $date_statuts)
             ->from('ticket')
             ->where('DATE_FORMAT('. $date_statuts .', "%m") = ' . $mois);
+        
+        /* if ($session == 4) {
+            $this->db->where("d.idUtilisateur", $user);
+        } */
 
         if ($an != NULL) {
             $this->db->where('DATE_FORMAT('. $date_statuts .', "%Y") = ' . $an);

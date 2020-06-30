@@ -31,8 +31,7 @@
 						<a href="<?php echo base_url('/assets/Fichiers/'. $row->fichier); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a>
 						<?php endif; ?>
 						<hr class="my-4">
-
-						<p class="text-monospace"><?php echo $row->contenu; ?></p>
+						<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 					</div>
 				</div>
 
@@ -94,7 +93,7 @@
 						<?php endif; ?>
 						<hr class="my-4">
 
-						<p class="text-monospace"><?php echo $row->contenu; ?></p>
+						<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 					</div>
 				</div>
 
@@ -156,7 +155,7 @@
 						<?php endif; ?>
 						<hr class="my-4">
 
-						<p class="text-monospace"><?php echo $row->contenu; ?></p>
+						<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 					</div>
 				</div>
 
@@ -233,7 +232,7 @@
 							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Motif d'abandon</h5>
 							<hr class="my-4">
 
-							<p class="text-monospace"><?php echo $row->motif; ?></p>
+							<p class="text-monospace" style="max-height: 500px; overflow-y: scroll;"><?php echo $row->motif; ?></p>
 						</div>
 
 						<div>
@@ -243,7 +242,7 @@
 							<?php endif; ?>
 							<hr class="my-4">
 
-							<p class="text-monospace"><?php echo $row->contenu; ?></p>
+							<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 						</div>
 					</div>
 				</div>
@@ -304,7 +303,7 @@
 							<h5 class="font-weight-bold text-monospace" id="objet_ticket">Remarque à faire</h5>
 							<hr class="my-4">
 
-							<p class="text-monospace"><?php echo $row->revision; ?></p>
+							<p class="text-monospace" style="max-height: 500px; overflow-y: scroll;"><?php echo $row->revision; ?></p>
 						</div>
 
 						<div>
@@ -314,7 +313,7 @@
 							<?php endif; ?>
 							<hr class="my-4">
 
-							<p class="text-monospace"><?php echo $row->contenu; ?></p>
+							<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 						</div>
 					</div>
 				</div>
@@ -400,7 +399,7 @@
 						<?php endif; ?>
 						<hr class="my-4">
 
-						<p class="text-monospace"><?php echo $row->contenu; ?></p>
+						<div style="max-height: 500px; overflow-y: scroll;"><p class="text-monospace" ><?php echo $row->contenu; ?></p></div>
 					</div>
 				</div>
 

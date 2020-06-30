@@ -35,13 +35,14 @@
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateReception)); ?></td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td>
-                                    <a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Visualiser"><i class="fas fa-eye"></i></a>
+                                    <a class="btn-floating btn-sm btn-info" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-role="<?php echo $this->session->userdata('role'); ?>" data-tooltip="tooltip" data-placement="bottom" title="Visualiser"><i class="fas fa-eye"></i></a>
 
                                     <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2) { ?>
                                     <a class="btn-floating btn-sm btn-amber" data-toggle="modal" data-target="#modalAssigner" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Assigner à un juriste"><i class="fas fa-user-tag"></i></a>
                                     <?php } ?>
-
+                                    <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) { ?>
                                     <a class="btn-floating btn-sm btn-danger" data-toggle="modal" data-target="#modalAbandonner" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Abandonner le ticket"><i class="fas fa-times"></i></a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <?php endforeach ?>
@@ -144,8 +145,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#modalAfficher').on('show.bs.modal', function (e) {
-            var idTicket = $(e.relatedTarget).attr('data-id');
+            var idTicket  = $(e.relatedTarget).attr('data-id');
             var numTicket = $(e.relatedTarget).attr('data-numTicket');
+            var role      = $(e.relatedTarget).attr('data-role');
 
             $(this).find('.numTicket').text(numTicket);
 
@@ -160,6 +162,12 @@
                         if(value.fichier){
                             pj ='<a href="<?php echo base_url("/assets/Fichiers/"); ?>'+ value.fichier +'"><i class="fas fa-paperclip mr-2"></i>'+ value.fichier +'</a>'
                         }
+
+                        var traiter = '';
+                        if (role == 1 || role == 2 || role == 3){
+                            traiter = '<a href="<?php echo base_url('ticket/traiter/') ?>' + idTicket + '" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-tasks mr-2"></i>Traiter</a>';
+                        }
+
                         $('#contenu').empty();
                         $('#contenu').append(
                             '<div class="row">' +
@@ -187,18 +195,17 @@
                             '<div class="col-4">' +
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
-                            '<span class="font-weight-bold">' + value.matricule + '</span> - ' + value.nom + ' ' + value.prenom + '<br>' +
-                            //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
+                            '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
                             '</div>' +
                             '</div>' +
 
                             '<small><i class="fas fa-file mr-2"></i>Contenue</small>' +
                             '<hr>' +
-                            value.contenu +
+                            '<div style="max-height: 250px; overflow-y: scroll;">' + value.contenu + '</div>' +
                             '<hr>' +
 
                             '<div class="text-center">' +
-                            '<a href="<?php echo base_url('ticket/traiter/') ?>' + idTicket + '" class="btn btn-sm btn-rounded btn-success"><i class="fas fa-tasks mr-2"></i>Traiter</a>' +
+                            traiter +
                             '<button data-dismiss="modal" class="btn btn-sm btn-rounded btn-light"><i class="fas fa-times mr-2"></i>Annuler</button>' +
                             '</div>'
                         );

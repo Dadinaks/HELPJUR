@@ -427,14 +427,14 @@
 	    });
 
 	    // Calcul pourcentage
-	    var termine 	= (parseInt(<?php echo $this->TicketModel->count('Terminé'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var recu 		= (parseInt(<?php echo $this->TicketModel->count('Reçu'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var encours 	= (parseInt(<?php echo $this->TicketModel->count('Encours'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var refuse 		= (parseInt(<?php echo $this->TicketModel->count('Refusé'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var abandonne 	= (parseInt(<?php echo $this->TicketModel->count('Abandonné'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var revise	 	= (parseInt(<?php echo $this->TicketModel->count('Revise'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var a_valide 	= (parseInt(<?php echo $this->TicketModel->count('A_Valide'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
-	    var faq 		= (parseInt(<?php echo $this->TicketModel->count('faq'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(2);
+	    var termine 	= (parseInt(<?php echo $this->TicketModel->count('Terminé'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var recu 		= (parseInt(<?php echo $this->TicketModel->count('Reçu'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var encours 	= (parseInt(<?php echo $this->TicketModel->count('Encours'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var refuse 		= (parseInt(<?php echo $this->TicketModel->count('Refusé'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var abandonne 	= (parseInt(<?php echo $this->TicketModel->count('Abandonné'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var revise	 	= (parseInt(<?php echo $this->TicketModel->count('Revise'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var a_valide 	= (parseInt(<?php echo $this->TicketModel->count('A_Valide'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
+	    var faq 		= (parseInt(<?php echo $this->TicketModel->count('faq'); ?>) * 100 / parseInt(<?php echo $this->TicketModel->count(); ?>)).toFixed(0);
 
 	    var ctxP = document.getElementById("tic").getContext('2d');
 	    var myPieChart = new Chart(ctxP, {
@@ -647,7 +647,7 @@
 								numero = '<a href="<?php echo base_url("Ticket/Visualiser/" ); ?>' + data.idTicket + '/Termine">'+ data.numTicket  +' </a>';
 								break;
 							case "Reçu" :
-								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
+								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-stat="recu" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 							case "Encours" :
 								numero = '<a href="<?php echo base_url("Ticket/traitement/" ); ?>' + data.idTicket + '/Voir">'+ data.numTicket  +' </a>';
@@ -656,16 +656,20 @@
 								numero = '<a href="<?php echo base_url("Ticket/traitement/" ); ?>' + data.idTicket +  '/Consulter">'+ data.numTicket  +' </a>';
 								break;
 							case "Abandonné" :
-								numero = '<a href="<?php echo base_url("Ticket/traitement/"); ?>' + data.idTicket + '/Abandonne">'+ data.numTicket  +' </a>';
+								if (data.idTache){
+									numero = '<a href="<?php echo base_url("Ticket/traitement/"); ?>' + data.idTicket + '/Abandonne">'+ data.numTicket  +' </a>';
+								} else {
+									numero = '<a data-toggle="modal" data-target="#modalAfficher" data-stat="abandon" data-keyboard="false" data-backdrop="static"data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
+								}
 								break;
 							case "Refusé" :
-								numero = '<a data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static">'+ data.numTicket  +' </a>';
+								numero = '<a data-toggle="modal" data-target="#modalAfficher" data-stat="refuse" data-keyboard="false" data-backdrop="static"data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 							case "Révisé" :
 								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 							case "Faq" :
-								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
+								numero = '<a href="" data-toggle="modal" data-target="#modalAfficher" data-stat="faq" data-keyboard="false" data-backdrop="static" data-id="' + data.idTicket + '" data-numTicket="' + data.numTicket + '">'+ data.numTicket  +' </a>';
 								break;
 
 							default:
@@ -693,8 +697,13 @@
 					}
 			    }, {
 			        "title": "Objet",
-			        "data" : "objet",
-					"class": "text-left"
+			        "data" : null,
+					"class": "text-left",
+					"render": function ( data, type, row, meta ) {
+						var objet = '';
+						objet = '...'.padStart(40, data.objet);
+						return objet;
+					}
 			    }, {
 			        "title": "Nature de tâche",
 			        "data" : "tache",
@@ -923,13 +932,15 @@
 		});
 
 		$('#modalAfficher').on('show.bs.modal', function (e) {
-            var idTicket = $(e.relatedTarget).attr('data-id');
+            var idTicket  = $(e.relatedTarget).attr('data-id');
             var numTicket = $(e.relatedTarget).attr('data-numTicket');
+            var status 	  = $(e.relatedTarget).attr('data-stat');
 
+			console.log(status);
             $(this).find('.numTicket').text(numTicket);
 
             $.ajax({
-                url: '<?php echo base_url('ticket/Visualiser/') ?>' + idTicket + '/recu',
+                url: '<?php echo base_url('ticket/Visualiser/') ?>' + idTicket + '/' + status,
                 type: 'GET',
                 dataType: 'json',
 
@@ -961,13 +972,12 @@
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
                             '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
-                            //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
                             '</div>' +
                             '</div>' +
 
                             '<small><i class="fas fa-file mr-2"></i>Contenue</small>' +
                             '<hr>' +
-                            value.contenu +
+                            '<div style="max-height: 250px; overflow-y: scroll;">' + value.contenu + '</div>'+
                             '<hr>' +
 
 							'<div class="text-center">' +

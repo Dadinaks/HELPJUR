@@ -63,7 +63,7 @@
 								<label for="poste_utilisateur">Poste</label>
 							</div>
 
-							<select class="browser-default custom-select custom-select-sm mb-4" name="profile_utilisateur" required>
+							<select class="browser-default custom-select custom-select-sm mb-4" id="profile_utilisateur" name="profile_utilisateur" required>
 								<option class="font-weight-bold" selected disabled>-- Profil --</option>
 								<?php 
 								$data['profiles'] = $this->ProfilModel->find();
@@ -209,6 +209,7 @@
 				$('#nom_utilisateur').attr("disabled", true);
 				$('#prenom_utilisateur').attr("disabled", true);
 				$('#email_utilisateur').attr("disabled", true);
+				$('#input_lieu_utilisateur').attr("disabled", true);
 				$('#lieu_utilisateur').attr("disabled", true);
 				$('#departement_utilisateur').attr("disabled", true);
 				$('#direction_utilisateur').attr("disabled", true);
@@ -220,7 +221,7 @@
 				$('#nom_utilisateur').attr("disabled", false);
 				$('#prenom_utilisateur').attr("disabled", false);
 				$('#email_utilisateur').attr("disabled", false);
-				$('#lieu_utilisateur').attr("disabled", false);
+				$('#input_lieu_utilisateur').attr("disabled", false);
 				$('#departement_utilisateur').attr("disabled", false);
 				$('#direction_utilisateur').attr("disabled", false);
 				$('#unite_utilisateur').attr("disabled", false);

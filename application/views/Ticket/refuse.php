@@ -111,7 +111,6 @@
                             '<small><i class="fas fa-user mr-2"></i>Demandeur</small>' +
                             '<hr>' +
                             '<span class="font-weight-bold">' + value.info_demandeur + '<br>' +
-                            //'<small>' + value.agence + ' / ' + value.direction + ' / ' + value.departement + ' / ' + value.unite + ' / ' + value.poste + '</small>' +
                             '</div>' +
                             '</div>' +
 
@@ -125,7 +124,7 @@
                             '<div class="col-6">' +
                             '<small><i class="fas fa-file mr-2"></i>Contenu</small>' +
                             '<hr>' +
-                            value.contenu +
+                            '<div style="max-height: 250px; overflow-y: scroll;">' + value.contenu + '</div>'+
                             '</div>' +
                             '</div>'
                         );

@@ -120,7 +120,7 @@
 
                             '<small><i class="fas fa-file mr-2"></i>Contenue</small>' +
                             '<hr>' +
-                            value.contenu +
+                            '<div style="max-height: 250px; overflow-y: scroll;">' + value.contenu + '</div>'+
                             '<hr>' +
 
                             '<div class="text-center">' +
