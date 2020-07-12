@@ -2,11 +2,6 @@
 
 class UtilisateurModel extends CI_Model
 {
-    /**
-	 * Récuperer les utilisateurs :
-     *      - La condition WHERE de la requête existe si la fonction find()
-     *        reçoit un parametre dans le Controlleur [find( $where )].
-	 */
 	public function find($where = NULL)
 	{
         $this->db->select('*')

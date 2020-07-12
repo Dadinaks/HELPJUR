@@ -46,37 +46,27 @@ class Ticket extends CI_Controller
 		$idDemandeur = $this->input->post('demandeur_confirm');
 		$this->TicketModel->insert('Reçu', $idDemande, $idDemandeur);
 		
-		$where = 'demande.idDemande = '. $idDemande;
-		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
-		
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = ' . $idDemande);
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande =' . $idDemande);	
 
 		$config ['protocol']  = 'smtp';
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8';
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
 		
 		$this->email->initialize($config);
-		
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		
-		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
-		endforeach;
-		
-		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
 		$this->email->subject("[HELPJUR]Demande Recu");
-		
-		foreach ($data['ticket'] as $row) :
-			$a = $this->email->message(
-				"Bonjour, <br>
-				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est reçu.<br>
-				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-				<br><br>Cordialement."
-			);
-		endforeach;
-		
+		$this->email->message(
+			"Bonjour, <br>
+			Votre demande sous l'objet : '<b>" . $data['ticket'][0]->objet . "</b>' est reçu.<br>
+			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+			<br><br>Cordialement."
+		);
 		$this->email->send();
 
 		redirect(base_url('Ticket/recus'));
@@ -116,42 +106,32 @@ class Ticket extends CI_Controller
 	public function Refuser_ticket()
 	{
 		$this->TicketModel->insert('Refusé');
-
-		$where = 'demande.idDemande = '. $this->input->post('demandeRefus');
-		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = '. $this->input->post('demandeRefus_confirm'));
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande ='. $this->input->post('demandeRefus_confirm'));
 
 		$config ['protocol']  = 'smtp';
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8';
 		$config ['mailtype']  = 'html';
 		$config ['wordwrap']  = TRUE;
 		
 		$this->email->initialize($config);
-		
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		
-		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
-		endforeach;
-		
-		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $this->input->post('demandeAccept_confirm'));
-
-		foreach ($data['ticket'] as $row) :
-			$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande Refusé");
-			$this->email->message(
-				"Bonjour, <br>
-				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est refusé.
-				Vous pouvez la consulté dans la liste des dossiers refusé : <br>
-				<ul>
-					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
-					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
-				</ul>
-				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-				<br><br>Cordialement."
-			);
-		endforeach;
-
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
+		$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Demande Refusé");
+		$this->email->message(
+			"Bonjour, <br>
+			Votre demande sous l'objet : '<b>" . $data['ticket'][0]->objet . "</b>' est refusé.
+			Vous pouvez la consulté dans la liste des dossiers refusé : <br>
+			<ul>
+				<li><b><u>Numéro :</u></b>" . $data['ticket'][0]->numTicket . "</li>
+				<li><b><u>Objet :</u></b>" . $data['ticket'][0]->objet . "</li>
+			</ul>
+			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+			<br><br>Cordialement."
+		);
 		$this->email->send();
 
 		redirect(base_url('ticket/Refuses'));
@@ -200,12 +180,12 @@ class Ticket extends CI_Controller
 			$idDemande = $this->input->post('idDemande_abandonner');
 			$this->TicketModel->insert('Abandonné', $idDemande);
 			$this->DemandeModel->update($idDemande, 'Abandonné');
-
-			$where = 'demande.idDemande = '. $idDemande;
-			$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+			
+			$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = '. $idDemande);
+			$data['ticket'] = $this->TicketModel->find('ticket.idDemande ='. $idDemande);
 
 			$config ['protocol']  = 'smtp';
-			$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+			$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 			$config ['smtp_port'] = 25;//25;
 			$config ['charset']   = 'utf-8'; 
 			$config ['mailtype']  = 'html';
@@ -215,26 +195,19 @@ class Ticket extends CI_Controller
 
 			$this->email->set_newline("\r\n");
 			$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-			foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
-			endforeach;
-
-			$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
-
-			foreach ($data['ticket'] as $row) :
-				$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande Abandonné");
-				$this->email->message(
-					"Bonjour, <br>
-					Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est abandonné.
-					Vous pouvez la consulté dans la liste des dossiers abandonné :
-					<ul>
-						<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
-						<li><b><u>Objet :</u></b>" . $row->objet . "</li>
-					</ul>
-					<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-					<br><br>Cordialement."
-				);
-			endforeach;
-
+			$this->email->to($email_envoyeur['envoyeur'][0]->email);
+			$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Demande Abandonné");
+			$this->email->message(
+				"Bonjour, <br>
+				Votre demande sous l'objet : '<b>" . $data['ticket'][0]->objet . "</b>' est abandonné.
+				Vous pouvez la consulté dans la liste des dossiers abandonné :
+				<ul>
+					<li><b><u>Numéro :</u></b>" . $data['ticket'][0]->numTicket . "</li>
+					<li><b><u>Objet :</u></b>" . $data['ticket'][0]->objet . "</li>
+				</ul>
+				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+				<br><br>Cordialement."
+			);
 			$this->email->send();
 		}
 
@@ -276,12 +249,11 @@ class Ticket extends CI_Controller
     public function Rediriger_faq($idDemande, $idDemandeur)
 	{
 		$this->TicketModel->insert('Faq', $idDemande, $idDemandeur);
-
-		$where = 'demande.idDemande = '. $idDemande;
-		$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = '. $idDemande);
+		$data['ticket'] = $this->TicketModel->find('ticket.idDemande ='. $idDemande);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
@@ -291,27 +263,21 @@ class Ticket extends CI_Controller
 
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		foreach ($email_envoyeur['envoyeur'] as $row) : $this->email->to($row->email);
-        endforeach;
-
-		$data['ticket'] = $this->TicketModel->find('ticket.idDemande', $idDemande);
-
-		foreach ($data['ticket'] as $row) :
-			$this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande redirigé vers F.A.Q");
-			$this->email->message(
-				"Bonjour, <br>
-				Veuillez consulter la reponse de votre demande sur le  lien suivant : <br>
-				<a href='http://sp-web-pr/Lists/FAQ/Flat.aspx?RootFolder=%2FLists%2FFAQ%2FFAQ%20JURIDIQUETHEME%20ch%C3%A8ques%2C%20soci%C3%A9t%C3%A9s%20commerciales%2C%20suret%C3%A9s%20et%20les%20incidents%20de%20compte&FolderCTID=0x0120020018B2C7DB8F82724E98C046A6F3EE0D7B'>http://sp-web-pr/Lists/FAQ/</a>
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
+		$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Demande redirigé vers F.A.Q");
+		$this->email->message(
+			"Bonjour, <br>
+			Veuillez consulter la reponse de votre demande sur le  lien suivant : <br>
+			<a href='http://sp-web-pr/Lists/FAQ/Flat.aspx?RootFolder=%2FLists%2FFAQ%2FFAQ%20JURIDIQUETHEME%20ch%C3%A8ques%2C%20soci%C3%A9t%C3%A9s%20commerciales%2C%20suret%C3%A9s%20et%20les%20incidents%20de%20compte&FolderCTID=0x0120020018B2C7DB8F82724E98C046A6F3EE0D7B'>http://sp-web-pr/Lists/FAQ/</a>
 				
-				<b><u>NB :</b></u>
-				<ul>
-					<li>N'oubliez pas de renseigner votre matricule et mot de passe.</li>
-					<li><span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span></li>
-				</ul> 
-				<br><br>Cordialement."
-			);
-		endforeach;
-
+			<br><b><u>NB :</b></u>
+			<ul>
+				<li>N'oubliez pas de renseigner votre matricule et mot de passe.</li>
+				<li>Vous pouvez la consulté dans la liste des dossiers redirigé vers F.A.Q sous le numero : <b>" . $data['ticket'][0]->numTicket . "</b></li>
+				<li><span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span></li>
+			</ul> 
+			<br>Cordialement."
+		);
 		$this->email->send();
 
 		redirect(base_url('ticket/Faq'));
@@ -415,12 +381,12 @@ class Ticket extends CI_Controller
 	{
 		$this->TicketModel->update($idTicket);
 		$this->TicketModel->update($idTicket, 'Terminé', $valideur);
-
-		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where);
+		
+		$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = ' . $data['ticket'][0]->idDemande);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
@@ -430,28 +396,19 @@ class Ticket extends CI_Controller
 
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		foreach ($data['ticket'] as $row) : 
-			$where = 'demande.idDemande = ' . $row->idDemande;
-			$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
-
-			foreach ($email_envoyeur['envoyeur'] as $envoyeur) : 
-				$this->email->to($envoyeur->email);
-			endforeach;
-
-		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Ticket terminé");
-		    $this->email->message(
-		    	"Bonjour, <br> 
-				Votre demande sous l'objet : '<b>" . $row->objet . "</b>' est Terminé.
-				Vous pouvez la consulté dans la liste des dossiers terminé :
-					<ul>
-						<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
-						<li><b><u>Objet :</u></b>" . $row->objet . "</li>
-					</ul>
-				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-				<br><br>Cordialement."
-			);
-		endforeach;
-
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
+		$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Ticket terminé");
+		$this->email->message(
+		    "Bonjour, <br> 
+			Votre demande sous l'objet : '<b>" . $data['ticket'][0]->objet . "</b>' est Terminé.
+			Vous pouvez la consulté dans la liste des dossiers terminé :
+			<ul>
+				<li><b><u>Numéro :</u></b>" . $data['ticket'][0]->numTicket . "</li>
+				<li><b><u>Objet :</u></b>" . $data['ticket'][0]->objet . "</li>
+			</ul>
+			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+			<br><br>Cordialement."
+		);
 		$this->email->send();	
 
 		redirect(base_url('ticket/Termines'));
@@ -502,8 +459,7 @@ class Ticket extends CI_Controller
 	 */
 	public function  Traitement($idTicket, $visualiser = NULL)
 	{
-		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where, NULL);
+		$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
         $session = $this->session->userdata('profile');
 
 		Switch ($session){
@@ -531,12 +487,12 @@ class Ticket extends CI_Controller
 	{
 		$userActif = $this->session->userdata('id_utilisateur');
 		$this->TicketModel->update($idTicket, 'Encours', $userActif);
-
-		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where);
+		
+		$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = ' . $data['ticket'][0]->idDemande);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
@@ -546,31 +502,22 @@ class Ticket extends CI_Controller
 
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		foreach ($data['ticket'] as $row) : 
-			$where = 'demande.idDemande = ' . $row->idDemande;
-			$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
+		$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Demande prise en charge");
+		$this->email->message(
+		    "Bonjour, <br> 
+		    Votre demande est prise en charge sous le numéro : " . $data['ticket'][0]->numTicket . ".<br>
+			Nous vous tiendrons informé dans " . $data['ticket'][0]->delai . " jour(s).
 
-			foreach ($email_envoyeur['envoyeur'] as $envoyeur) : 
-				$this->email->to($envoyeur->email);
-			endforeach;
-
-		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande prise en charge");
-		    $this->email->message(
-		    	"Bonjour, <br> 
-		    	Votre demande est prise en charge sous le numéro : " . $row->numTicket . ".<br>
-				Nous vous tiendrons informé dans " . $row->delai . " jour(s).
-
-				Vous pouvez la consulté dans la liste des dossiers prise en charge :
-				<ul>
-					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
-					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
-				</ul>
+			Vous pouvez la consulté dans la liste des dossiers prise en charge :
+			<ul>
+				<li><b><u>Numéro :</u></b>" . $data['ticket'][0]->numTicket . "</li>
+				<li><b><u>Objet :</u></b>" . $data['ticket'][0]->objet . "</li>
+			</ul>
 				
-				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-		    	<br><br>Cordialement."
-			);
-		endforeach;
-
+			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+		    <br><br>Cordialement."
+		);
 		$this->email->send();
 
         redirect(base_url('ticket/Traitement/' . $idTicket));
@@ -582,12 +529,12 @@ class Ticket extends CI_Controller
 		$idTicket 	  = $this->input->post('idTicket_assigner');
 
 		$this->TicketModel->update($idTicket, 'Encours', $userAssigned);
-
-		$where = 'ticket.idTicket = '. $idTicket;
-		$data['ticket'] = $this->TicketModel->find($where, NULL, 3);
+		
+		$data['ticket'] = $this->TicketModel->find('ticket.idTicket = '. $idTicket);
+		$email_envoyeur['envoyeur'] = $this->DemandeModel->find('demande.idDemande = ' . $data['ticket'][0]->idDemande);
 
 		$config ['protocol']  = 'smtp'; 
-		$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+		$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 		$config ['smtp_port'] = 25;//25;
 		$config ['charset']   = 'utf-8'; 
 		$config ['mailtype']  = 'html';
@@ -597,31 +544,22 @@ class Ticket extends CI_Controller
 
 		$this->email->set_newline("\r\n");
 		$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
-		foreach ($data['ticket'] as $row) : 
-			$where = 'demande.idDemande = ' . $row->idDemande;
-			$email_envoyeur['envoyeur'] = $this->DemandeModel->find($where);
+		$this->email->to($email_envoyeur['envoyeur'][0]->email);
+		$this->email->subject("[HELPJUR : ". $data['ticket'][0]->numTicket ."]Demande prise en charge");
+		$this->email->message(
+			"Bonjour, <br> 
+		    Votre demande est prise en charge sous le numéro : " . $data['ticket'][0]->numTicket . ".<br>
+			Nous vous tiendrons informé dans " . $data['ticket'][0]->delai . " jour(s).
 
-			foreach ($email_envoyeur['envoyeur'] as $envoyeur) : 
-				$this->email->to($envoyeur->email);
-			endforeach;
-
-		    $this->email->subject("[HELPJUR : <b>". $row->numTicket ."</b>]Demande prise en charge");
-		    $this->email->message(
-		    	"Bonjour, <br> 
-		    	Votre demande est prise en charge sous le numéro : " . $row->numTicket . ".<br>
-				Nous vous tiendrons informé dans " . $row->delai . " jour(s).
-
-				Vous pouvez la consulté dans la liste des dossiers prise en charge :
-				<ul>
-					<li><b><u>Numéro :</u></b>" . $row->numTicket . "</li>
-					<li><b><u>Objet :</u></b>" . $row->objet . "</li>
-				</ul>
+			Vous pouvez la consulté dans la liste des dossiers prise en charge :
+			<ul>
+				<li><b><u>Numéro :</u></b>" . $data['ticket'][0]->numTicket . "</li>
+				<li><b><u>Objet :</u></b>" . $data['ticket'][0]->objet . "</li>
+			</ul>
 				
-				<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-		    	<br><br>Cordialement."
-			);
-		endforeach;
-
+			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
+		    <br><br>Cordialement."
+		);
 		$this->email->send();
 
 		redirect(base_url('ticket/Recus'));
@@ -747,35 +685,7 @@ class Ticket extends CI_Controller
 	{
 		date_default_timezone_set('Africa/Nairobi');
 
-		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);
-		foreach ($data['ticket'] as $row) {
-			$recu	      = $row->dateReception;
-			$jour_ouvre[] = date("Y-m-d", self::jour_ouvre(strtotime($recu), 5));
-			$now 		  = date("Y-m-d H:i:s");
-
-			$dateRecu = new DateTime($recu);
-			$date 	  = new DateTime($now);
-			$differnce  = $date->diff($dateRecu);
-
-			var_dump($jour_ouvre);
-			var_dump("Date de Réception : " . $row->dateReception);
-			var_dump("Aujourd'hui       : " . $now);
-			var_dump("Intervale         : " . $differnce->days . " jour(s) " . $differnce->h . " heur(s) " . $differnce->i . " minute(s).");
-			var_dump("-------------------");
-		}
-	}
-
-
-	/*
-	 *-----------------------------------------------------------------------------------------
-	 *											Test
-	 *-----------------------------------------------------------------------------------------
-	 */
-	public function test() 
-	{
-		date_default_timezone_set('Africa/Nairobi');
-
-		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception', 1);	
+		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');	
 		$now  = date("Y-m-d H:i");
 
 		foreach ($data['ticket'] as $row) {
@@ -790,7 +700,7 @@ class Ticket extends CI_Controller
 
 			if($now == $dateAddOneDay){
 				$config ['protocol']  = 'smtp'; 
-				$config ['smtp_host'] = '10.161.65.60';//"10.161.65.60";
+				$config ['smtp_host'] = 'localhost';//"10.161.65.60";
 				$config ['smtp_port'] = 25;//25;
 				$config ['charset']   = 'utf-8'; 
 				$config ['mailtype']  = 'html';
@@ -801,7 +711,7 @@ class Ticket extends CI_Controller
 				$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
 				$this->email->to("Cedrick.RAVOAHANGINIAINA@bni.mg");
 			
-				$this->email->subject("[HELPJUR]Ticket en retard de 24h");
+				$this->email->subject("[HELPJUR]Ticket numero  en retard de 24h");
 			
 				$this->email->message(
 					"Bonjour, <br>
@@ -809,12 +719,67 @@ class Ticket extends CI_Controller
 					<b><u>NB :</b></u> <span style='color : rgb(241, 0, 74);'>Veuillez ne pas répondre à ce mail.</span>
 		    		<br><br>Cordialement."
 				);
-		
-				$this->email->send();
+
+				return $this->email->send();
 			} else {
-				echo "aucun <br>";
+				$notif['notif_mail'] = "aucun";
+				return json_encode($notif);
 			}
 		}
+	}
+
+
+	/*
+	 *-----------------------------------------------------------------------------------------
+	 *											Test
+	 *-----------------------------------------------------------------------------------------
+	 */
+	public function test() 
+	{
+		date_default_timezone_set('Africa/Nairobi');
+
+		$data['ticket'] = $this->TicketModel->find('ticket.statutTicket = "Reçu"', 'ticket.dateReception');	
+		$now  = date("Y-m-d H:i");
+
+		foreach ($data['ticket'] as $row) {
+			$recu[]     = date("Y-m-d H:i", strtotime($row->dateReception));
+			$recuTime[] = date("H:i", strtotime($row->dateReception));
+		}
+
+		for ($i = 0; $i < count($recu); $i++){
+			$date = $recu[$i];
+			$jour_ouvre[$recu[$i]]  = self::jour_ouvre(strtotime($date), 5);
+			$dateAddOneDay 			= $jour_ouvre[$recu[$i]][1] . ' ' . $recuTime[$i];
+
+			if($now == $dateAddOneDay){
+				$config ['protocol']  = 'smtp'; 
+				$config ['smtp_host'] = 'localhost';//"10.161.65.60";
+				$config ['smtp_port'] = 25;//25;
+				$config ['charset']   = 'utf-8'; 
+				$config ['mailtype']  = 'html';
+				$config ['wordwrap']  = TRUE;
+		
+				$this->email->initialize($config);
+				$this->email->set_newline("\r\n");
+				$this->email->from("gestion.helpjur@bni.mg", "Gestion HELPJUR");
+				$this->email->to("Cedrick.RAVOAHANGINIAINA@bni.mg");
+			
+				$this->email->subject("[HELPJUR]Ticket numero  en retard de 24h");
+			
+				$this->email->message(
+					"Bonjour, <br>
+					Le ticket numéro .... est en retard de 24h. 
+					<b><u>NB :</b></u> <span style='color : rgb(241, 0, 74);'>Veuillez ne pas répondre à ce mail.</span>
+		    		<br><br>Cordialement."
+				);
+				$notif['notif_mail'] = $this->email->send();
+			
+				echo json_encode($notif);
+			} else {
+				$notif['notif_mail'] = "aucun";
+				echo json_encode($notif);
+			}
+		}		
 	}
 
 }

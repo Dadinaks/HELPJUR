@@ -30,7 +30,17 @@
                                     <span class="font-weight-bold"><?php echo $row->nom . ' ' . $row->prenom; ?></span><br>                                    
                                     <small class="text-muted"><?php echo $row->direction . '/' . $row->unite . '/' . $row->poste; ?></small>                      
                                 </td>
-                                <td class="text-left"><?php echo $row->objet; ?></td>
+                                <td class="text-left">
+                                    <?php
+                                    /* if (strlen($row->objet) > 40)  :
+                                        var_dump(strlen($row->objet));
+                                        var_dump(str_pad($row->objet, 40, "...", STR_PAD_RIGHT));
+                                    else:
+                                        $row->objet;
+                                    endif; */
+                                    echo $row->objet;
+                                    ?>
+                                </td>
                                 <td><?php echo date('d/m/Y, H:i', strtotime($row->dateDemande)); ?></td>
                                 <td class="text-left">
                                     <?php if($row->fichier != NULL) :?>

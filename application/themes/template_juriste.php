@@ -238,7 +238,7 @@
             $(document).ready(function () {
                 setInterval(function () {
                     $.ajax({
-                        url     : "<?php echo base_url('demande_d_avis/notification') ?>",
+                        url     : "<?php echo base_url('demande_d_avis/notification'); ?>",
                         type    : "post",
                         dataType: "json",
 
@@ -250,7 +250,7 @@
 
                 setInterval(function () {
                     $.ajax({
-                        url: "<?php echo base_url('ticket/notification') ?>",
+                        url: "<?php echo base_url('ticket/notification'); ?>",
                         type: "post",
                         dataType: "json",
 
@@ -264,6 +264,19 @@
                         }
                     });
                 }, 100);
+
+
+                setInterval(function () {
+                    $.ajax({
+                        url: "<?php echo base_url('Ticket/test'); ?>",
+                        type: "post",
+                        dataType: "json",
+
+                        success: function (notif) {
+                            console.log(notif);
+                        }
+                    });
+                }, 20000);
             });
         </script>
     </body>

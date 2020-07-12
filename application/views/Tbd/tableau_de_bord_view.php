@@ -701,7 +701,8 @@
 					"class": "text-left",
 					"render": function ( data, type, row, meta ) {
 						var objet = '';
-						objet = '...'.padStart(40, data.objet);
+						var obj   = data.objet;
+						obj.length > 40 ? objet = '...'.padStart(40, obj) :	objet = obj;
 						return objet;
 					}
 			    }, {
@@ -779,7 +780,7 @@
                 "sLengthMenu":     "Eléments à afficher _MENU_",
                 "sLoadingRecords": "Chargement...",
                 "sProcessing":     "Traitement...",
-                "sSearch":         "Rechercher",
+                "sSearch":         "<i class='fas fa-search'></i>",
                 "sZeroRecords":    "Aucun élément correspondant trouvé",
                 "oPaginate": {
                     "sFirst":    "Premier",

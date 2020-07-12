@@ -41,7 +41,7 @@
                                     <a class="btn-floating btn-sm btn-amber" data-toggle="modal" data-target="#modalAssigner" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Assigner à un juriste"><i class="fas fa-user-tag"></i></a>
                                     <?php } ?>
                                     <?php if ($this->session->userdata('role') == 1 || $this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) { ?>
-                                    <a class="btn-floating btn-sm btn-danger" data-toggle="modal" data-target="#modalAbandonner" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Abandonner le ticket"><i class="fas fa-times"></i></a>
+                                    <a class="btn-floating btn-sm btn-danger" data-toggle="modal" data-target="#modalAbandonner" data-keyboard="false" data-backdrop="static" data-id="<?php echo $row->idTicket; ?>" data-demande="<?php echo $row->idDemande; ?>" data-numTicket="<?php echo $row->numTicket; ?>" data-tooltip="tooltip" data-placement="bottom" title="Abandonner le ticket"><i class="fas fa-times"></i></a>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -128,6 +128,7 @@
 
                 <?php echo form_open('Ticket/Abandonner/recu'); ?>
                     <input type="hidden" id="idTicket_abandonner" name="idTicket_abandonner">
+                    <input type="hidden" id="idDemande_abandonner" name="idDemande_abandonner">
                     <div class="md-form">
                         <textarea id="motif_abandon" name="motif_abandon" class="md-textarea form-control" rows="4" required></textarea>
                         <label for="motif_abandon">Motifs d'abandon</label>
@@ -226,10 +227,12 @@
         });
 
         $('#modalAbandonner').on('show.bs.modal', function (e) {
-            var idTicket = $(e.relatedTarget).attr('data-id');
-            var objet    = $(e.relatedTarget).attr('data-numTicket');
+            var idTicket  = $(e.relatedTarget).attr('data-id');
+            var idDemande = $(e.relatedTarget).attr('data-demande');
+            var objet     = $(e.relatedTarget).attr('data-numTicket');
 
             $(this).find('.modal-body #idTicket_abandonner').val(idTicket);
+            $(this).find('.modal-body #idDemande_abandonner').val(idDemande);
             $(this).find('.objet').text(objet);
         });
 
@@ -245,7 +248,7 @@
                 "sLengthMenu":     "Eléments à afficher _MENU_",
                 "sLoadingRecords": "Chargement...",
                 "sProcessing":     "Traitement...",
-                "sSearch":         "Rechercher",
+                "sSearch":         "<i class='fas fa-search'></i>",
                 "sZeroRecords":    "Aucun élément correspondant trouvé",
                 "oPaginate": {
                     "sFirst":    "Premier",

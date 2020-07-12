@@ -68,7 +68,7 @@
                 "sLengthMenu":     "Eléments à afficher _MENU_",
                 "sLoadingRecords": "Chargement...",
                 "sProcessing":     "Traitement...",
-                "sSearch":         "Rechercher",
+                "sSearch":         "<i class='fas fa-search'></i>",
                 "sZeroRecords":    "Aucun élément correspondant trouvé",
                 "oPaginate": {
                     "sFirst":    "Premier",
