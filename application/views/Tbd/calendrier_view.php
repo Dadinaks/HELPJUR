@@ -24,18 +24,13 @@
 					<small class="red-text font-weight-bold"><i class="fas fa-exclamation mr-2"></i>Note :</small>
 
 					<small>
-						<?php if ($this->session->userdata('profile') === 'Administrateur') : ?>
 						Vous devez juste inserer <span class="font-weight-bold">les autres dates fériés.</span>
-						<?php endif; ?>
 						Les <span class="font-weight-bold red-text">jours fériés</span> seront en 
 						<span class="font-weight-bold red-text">Rouge</span> dans le calendrier.
 					</small>
 				</p>
 
-				<?php 
-				if ($this->session->userdata('profile') === 'Administrateur') :
-				echo form_open('Calendrier/Inserer/ferie'); 
-				?>
+				<?php echo form_open('Calendrier/Inserer/ferie'); ?>
 					<div class="row justify-content-center">
 						<div class="col-8">
 							<div class="md-form">
@@ -57,10 +52,7 @@
 							</div>
 						</div>
 					</div>
-				<?php 
-				echo form_close();
-				endif;
-				?>
+				<?php echo form_close(); ?>
 			</div>
 		</div>
 	</div>
@@ -94,14 +86,11 @@
 					</small>
 				</p>
 
-				<?php 
-				if ($this->session->userdata('profile') === 'Administrateur' || $this->session->userdata('profile') === 'Directeur Juridique' || $this->session->userdata('profile') === 'Senior' || $this->session->userdata('profile') === 'Junior') :
-
-					echo form_open('Calendrier/Inserer/conge'); ?>
+				<?php echo form_open('Calendrier/Inserer/conge'); ?>
 					<div class="row justify-content-center">
 						<div class="col-8 mb-4">
 							<select id="profil" name="profil" class="browser-default custom-select" required>
-								<option class="font-weight-bold" selected disabled>-- Profil --</option>
+								<option class="font-weight-bold" selected disabled>-- Profile --</option>
 								<?php $donnee['profils'] = $this->ProfilModel->find('idProfil BETWEEN 1 AND 3');
 								foreach ($donnee['profils'] as $row) : ?>
 								<option value="<?php echo $row->idProfil; ?>"><?php echo $row->profile; ?></option>
@@ -137,10 +126,7 @@
 					<div>
 						<button class="btn btn-rounded btn-success btn-sm">Enregistrer</button>
 					</div>
-				<?php 
-				echo form_close();
-				endif;
-				 ?>
+				<?php echo form_close(); ?>
 			</div>
 		</div>
 	</div>

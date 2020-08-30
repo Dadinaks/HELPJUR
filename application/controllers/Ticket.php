@@ -62,8 +62,9 @@ class Ticket extends CI_Controller
 		$this->email->to($email_envoyeur['envoyeur'][0]->email);
 		$this->email->subject("[HELPJUR]Demande Recu");
 		$this->email->message(
-			"Bonjour, <br>
-			Votre demande sous l'objet : '<b>" . $data['ticket'][0]->objet . "</b>' est reçu.<br>
+			"Bonjour,
+			Nous accusons réception de votre demande sous l'objet :
+			'<b>" . $data['ticket'][0]->objet . "</b>', elle peut être consultée dans la liste des demandes reçues.
 			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
 			<br><br>Cordialement."
 		);
@@ -534,7 +535,7 @@ class Ticket extends CI_Controller
 		$this->email->message(
 		    "Bonjour, <br> 
 		    Votre demande est prise en charge sous le numéro : " . $data['ticket'][0]->numTicket . ".<br>
-			Nous vous tiendrons informé dans " . $data['ticket'][0]->delai . " jour(s).
+			Nous reviendrons vers vous dans " . $data['ticket'][0]->delai . " jour(s) ouvrés.
 
 			Vous pouvez la consulté dans la liste des dossiers prise en charge :
 			<ul>
@@ -543,7 +544,7 @@ class Ticket extends CI_Controller
 			</ul>
 				
 			<b><u>NB :</b></u> <span style='color : #F1004A;'>Veuillez ne pas répondre à ce mail.</span>
-		    <br><br>Cordialement."
+			<br><br>Cordialement."
 		);
 		$this->email->send();
 
@@ -758,6 +759,15 @@ class Ticket extends CI_Controller
 		}
 	}
 
+	/*
+	 *-----------------------------------------------------------------------------------------
+	 *											Delai de réalisation
+	 *-----------------------------------------------------------------------------------------
+	 */
+	public function delai_realisation()
+	{
+		
+	}
 
 	/*
 	 *-----------------------------------------------------------------------------------------

@@ -199,7 +199,7 @@
 												<option value="Tout">Tous</option>
 												<option value="Termine">Terminé</option>
 												<option value="Encours">En cours de traitement</option>
-												<option value="Revise">Révisé</option>
+												<option value="Revise">A réviser</option>
 												<option value="A_Valide">A Validé</option>
 												<option value="Refuse">Refusé</option>
 												<option value="Abandonne">Abandonné</option>
@@ -236,7 +236,7 @@
 
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="card mb-3">
-								<div class="card-header font-weight-bold">Nombre de Ticket par categorie de demande</div>
+								<div class="card-header font-weight-bold">Nombre de Ticket par catégorie de demande</div>
 
 								<div class="card-body">
 									<div class="row">
@@ -260,7 +260,7 @@
 										<thead class="">
 										<tr>
 											<th class="font-weight-bold">Nature de tâche</th>
-											<th class="font-weight-bold">Nombre(s)</th>
+											<th class="font-weight-bold">Nombre de Ticket(s)</th>
 										</tr>
 										</thead>
 
@@ -279,7 +279,7 @@
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							<div class="card mb-3">
-								<div class="card-header font-weight-bold">Nombre de Ticket traiter par les types de Juristes</div>
+								<div class="card-header font-weight-bold">Nombre de Tickets traités par type de Juriste</div>
 								<div class="card-body">
 									<canvas id="jur"></canvas>
 								</div>
@@ -288,7 +288,7 @@
 
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							<div class="card mb-3">
-								<div class="card-header font-weight-bold">Pourcentage de ticket par statut</div>
+								<div class="card-header font-weight-bold">Pourcentage de tickets par statut</div>
 								<div class="card-body">
 									<canvas id="tic"></canvas>
 								</div>
@@ -342,7 +342,7 @@
   						<th class="font-weight-bold">Objet</th>
   						<th class="font-weight-bold">Nature de tâche</th>
   						<th class="font-weight-bold">Date de réception</th>
-  						<th class="font-weight-bold">Status</th>
+  						<th class="font-weight-bold">Statut</th>
   						<th class="font-weight-bold">Date de traitement</th>
   						<th class="font-weight-bold">Date de validation</th>
   						<th class="font-weight-bold">Date de transmission</th>
@@ -440,7 +440,7 @@
 	    var myPieChart = new Chart(ctxP, {
 	        type: 'pie',
 	        data: {
-	            labels: [ "Terminée", "Reçu", "Encours", "Refusée", "Abandonnée", "A reviser", "A valider", "F.A.Q"],
+	            labels: [ "Terminé", "Reçu", "En cours", "Refusé", "Abandonné", "A reviser", "A valider", "F.A.Q"],
 
 	            datasets: [{
 	                data: [termine, recu, encours, refuse, abandonne, revise, a_valide, faq],
@@ -519,7 +519,7 @@
 			        "data": "tache",
 			        "class" : "font-weight-bold"
 			    }, {
-			        "title": "Nombre(s)",
+			        "title": "Nombre de Ticket(s)",
 			        "data": "nb"
 				}],
 			"searching": false,
@@ -713,7 +713,7 @@
 			        "title": "Date de réception",
 					"data" : "dateReception"
 			    }, {
-			        "title": "Status",
+			        "title": "Statut",
 			        "data" : "statutTicket",
 					"render" : function ( data, type, row, meta ) {
 						var a      = "";

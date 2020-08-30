@@ -86,6 +86,8 @@ class Calendrier extends Ci_Controller
 		- Ascenssion
 		- Pentecote
 		- Lundi de Pentecote
+
+		Executer que si vous avez vidé la table Ferie de la base de donné.
 	**************************************************************************************************************/
 
 	public function Attention(){

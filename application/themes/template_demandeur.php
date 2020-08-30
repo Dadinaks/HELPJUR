@@ -57,7 +57,7 @@
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/mdb.min.js'); ?>"></script>
         
         <!-- moment -->
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/moment.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/FullCalendar3.10.0/lib/moment.min.js'); ?>"></script>
         <!-- /.moment -->
 
         <!-- addons dataTable -->

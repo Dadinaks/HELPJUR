@@ -4629,7 +4629,7 @@ var EventRenderer = /** @class */ (function () {
                 if (hasEventRenderHandlers) { // optimization
                     el = _this.filterEventRenderEl(seg.footprint, el);
                 }
-                if (el) {
+                if(el && seg != typeof 'undefined') {
                     el.data('fc-seg', seg); // used by handlers
                     seg.el = el;
                     renderedSegs.push(seg);

@@ -57,7 +57,7 @@
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/mdb.min.js'); ?>"></script>
         
         <!-- moment -->
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/moment.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/FullCalendar3.10.0/lib/moment.min.js'); ?>"></script>
         <!-- /.moment -->
         
         <!-- addons dataTable -->
@@ -93,72 +93,6 @@
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item <?php if ($this->uri->segment(1) == "Tableau_de_bord") { echo "active"; } ?>">
                                 <a class="nav-link waves-effect" href="<?php echo base_url('Tableau_de_bord'); ?>">Tableau de bord</a>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="dropdown_ticket" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Gérer les Tickets
-                                    <?php $nb = $this->TicketModel->count('Reçu') + $this->TicketModel->count('A_Validé') + $this->TicketModel->count('Révisé'); 
-                                    if ($nb != NULL) { ?>
-                                        <span class="badge badge-pill badge-danger" id="new_ticket"></span>
-                                    <?php } ?>
-                                </a>
-                                
-                                <div class="dropdown-menu dropdown-default" aria-labelledby="dropdown_ticket">
-                                    
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Recus") { echo "active"; } ?>" href="<?php echo site_url('ticket/Recus'); ?>">
-                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Recus") { echo "white-text"; } ?>">
-                                            <i class="fas fa-file-alt mr-2"></i>Dossier Reçus 
-                                            <?php $recu = $this->TicketModel->count('Reçu'); 
-                                            if ($recu != NULL) { ?>
-                                                <span class="badge badge-pill badge-danger" id="new_recu"></span>
-                                            <?php } ?>
-                                        </span>
-                                    </a>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Encours") { echo "active"; } ?>" href="<?php echo site_url('ticket/Encours'); ?>">
-                                        <span class="mr-5 <?php if ($this->uri->segment(2) == "Encours") { echo "white-text"; } ?>"><i class="fas fa-file-signature mr-1"></i>Dossier En cours de traitement</span>
-                                    </a>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Refuses") { echo "active"; } ?>" href="<?php echo site_url('ticket/Refuses'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Refuses") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossier Refusés</span>
-                                    </a>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Abandon") { echo "active"; } ?>" href="<?php echo site_url('ticket/Abandon'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Abandon") { echo "white-text"; } ?>"><i class="fas fa-file-excel mr-2"></i>Dossier Abandonné</span>
-                                    </a>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Faq") { echo "active"; } ?>" href="<?php echo site_url('ticket/Faq'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Faq") { echo "white-text"; } ?>"><i class="fas fa-file mr-2"></i>Dossier redirigé vers F.A.Q</span>
-                                    </a>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Termines") { echo "active"; } ?>" href="<?php echo site_url('ticket/Termines'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Termines") { echo "white-text"; } ?>"><i class="fas fa-file-archive mr-2"></i>Dossier Terminés</span>
-                                    </a>
-
-                                    <small class="text-muted"> Validation </small>
-                                    <hr>
-
-                                    <a class="dropdown-item <?php if ($this->uri->segment(2) == "Validation") { echo "active"; } ?>" href="<?php echo site_url('ticket/Validation'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Validation") { echo "white-text"; } ?>"><i class="fas fa-file-import mr-2"></i>
-                                            Dossier à valider
-                                            <?php $valider = $this->TicketModel->count('A_Validé'); 
-                                            if ($valider != NULL) { ?>
-                                                <span class="badge badge-pill badge-danger" id="new_avalider"></span>
-                                            <?php } ?>
-                                        </span>
-                                    </a>
-
-                                     <a class="dropdown-item <?php if ($this->uri->segment(2) == "Revision") { echo "active"; } ?>" href="<?php echo site_url('ticket/Revision'); ?>">
-                                        <span class="<?php if ($this->uri->segment(2) == "Revision") { echo "white-text"; } ?>"><i class="fas fa-file-export mr-2"></i>
-                                            Dossier à réviser
-                                            <?php $revise = $this->TicketModel->count('Révisé'); 
-                                            if ($revise != NULL) { ?>
-                                                <span class="badge badge-pill badge-danger" id="new_revise"></span>
-                                            <?php } ?>
-                                        </span>
-                                    </a>
-                                </div>
                             </li>
                         </ul>
 
