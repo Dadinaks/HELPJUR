@@ -10,7 +10,7 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
 					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
@@ -71,7 +71,7 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
 					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
@@ -133,7 +133,7 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
 					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
@@ -283,7 +283,7 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
 					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
@@ -377,7 +377,7 @@
 			<small>
 				<dl class="row">
 					<dt class="col-sm-3 col-md-4 col-lg-2">Demandeur</dt>
-					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?> <small class="text-muted">< <?php echo $row->email; ?> ></small></dd>
+					<dd class="col-sm-9"><?php echo $row->info_demandeur; ?></dd>
 
 					<dt class="col-sm-3 col-md-4 col-lg-2">Saisisseur</dt>
 					<dd class="col-sm-9"><?php echo $row->info_saisisseur; ?></dd>
@@ -405,6 +405,41 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+					foreach ($pjs['pj'] as $col) :
+					if($col->pj != NULL) :?>
+					<small>
+						<dl class="row">	
+							<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe</dt>
+							<dd class="col-sm-7"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a></dd>	
+						</dl>
+					</small>
+					<?php 
+					endif;
+					endforeach;
+					?>
+
+					<?php echo form_open_multipart('ajouter_pj/' . $this->uri->segment(3)); ?>
+						<input type="hidden" name="pj_idTicket" value="<?php echo $this->uri->segment(3); ?>">
+						<div class="row clearfix">
+							<div class="col-9">
+								<div class="input-group mb-2">
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" id="pj" name="pj" aria-describedby="pj">
+										<label class="custom-file-label text-left" for="pj1">Choisir un fichier inferieur à 2Mo</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-1">
+								<button type="submit" id="save" class="btn btn-sm btn-rounded btn-success" data-tooltip="tooltip" data-placement="bottom" title="Ajouter le piece jointe dans le traitement">Ajouter</button>
+							</div>
+						</div>
+
+						<small id="error_uploadFile" class="red-text font-weight-bold"></small>
+					<?php echo form_close(); ?>
+					
 					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3)); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
@@ -470,6 +505,25 @@
 <?php endforeach; ?>
 
 <script type="text/javascript">
+	function bytesToSize(bytes) {
+		var sizes = ['Bytes', 'Ko', 'Mo', 'Go', 'To'];
+		if (bytes == 0) return '0 Byte';
+			var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+                                    
+    $('#pj').bind('change', function() {
+        $("#error_uploadFile").empty();
+        if (this.files[0].size > 2000000){
+            $("#error_uploadFile").append(
+                "La pièce jointe ne doit pas dépasser de 2Mo. La taille de votre fichier est " + bytesToSize(this.files[0].size)
+            );
+            $("#save").attr("disabled", true);
+        } else {
+            $("#save").attr("disabled", false);
+        }
+    });
+
     function exportHTML() {
         var num = $('#numeroTicket').html();
         var objet = $('#objet_ticket').html();

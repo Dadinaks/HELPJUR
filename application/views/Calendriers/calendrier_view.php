@@ -6,7 +6,6 @@
 
 <script src="<?php echo base_url('assets/FullCalendar3.10.0/locale/fr.js') ?>"></script>
 
-
 <div class="row">
 	<div class="col-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
 		<div class="card testimonial-card">

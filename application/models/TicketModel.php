@@ -18,6 +18,7 @@ class TicketModel extends CI_Model
 			->join('demande', 'demande.idDemande = ticket.idDemande', 'left')
 			->join('tache', 'tache.idTache = ticket.idTache', 'left')
 			->join('categorie', 'categorie.idCategorie = tache.idCategorie', 'left')
+			//->join('pj_traitement', 'pj_traitement.idTicket = ticket.idTicket', 'left')
 			->join('utilisateur s', 's.idUtilisateur = ticket.saisisseur', 'left')
 			->join('utilisateur v', 'v.idUtilisateur = ticket.valideur', 'left')
 			->join('utilisateur d', 'd.idUtilisateur = ticket.demandeur', 'left')

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 20 mai 2020 à 12:50
--- Version du serveur :  5.7.26
--- Version de PHP :  7.3.5
+-- Host: localhost
+-- Generation Time: Sep 08, 2020 at 11:28 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,24 +18,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `db_helpjur`
+-- Database: `db_helpjur`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categorie`
+-- Table structure for table `categorie`
 --
 
-DROP TABLE IF EXISTS `categorie`;
-CREATE TABLE IF NOT EXISTS `categorie` (
-  `idCategorie` int(11) NOT NULL AUTO_INCREMENT,
-  `categorie` varchar(100) NOT NULL,
-  PRIMARY KEY (`idCategorie`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `categorie` (
+  `idCategorie` int(11) NOT NULL,
+  `categorie` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `categorie`
+-- Dumping data for table `categorie`
 --
 
 INSERT INTO `categorie` (`idCategorie`, `categorie`) VALUES
@@ -46,43 +43,38 @@ INSERT INTO `categorie` (`idCategorie`, `categorie`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `conge`
+-- Table structure for table `conge`
 --
 
-DROP TABLE IF EXISTS `conge`;
-CREATE TABLE IF NOT EXISTS `conge` (
-  `idConge` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `conge` (
+  `idConge` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
   `editable` varchar(6) NOT NULL DEFAULT 'false ',
   `color` varchar(25) NOT NULL,
   `backgroundColor` varchar(25) NOT NULL,
-  `textColor` varchar(25) NOT NULL DEFAULT 'white',
-  PRIMARY KEY (`idConge`)
+  `textColor` varchar(25) NOT NULL DEFAULT 'white'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `demande`
+-- Table structure for table `demande`
 --
 
-DROP TABLE IF EXISTS `demande`;
-CREATE TABLE IF NOT EXISTS `demande` (
-  `idDemande` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `demande` (
+  `idDemande` int(11) NOT NULL,
   `dateDemande` datetime NOT NULL,
   `objet` text NOT NULL,
   `contenu` longtext NOT NULL,
   `fichier` varchar(250) DEFAULT NULL,
   `envoyeur` int(11) NOT NULL,
-  `statutDemande` varchar(6) DEFAULT 'Envoyé',
-  PRIMARY KEY (`idDemande`),
-  KEY `fk_demande_utilisateur` (`envoyeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `statutDemande` varchar(6) DEFAULT 'Envoyé'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `demande`
+-- Dumping data for table `demande`
 --
 
 INSERT INTO `demande` (`idDemande`, `dateDemande`, `objet`, `contenu`, `fichier`, `envoyeur`, `statutDemande`) VALUES
@@ -94,28 +86,31 @@ INSERT INTO `demande` (`idDemande`, `dateDemande`, `objet`, `contenu`, `fichier`
 (6, '2020-05-20 09:11:22', 'Test Test', '<p>bonjour,</p>\r\n\r\n<p>azekabj&nbsp; zealn nezna&nbsp;</p>\r\n\r\n<p>e azezaeazzzzzzzzzzzzzzzzz aezaaaaaaaaaaaaaaaaaaaaaa</p>\r\n\r\n<p>zesdq&nbsp;</p>\r\n', NULL, 7, 'Reçu'),
 (7, '2020-05-20 14:30:15', 'zzzzzzzzzz', '<p>zzzzzzzzzzzzzzzz</p>\r\n', NULL, 7, 'Reçu'),
 (8, '2020-05-20 14:30:21', 'eeeeeeeeee', '<p>eeeeeeeeeeeeeeee</p>\r\n', NULL, 7, 'Reçu'),
-(9, '2020-05-20 14:30:28', 'gggggggggggg', '<p>ggggggggggggggggg</p>\r\n', NULL, 7, 'Reçu');
+(9, '2020-05-20 14:30:28', 'gggggggggggg', '<p>ggggggggggggggggg</p>\r\n', NULL, 7, 'Reçu'),
+(10, '2020-09-07 19:20:03', 'zazxaxax zxzaxza zdzadnzuadnaz zdaj dznadanodzka dioanioanc eoanciencl k ce cino', '<p>Bonjour,<br />\r\nVotre demande est prise en charge sous le num&eacute;ro : TIK-JUR-00000000009.<br />\r\nNous reviendrons vers vous dans 15 jour(s) ouvr&eacute;s. Vous pouvez la consult&eacute; dans la liste des dossiers prise en charge :</p>\r\n\r\n<ul>\r\n	<li><strong>Num&eacute;ro :</strong>TIK-JUR-00000000009</li>\r\n	<li><strong>Objet :</strong>zzzzzzzzzz</li>\r\n</ul>\r\n\r\n<p><strong>NB :</strong> Veuillez ne pas r&eacute;pondre &agrave; ce mail.<br />\r\n<br />\r\n<strong>Cordialement. </strong></p>\r\n', '', 7, 'Envoyé'),
+(11, '2020-09-07 19:26:18', 'w', '<p>w</p>\r\n', '', 7, 'Envoyé'),
+(12, '2020-09-07 19:51:07', '2', '<p>hg</p>\r\n', NULL, 7, 'Envoyé'),
+(13, '2020-09-08 10:03:05', '4', '<p>h</p>\r\n', '', 7, 'Envoyé'),
+(14, '2020-09-08 10:08:04', 'a', '<p>a</p>\r\n', 'Violet-Evergarden-1440x1280.jpg', 7, 'Envoyé');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ferie`
+-- Table structure for table `ferie`
 --
 
-DROP TABLE IF EXISTS `ferie`;
-CREATE TABLE IF NOT EXISTS `ferie` (
-  `idFerie` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `ferie` (
+  `idFerie` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `start` date NOT NULL,
   `editable` varchar(6) NOT NULL DEFAULT 'false',
   `color` varchar(25) NOT NULL DEFAULT 'rgb(255, 59, 94)',
   `backgroundColor` varchar(25) NOT NULL DEFAULT 'rgb(255, 59, 94)',
-  `textColor` varchar(25) NOT NULL DEFAULT 'white',
-  PRIMARY KEY (`idFerie`)
-) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=latin1;
+  `textColor` varchar(25) NOT NULL DEFAULT 'white'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `ferie`
+-- Dumping data for table `ferie`
 --
 
 INSERT INTO `ferie` (`idFerie`, `title`, `start`, `editable`, `color`, `backgroundColor`, `textColor`) VALUES
@@ -383,16 +378,15 @@ INSERT INTO `ferie` (`idFerie`, `title`, `start`, `editable`, `color`, `backgrou
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ldap`
+-- Table structure for table `ldap`
 --
 
-DROP TABLE IF EXISTS `ldap`;
-CREATE TABLE IF NOT EXISTS `ldap` (
-  `ldap` int(11) NOT NULL DEFAULT '1'
+CREATE TABLE `ldap` (
+  `ldap` int(11) NOT NULL DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `ldap`
+-- Dumping data for table `ldap`
 --
 
 INSERT INTO `ldap` (`ldap`) VALUES
@@ -401,19 +395,17 @@ INSERT INTO `ldap` (`ldap`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `lieu`
+-- Table structure for table `lieu`
 --
 
-DROP TABLE IF EXISTS `lieu`;
-CREATE TABLE IF NOT EXISTS `lieu` (
-  `idLieu` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `lieu` (
+  `idLieu` int(11) NOT NULL,
   `codeAgence` int(5) UNSIGNED ZEROFILL NOT NULL,
-  `agences` varchar(150) NOT NULL,
-  PRIMARY KEY (`idLieu`)
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=latin1;
+  `agences` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `lieu`
+-- Dumping data for table `lieu`
 --
 
 INSERT INTO `lieu` (`idLieu`, `codeAgence`, `agences`) VALUES
@@ -529,18 +521,28 @@ INSERT INTO `lieu` (`idLieu`, `codeAgence`, `agences`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `profil`
+-- Table structure for table `pj_traitement`
 --
 
-DROP TABLE IF EXISTS `profil`;
-CREATE TABLE IF NOT EXISTS `profil` (
-  `idProfil` int(11) NOT NULL AUTO_INCREMENT,
-  `profile` varchar(20) NOT NULL,
-  PRIMARY KEY (`idProfil`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+CREATE TABLE `pj_traitement` (
+  `idPj` int(11) NOT NULL,
+  `pj` varchar(250) NOT NULL,
+  `idTicket` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Déchargement des données de la table `profil`
+-- Table structure for table `profil`
+--
+
+CREATE TABLE `profil` (
+  `idProfil` int(11) NOT NULL,
+  `profile` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `profil`
 --
 
 INSERT INTO `profil` (`idProfil`, `profile`) VALUES
@@ -554,22 +556,19 @@ INSERT INTO `profil` (`idProfil`, `profile`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tache`
+-- Table structure for table `tache`
 --
 
-DROP TABLE IF EXISTS `tache`;
-CREATE TABLE IF NOT EXISTS `tache` (
-  `idTache` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tache` (
+  `idTache` int(11) NOT NULL,
   `tache` varchar(100) NOT NULL,
   `delai` int(11) NOT NULL,
   `cotation` varchar(40) NOT NULL COMMENT 'Bas, Moyen, Difficile, Complexe, Assistance externe	',
-  `idCategorie` int(11) NOT NULL,
-  PRIMARY KEY (`idTache`),
-  KEY `fk_tache_categorie` (`idCategorie`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `idCategorie` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `tache`
+-- Dumping data for table `tache`
 --
 
 INSERT INTO `tache` (`idTache`, `tache`, `delai`, `cotation`, `idCategorie`) VALUES
@@ -587,21 +586,22 @@ INSERT INTO `tache` (`idTache`, `tache`, `delai`, `cotation`, `idCategorie`) VAL
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ticket`
+-- Table structure for table `ticket`
 --
 
-DROP TABLE IF EXISTS `ticket`;
-CREATE TABLE IF NOT EXISTS `ticket` (
-  `idTicket` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `ticket` (
+  `idTicket` int(11) NOT NULL,
   `idDemande` int(11) DEFAULT NULL,
   `idTache` int(11) DEFAULT NULL,
   `saisisseur` int(11) DEFAULT NULL,
   `demandeur` int(11) DEFAULT NULL,
+  `valideur` int(11) DEFAULT NULL,
+  `valideRemarque` int(11) DEFAULT NULL,
   `statutTicket` varchar(20) DEFAULT NULL,
   `numTicket` varchar(55) NOT NULL,
-  `motif` text,
-  `traitement` longtext,
-  `revision` text COMMENT 'Remarque du directeur ou senior',
+  `motif` text DEFAULT NULL,
+  `traitement` longtext DEFAULT NULL,
+  `revision` text DEFAULT NULL COMMENT 'Remarque du directeur ou senior',
   `dateReception` datetime DEFAULT NULL COMMENT 'Date de réception de la demande par les Juristes ',
   `dateEncours` datetime DEFAULT NULL,
   `dateAvantValidation` datetime DEFAULT NULL,
@@ -609,38 +609,35 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `dateTermine` datetime DEFAULT NULL,
   `dateRefus` datetime DEFAULT NULL,
   `dateAbandon` datetime DEFAULT NULL,
-  `dateFaq` datetime DEFAULT NULL,
-  PRIMARY KEY (`idTicket`),
-  KEY `fk_ticket_utilisateur` (`saisisseur`),
-  KEY `fk_ticket_tache` (`idTache`),
-  KEY `fk_ticket_demande` (`idDemande`),
-  KEY `fk_ticket_utilisateur2` (`demandeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `dateFaq` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `ticket`
+-- Dumping data for table `ticket`
 --
 
-INSERT INTO `ticket` (`idTicket`, `idDemande`, `idTache`, `saisisseur`, `demandeur`, `statutTicket`, `numTicket`, `motif`, `traitement`, `revision`, `dateReception`, `dateEncours`, `dateAvantValidation`, `dateRevise`, `dateTermine`, `dateRefus`, `dateAbandon`, `dateFaq`) VALUES
-(1, 1, 1, 6, 7, 'Terminé', 'TIK-JUR-00000000001', NULL, NULL, NULL, '2020-05-19 11:21:58', '2020-05-19 13:39:44', '2020-05-19 13:40:43', NULL, '2020-05-19 13:41:13', NULL, NULL, NULL),
-(2, 2, NULL, NULL, 7, 'Abandonné', 'TIK-JUR-00000000002', 'aaaaaaaaaa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-05-19 13:55:16', NULL),
-(3, 5, NULL, 5, NULL, 'Faq', 'TIK-JUR-00000000003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-05-19 13:56:45'),
-(4, 4, 2, 5, 7, 'Abandonné', 'TIK-JUR-00000000004', 'aezaea ', '<p>qqqqqqqqqqqqqqq</p>\r\n', NULL, '2020-05-19 13:57:01', '2020-05-19 13:58:26', NULL, NULL, NULL, NULL, '2020-05-19 14:00:13', NULL),
-(5, 3, 6, 6, 7, 'Terminé', 'TIK-JUR-00000000005', NULL, '<p>aaaaaa</p>\r\n', NULL, '2020-05-19 13:57:13', '2020-05-19 14:48:16', '2020-05-20 08:49:21', NULL, '2020-05-20 08:57:48', NULL, NULL, NULL),
-(6, 6, 2, 6, 7, 'Terminé', 'TIK-JUR-00000000006', NULL, '<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>\r\n', 'aaaaaaaaaaaaaaa', '2020-05-20 09:11:39', '2020-05-20 09:11:45', '2020-05-20 09:11:51', '2020-05-20 09:11:56', '2020-05-20 09:18:19', NULL, NULL, NULL),
-(7, 9, 10, NULL, 7, 'Reçu', 'TIK-JUR-00000000007', NULL, NULL, NULL, '2020-05-18 14:30:57', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 8, 1, NULL, 7, 'Reçu', 'TIK-JUR-00000000008', NULL, NULL, NULL, '2020-05-19 14:31:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 7, 9, NULL, 7, 'Reçu', 'TIK-JUR-00000000009', NULL, NULL, NULL, '2020-05-19 14:31:28', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ticket` (`idTicket`, `idDemande`, `idTache`, `saisisseur`, `demandeur`, `valideur`, `valideRemarque`, `statutTicket`, `numTicket`, `motif`, `traitement`, `revision`, `dateReception`, `dateEncours`, `dateAvantValidation`, `dateRevise`, `dateTermine`, `dateRefus`, `dateAbandon`, `dateFaq`) VALUES
+(1, 1, 1, 6, 7, NULL, NULL, 'Terminé', 'TIK-JUR-00000000001', NULL, NULL, NULL, '2020-05-19 11:21:58', '2020-05-19 13:39:44', '2020-05-19 13:40:43', NULL, '2020-05-19 13:41:13', NULL, NULL, NULL),
+(2, 2, NULL, NULL, 7, NULL, NULL, 'Abandonné', 'TIK-JUR-00000000002', 'aaaaaaaaaa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-05-19 13:55:16', NULL),
+(3, 5, NULL, 5, NULL, NULL, NULL, 'Faq', 'TIK-JUR-00000000003', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-05-19 13:56:45'),
+(4, 4, 2, 5, 7, NULL, NULL, 'Abandonné', 'TIK-JUR-00000000004', 'aezaea ', '<p>qqqqqqqqqqqqqqq</p>\r\n', NULL, '2020-05-19 13:57:01', '2020-05-19 13:58:26', NULL, NULL, NULL, NULL, '2020-05-19 14:00:13', NULL),
+(5, 3, 6, 6, 7, NULL, NULL, 'Terminé', 'TIK-JUR-00000000005', NULL, '<p>aaaaaa</p>\r\n', NULL, '2020-05-19 13:57:13', '2020-05-19 14:48:16', '2020-05-20 08:49:21', NULL, '2020-05-20 08:57:48', NULL, NULL, NULL),
+(6, 6, 2, 6, 7, NULL, NULL, 'Terminé', 'TIK-JUR-00000000006', NULL, '<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>\r\n', 'aaaaaaaaaaaaaaa', '2020-05-20 09:11:39', '2020-05-20 09:11:45', '2020-05-20 09:11:51', '2020-05-20 09:11:56', '2020-05-20 09:18:19', NULL, NULL, NULL),
+(7, 9, 10, NULL, 7, NULL, NULL, 'Reçu', 'TIK-JUR-00000000007', NULL, NULL, NULL, '2020-05-18 14:30:57', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 8, 1, 5, 7, NULL, NULL, 'Encours', 'TIK-JUR-00000000008', NULL, NULL, NULL, '2020-05-19 14:31:17', '2020-09-08 10:29:48', NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 7, 9, 5, 7, NULL, NULL, 'Encours', 'TIK-JUR-00000000009', NULL, NULL, NULL, '2020-05-19 14:31:28', '2020-09-07 18:34:44', NULL, NULL, NULL, NULL, NULL, NULL),
+(10, 14, 6, NULL, 7, NULL, NULL, 'Reçu', 'TIK-JUR-00000000010', NULL, NULL, NULL, '2020-09-08 10:55:36', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 14, 1, 5, 7, NULL, NULL, 'Encours', 'TIK-JUR-00000000011', NULL, NULL, NULL, '2020-09-08 10:57:11', '2020-09-08 11:00:04', NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 14, NULL, 5, 7, NULL, NULL, 'Refusé', 'TIK-JUR-00000000012', '45513122221\r\n', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-09-08 10:59:41', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateur`
+-- Table structure for table `utilisateur`
 --
 
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `idUtilisateur` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `utilisateur` (
+  `idUtilisateur` int(11) NOT NULL,
   `nom` varchar(100) NOT NULL,
   `prenom` varchar(100) NOT NULL,
   `matricule` int(11) NOT NULL,
@@ -650,14 +647,11 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `unite` varchar(200) NOT NULL,
   `poste` varchar(250) NOT NULL,
   `statutCompte` varchar(10) NOT NULL,
-  `profil` int(11) NOT NULL,
-  PRIMARY KEY (`idUtilisateur`),
-  KEY `fk_utilsateur_profil` (`profil`),
-  KEY `fk_utilsateur_lieu` (`agence`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `profil` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `utilisateur`
+-- Dumping data for table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`idUtilisateur`, `nom`, `prenom`, `matricule`, `email`, `agence`, `direction`, `unite`, `poste`, `statutCompte`, `profil`) VALUES
@@ -670,32 +664,180 @@ INSERT INTO `utilisateur` (`idUtilisateur`, `nom`, `prenom`, `matricule`, `email
 (7, 'Demandeur', 'Demandeur', 1111, 'demandeur@demandeur.dem', 5, 'Demande', 'Demande', 'Demande', 'Activé', 4);
 
 --
--- Contraintes pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Contraintes pour la table `demande`
+-- Indexes for table `categorie`
+--
+ALTER TABLE `categorie`
+  ADD PRIMARY KEY (`idCategorie`);
+
+--
+-- Indexes for table `conge`
+--
+ALTER TABLE `conge`
+  ADD PRIMARY KEY (`idConge`);
+
+--
+-- Indexes for table `demande`
+--
+ALTER TABLE `demande`
+  ADD PRIMARY KEY (`idDemande`),
+  ADD KEY `fk_demande_utilisateur` (`envoyeur`);
+
+--
+-- Indexes for table `ferie`
+--
+ALTER TABLE `ferie`
+  ADD PRIMARY KEY (`idFerie`);
+
+--
+-- Indexes for table `lieu`
+--
+ALTER TABLE `lieu`
+  ADD PRIMARY KEY (`idLieu`);
+
+--
+-- Indexes for table `pj_traitement`
+--
+ALTER TABLE `pj_traitement`
+  ADD PRIMARY KEY (`idPj`),
+  ADD KEY `fk_Pj_Ticket` (`idTicket`);
+
+--
+-- Indexes for table `profil`
+--
+ALTER TABLE `profil`
+  ADD PRIMARY KEY (`idProfil`);
+
+--
+-- Indexes for table `tache`
+--
+ALTER TABLE `tache`
+  ADD PRIMARY KEY (`idTache`),
+  ADD KEY `fk_tache_categorie` (`idCategorie`);
+
+--
+-- Indexes for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD PRIMARY KEY (`idTicket`),
+  ADD KEY `fk_ticket_utilisateur` (`saisisseur`),
+  ADD KEY `fk_ticket_tache` (`idTache`),
+  ADD KEY `fk_ticket_demande` (`idDemande`),
+  ADD KEY `fk_ticket_utilisateur2` (`demandeur`),
+  ADD KEY `demandeur` (`demandeur`),
+  ADD KEY `valideur` (`valideur`),
+  ADD KEY `fk_ticket_utilisateur4` (`valideRemarque`);
+
+--
+-- Indexes for table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  ADD PRIMARY KEY (`idUtilisateur`),
+  ADD KEY `fk_utilsateur_profil` (`profil`),
+  ADD KEY `fk_utilsateur_lieu` (`agence`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `categorie`
+--
+ALTER TABLE `categorie`
+  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `conge`
+--
+ALTER TABLE `conge`
+  MODIFY `idConge` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `demande`
+--
+ALTER TABLE `demande`
+  MODIFY `idDemande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `ferie`
+--
+ALTER TABLE `ferie`
+  MODIFY `idFerie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
+
+--
+-- AUTO_INCREMENT for table `lieu`
+--
+ALTER TABLE `lieu`
+  MODIFY `idLieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+
+--
+-- AUTO_INCREMENT for table `pj_traitement`
+--
+ALTER TABLE `pj_traitement`
+  MODIFY `idPj` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `profil`
+--
+ALTER TABLE `profil`
+  MODIFY `idProfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tache`
+--
+ALTER TABLE `tache`
+  MODIFY `idTache` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `ticket`
+--
+ALTER TABLE `ticket`
+  MODIFY `idTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  MODIFY `idUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `demande`
 --
 ALTER TABLE `demande`
   ADD CONSTRAINT `fk_demande_utilisateur` FOREIGN KEY (`envoyeur`) REFERENCES `utilisateur` (`idUtilisateur`);
 
 --
--- Contraintes pour la table `tache`
+-- Constraints for table `pj_traitement`
+--
+ALTER TABLE `pj_traitement`
+  ADD CONSTRAINT `fk_Pj_Ticket` FOREIGN KEY (`idTicket`) REFERENCES `ticket` (`idTicket`);
+
+--
+-- Constraints for table `tache`
 --
 ALTER TABLE `tache`
   ADD CONSTRAINT `fk_tache_categorie` FOREIGN KEY (`idCategorie`) REFERENCES `categorie` (`idCategorie`);
 
 --
--- Contraintes pour la table `ticket`
+-- Constraints for table `ticket`
 --
 ALTER TABLE `ticket`
   ADD CONSTRAINT `fk_ticket_demande` FOREIGN KEY (`idDemande`) REFERENCES `demande` (`idDemande`),
   ADD CONSTRAINT `fk_ticket_tache` FOREIGN KEY (`idTache`) REFERENCES `tache` (`idTache`),
   ADD CONSTRAINT `fk_ticket_utilisateur1` FOREIGN KEY (`saisisseur`) REFERENCES `utilisateur` (`idUtilisateur`),
-  ADD CONSTRAINT `fk_ticket_utilisateur2` FOREIGN KEY (`demandeur`) REFERENCES `utilisateur` (`idUtilisateur`);
+  ADD CONSTRAINT `fk_ticket_utilisateur2` FOREIGN KEY (`demandeur`) REFERENCES `utilisateur` (`idUtilisateur`),
+  ADD CONSTRAINT `fk_ticket_utilisateur3` FOREIGN KEY (`valideur`) REFERENCES `utilisateur` (`idUtilisateur`),
+  ADD CONSTRAINT `fk_ticket_utilisateur4` FOREIGN KEY (`valideRemarque`) REFERENCES `utilisateur` (`idUtilisateur`);
 
 --
--- Contraintes pour la table `utilisateur`
+-- Constraints for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD CONSTRAINT `fk_utilsateur_lieu` FOREIGN KEY (`agence`) REFERENCES `lieu` (`idLieu`),

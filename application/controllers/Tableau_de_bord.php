@@ -69,7 +69,7 @@ class Tableau_de_bord extends CI_Controller
         echo json_encode($data);
     }
 
-    public function graphe_line(){
+    public function graphe_line($annee = NULL){
         $mois = 01;
         $tableau        = array();
         $tableauRecu    = array();
@@ -81,32 +81,60 @@ class Tableau_de_bord extends CI_Controller
         $tableauAbandon = array();
         $tableauFaq     = array();
 
-        while ( $mois <= 12) {
-            $data['recu'] = $this->TbdModel->data_chart_line('dateReception', $mois);
-            array_push($tableauRecu, $data["recu"][0]->dateReception);
+        while ($mois <= 12) {
+            if ($annee){
+                $data['recu'] = $this->TbdModel->data_chart_line('dateReception', $mois, $annee);
+                array_push($tableauRecu, $data["recu"][0]->dateReception);
 
-            $data['encours'] = $this->TbdModel->data_chart_line('dateEncours', $mois);
-            array_push($tableauEncours, $data["encours"][0]->dateEncours);
+                $data['encours'] = $this->TbdModel->data_chart_line('dateEncours', $mois, $annee);
+                array_push($tableauEncours, $data["encours"][0]->dateEncours);
 
-            $data['a_valide'] = $this->TbdModel->data_chart_line('dateAvantValidation', $mois);
-            array_push($tableauAvalide, $data["a_valide"][0]->dateAvantValidation);
+                $data['a_valide'] = $this->TbdModel->data_chart_line('dateAvantValidation', $mois, $annee);
+                array_push($tableauAvalide, $data["a_valide"][0]->dateAvantValidation);
 
-            $data['revise'] = $this->TbdModel->data_chart_line('dateRevise', $mois);
-            array_push($tableauRevise, $data["revise"][0]->dateRevise);
+                $data['revise'] = $this->TbdModel->data_chart_line('dateRevise', $mois, $annee);
+                array_push($tableauRevise, $data["revise"][0]->dateRevise);
 
-            $data['termine'] = $this->TbdModel->data_chart_line('dateTermine', $mois);
-            array_push($tableauTermine, $data["termine"][0]->dateTermine);
+                $data['termine'] = $this->TbdModel->data_chart_line('dateTermine', $mois, $annee);
+                array_push($tableauTermine, $data["termine"][0]->dateTermine);
 
-            $data['refuse'] = $this->TbdModel->data_chart_line('dateRefus', $mois);
-            array_push($tableauRefuse, $data["refuse"][0]->dateRefus);
+                $data['refuse'] = $this->TbdModel->data_chart_line('dateRefus', $mois, $annee);
+                array_push($tableauRefuse, $data["refuse"][0]->dateRefus);
 
-            $data['abandon'] = $this->TbdModel->data_chart_line('dateAbandon', $mois);
-            array_push($tableauAbandon, $data["abandon"][0]->dateAbandon);
+                $data['abandon'] = $this->TbdModel->data_chart_line('dateAbandon', $mois, $annee);
+                array_push($tableauAbandon, $data["abandon"][0]->dateAbandon);
 
-            $data['faq'] = $this->TbdModel->data_chart_line('dateFaq', $mois);
-            array_push($tableauFaq, $data["faq"][0]->dateFaq);
+                $data['faq'] = $this->TbdModel->data_chart_line('dateFaq', $mois, $annee);
+                array_push($tableauFaq, $data["faq"][0]->dateFaq);
 
-            $mois++;
+                $mois++;
+            } else {
+                $data['recu'] = $this->TbdModel->data_chart_line('dateReception', $mois);
+                array_push($tableauRecu, $data["recu"][0]->dateReception);
+
+                $data['encours'] = $this->TbdModel->data_chart_line('dateEncours', $mois);
+                array_push($tableauEncours, $data["encours"][0]->dateEncours);
+
+                $data['a_valide'] = $this->TbdModel->data_chart_line('dateAvantValidation', $mois);
+                array_push($tableauAvalide, $data["a_valide"][0]->dateAvantValidation);
+
+                $data['revise'] = $this->TbdModel->data_chart_line('dateRevise', $mois);
+                array_push($tableauRevise, $data["revise"][0]->dateRevise);
+
+                $data['termine'] = $this->TbdModel->data_chart_line('dateTermine', $mois);
+                array_push($tableauTermine, $data["termine"][0]->dateTermine);
+
+                $data['refuse'] = $this->TbdModel->data_chart_line('dateRefus', $mois);
+                array_push($tableauRefuse, $data["refuse"][0]->dateRefus);
+
+                $data['abandon'] = $this->TbdModel->data_chart_line('dateAbandon', $mois);
+                array_push($tableauAbandon, $data["abandon"][0]->dateAbandon);
+
+                $data['faq'] = $this->TbdModel->data_chart_line('dateFaq', $mois);
+                array_push($tableauFaq, $data["faq"][0]->dateFaq);
+
+                $mois++;
+            }
         }
 
         $tableau = [

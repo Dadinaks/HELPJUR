@@ -121,7 +121,10 @@ class TbdModel extends CI_Model
     }
 
 
-    /* SELECT count($date_statuts) FROM ticket where DATE_FORMAT($date_statuts, "%m") = $mois AND DATE_FORMAT($date_statuts, "%Y") = $an */
+    /**
+    * SELECT count($date_statuts) FROM ticket 
+    * where DATE_FORMAT($date_statuts, "%m") = $mois AND DATE_FORMAT($date_statuts, "%Y") = $an 
+    */
     public function data_chart_line($date_statuts, $mois, $an = NULL){
         /* $user    = $this->session->userdata('id_utilisateur');
         $session = $this->session->userdata('role'); */

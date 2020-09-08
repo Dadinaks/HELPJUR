@@ -389,7 +389,7 @@
   					<div class="card-body">
   						<div class="row">
   							<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-  								<label>Filtrer par année : </label><input class="form-control" type="number" name="filtreAnnee" min="2019">
+  								<label>Filtrer par année : </label><input class="form-control" type="number" name="filtreAnnee" id="filtreAnnee" min="2019">
   							</div>
   						</div>
   						<canvas id="lineChart"></canvas>
@@ -859,8 +859,79 @@
 			});
 		});
 		
-
 		//line
+		$('#filtreAnnee').on('change', function(){
+			$.getJSON("<?php echo base_url("Tableau_de_bord/graphe_line/") ?>" + $('#filtreAnnee').val(), function(data){
+				var ctxL = document.getElementById("lineChart").getContext('2d');
+				var myLineChart = new Chart(ctxL, {
+					type: 'line',
+					data: {
+						labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+						datasets: [{
+							label: "Terminée",
+							data: data.Termine,
+							backgroundColor: ['rgba(4, 200, 50, .2)',],
+							borderColor: ['rgba(4, 200, 40, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "Reçu",
+							data: data.Recu,
+							backgroundColor: [ 'rgba(43, 187, 173, .2)',],
+							borderColor: ['rgba(43, 187, 163, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "Encours",
+							data: data.Encours,
+							backgroundColor: [ 'rgba(255, 187, 51, .2)',],
+							borderColor: ['rgba(255, 187, 40, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "Refusée",
+							data: data.Refuse,
+							backgroundColor: [ 'rgba(255, 53, 71, .2)',],
+							borderColor: ['rgba(255, 53, 61, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "Abandonnée",
+							data: data.Abandon,
+							backgroundColor: [ 'rgba(191, 54, 44, .2)',],
+							borderColor: ['rgba(191, 54, 34, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "A reviser",
+							data: data.Revise,
+							backgroundColor: [ 'rgba(247, 126, 4, .2)',],
+							borderColor: ['rgba(247, 126, 0, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "A valider",
+							data: data.A_valide,
+							backgroundColor: [ 'rgba(17, 125, 9, .2)',],
+							borderColor: ['rgba(17, 125, 0, .7)',],
+							borderWidth: 2
+						},
+						{
+							label: "F.A.Q",
+							data: data.Faq,
+							backgroundColor: [ 'rgba(66, 133, 244, .2)',],
+							borderColor: ['rgba(66, 133, 234, .7)',],
+							borderWidth: 2
+						}		
+						]
+					},
+					options: {
+						responsive: true
+					}
+				});
+			});
+		});
+
 		$.getJSON("<?php echo base_url("Tableau_de_bord/graphe_line") ?>", function(data){
 			var ctxL = document.getElementById("lineChart").getContext('2d');
 			var myLineChart = new Chart(ctxL, {
