@@ -691,11 +691,11 @@
 					"class": "text-left",
 					"render": function ( data, type, row, meta ) {
 						var valideur = '';
-						if (data.valideRemarque = NULL) {
+						/*if (data.valideRemarque = NULL) {
 							valideur = data.valideur;
 						} else {
 							valideur = data.valideRemarque + ' <br><small class="text-muted">Accorder par : ' + data.valideur + '</small>';
-						}
+						}*/
 						return valideur;
 					}
 			    }, {

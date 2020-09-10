@@ -37,6 +37,21 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
+					foreach ($pjs['pj'] as $col) :
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7 col-md-8 col-lg-10"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
+					endforeach;
+					?>
 					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3)); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
@@ -99,6 +114,22 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
+					foreach ($pjs['pj'] as $col) :
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7 col-md-8 col-lg-10"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
+					endforeach;
+					?>
+
 					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3)); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
@@ -161,6 +192,22 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
+					foreach ($pjs['pj'] as $col) :
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7 col-md-8 col-lg-10"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
+					endforeach;
+					?>
+
 					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3) . '/Consulter'); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
@@ -249,6 +296,22 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
+					foreach ($pjs['pj'] as $col) :
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7 col-md-8 col-lg-10"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
+					endforeach;
+					?>
+
 					<?php echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3)); ?>
 						<input type="hidden" name="idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<textarea name="contenu_traitement" id="contenu_traitement" rows="10" cols="80"><?php echo $row->traitement; ?></textarea>
@@ -320,6 +383,22 @@
 
 				<!-- CKEditor traitement -->
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+					<?php 
+					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
+					foreach ($pjs['pj'] as $col) :
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7 col-md-8 col-lg-10"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
+					endforeach;
+					?>
+
 					<?php $matricul_verif = strpos($row->info_saisisseur, $this->session->userdata('matricule'));
                     if ($matricul_verif === false) { 
 						echo form_open('Ticket/Enregistrer/' . $this->uri->segment(3) . '/Reviser'); ?>
@@ -407,20 +486,21 @@
 				<div class="col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 					<?php 
 					$pjs['pj'] = $this->PjModel->find($this->uri->segment(3));
+				
 					foreach ($pjs['pj'] as $col) :
-					if($col->pj != NULL) :?>
-					<small>
-						<dl class="row">	
-							<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe</dt>
-							<dd class="col-sm-7"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $row->fichier; ?></a></dd>	
-						</dl>
-					</small>
-					<?php 
-					endif;
+						if($col->pj != NULL) : ?>
+						<small>
+							<dl class="row">	
+								<dt class="col-sm-5 col-md-4 col-lg-2">Pièce Jointe <small>(traitement)</small></dt>
+								<dd class="col-sm-7"><a href="<?php echo base_url('/assets/Fichiers/'. $col->pj); ?>"><i class="fas fa-paperclip mr-2"></i><?php echo $col->pj; ?></a></dd>	
+							</dl>
+						</small>
+						<?php 
+						endif;
 					endforeach;
 					?>
 
-					<?php echo form_open_multipart('ajouter_pj/' . $this->uri->segment(3)); ?>
+					<?php echo form_open_multipart('pj/ajouter_pj/' . $this->uri->segment(3)); ?>
 						<input type="hidden" name="pj_idTicket" value="<?php echo $this->uri->segment(3); ?>">
 						<div class="row clearfix">
 							<div class="col-9">
