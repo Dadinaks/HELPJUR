@@ -1,6 +1,4 @@
-<script src="<?php echo base_url('assets/FullCalendar3.10.0/lib/moment.min.js') ?>"></script>
-
-<link rel="stylesheet" href="<?php echo base_url('assets/FullCalendar3.10.0/fullcalendar.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/FullCalendar3.10.0/fullcalendar.min.css') ?>">
 
 <script src="<?php echo base_url('assets/FullCalendar3.10.0/fullcalendar.js') ?>"></script>
 
@@ -167,14 +165,12 @@
         }).val();
     });
 
-    var evenement = <?php echo json_encode($data) ?>;
-
     var date = new Date();
     var d 	 = date.getDate();
     var m 	 = date.getMonth();
     var y 	 = date.getFullYear();
 
-    $('#agenda').fullCalendar({
+    $('#agenda').fullCalendar({	
         header: {
             left   : 'prev,next today',
             center : 'title',
@@ -183,9 +179,9 @@
 
         defaultDate : date,
         navLinks    : true,// can click day/week names to navigate views
-        editable    : true,
+        editable    : false,
         eventLimit  : true,// allow "more" link when too many events
-		events 		: evenement
+		events 		: <?php echo json_encode($data); ?>
     })
 
     $('#profil').on('change', function () {

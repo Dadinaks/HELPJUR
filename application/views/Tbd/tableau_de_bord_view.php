@@ -21,6 +21,16 @@
 </style>
 
 
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/dataTables.buttons.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.flash.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/jszip.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/pdfmake.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/vfs_fonts.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.html5.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.print.min.js'); ?>"></script>
+
+
+
 <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
 	<li class="nav-item">
 		<a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab" aria-controls="home-md" aria-selected="true">Tableau de bord</a>

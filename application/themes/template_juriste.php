@@ -57,19 +57,12 @@
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/mdb.min.js'); ?>"></script>
         
         <!-- moment -->
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/moment.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/FullCalendar3.10.0/lib/moment.min.js') ?>"></script>
         <!-- /.moment -->
         
         <!-- addons dataTable -->
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/datatables.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/datatables-select.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/dataTables.buttons.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.flash.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/jszip.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/pdfmake.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/vfs_fonts.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.html5.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/addons/buttons.print.min.js'); ?>"></script>
         
         <!-- module WOW, Chart -->
         <script type="text/javascript" src="<?php echo base_url('assets/MDB4.8.10/js/modules/wow.js'); ?>"></script>

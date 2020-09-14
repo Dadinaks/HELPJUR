@@ -537,7 +537,15 @@
 							<button class="btn btn-sm btn-dark-green btn-rounded" type="submit" href="" data-tooltip="tooltip" data-placement="bottom" title="Enregistrer le traitement"><i class="fas fa-save mr-2"></i>Enregistrer</button>
 
 							<?php if ($this->session->userdata('role') == 2 || $this->session->userdata('role') == 3) { ?>
-								<button class="btn btn-sm btn-teal btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Soumettre/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Soumettre le traitement pour validation"><i class="fas fa-check mr-2"></i>Soumettre</button>
+								<!--button class="btn btn-sm btn-teal btn-rounded" type="submit" formaction="<?php //echo base_url('Ticket/Soumettre/' . $row->idTicket); ?>" data-tooltip="tooltip" data-placement="bottom" title="Soumettre le traitement pour validation"><i class="fas fa-check mr-2"></i>Soumettre</button>
+								-->
+								<button class="btn btn-sm btn-teal btn-rounded dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="top" title="Soumettre le traitement pour observation ou validation"><i class="fas fa-check mr-2"></i>Soumettre</button>
+
+								<div class="dropdown-menu dropdown-teal">
+								<a class="dropdown-item" href="#">Juriste Sénior (Observation)</a>
+								<a class="dropdown-item" href="#">Directeur Juridique (Validation)</a>
+								</div>
 
 							<?php } elseif ($this->session->userdata('role') == 1) { ?>
 								<button class="btn btn-sm btn-success btn-rounded" type="submit" formaction="<?php echo base_url('Ticket/Valider/' . $row->idTicket . '/' . $this->session->userdata('id_utilisateur')); ?>" data-tooltip="tooltip" data-placement="bottom" title="Valider le traitement"><i class="fas fa-check mr-2"></i>Valider</button>
