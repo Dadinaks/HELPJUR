@@ -44,7 +44,7 @@ select distinct
 		    else 'Dossier valide - soldé'
 		end)
 	else 'Déchéance du terme' end) as LIB_ETAT_DOSSIER,
- (
+(
 	select sum(
 	    sde*NVL(
 		(select tind from bktau where dev=c.dev and dco=today),
@@ -66,10 +66,12 @@ select distinct
 	inner join bkechprt ech on (rec.iden[1,6] = ech.eve and (rec.iden[7,8]*1) = (ech.ave*1) and rec.dva = ech.dva)
 	where rec.cli = bkcli.cli and rec.iden[1,6] = bkdosprt.eve and (rec.iden[7,8]*1) = (bkdosprt.ave*1) and rec.ctr = 1 and (ech.ctr='8' and ech.eta='VA')) Nombre_jour_retard,
 
-    (select bkechprt.res from bkechprt where num=bkdosprt.dech and eve=bkdosprt.eve and ave=bkdosprt.ave)
-	   *NVL(
+    (select sum(sde*NVL(
 		(select tind from bktau where dev=bkdosprt.dev and dco=today),
 		(select tind from bktau where dev=bkdosprt.dev and dco=today-1)
+	    )) from bkcom c
+	inner join bkcptprt p on (c.ncp = p.ncp and c.dev = p.dev and c.age = p.age)
+	where c.cli = bkcli.cli and p.nat = '004' and p.eve = bkdosprt.eve and p.ave = bkdosprt.ave
 	    ) CRD_en_mga,
 
     bkdosprt.dmep date_mise_en_place,
@@ -83,6 +85,7 @@ select distinct
 
     
 from bkdosprt
-left join bkcli on bkcli.cli=bkdosprt.cli  
+left join bkcli on bkcli.cli=bkdosprt.cli 
 
 where ((bkdosprt.eta = 'VA' and bkdosprt.ctr in (1,3,5,9)) or (bkdosprt.eta = 'DE'))
+    and bkdosprt.ave = (select max(d.ave) from bkdosprt d where d.eve = bkdosprt.eve)
